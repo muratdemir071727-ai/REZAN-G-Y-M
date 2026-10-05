@@ -1,0 +1,1756 @@
+```html
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>REZAN GİYİM</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:#f5f5f5;
+    color:#111;
+}
+
+button,
+input,
+select,
+textarea{
+    font:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
+header{
+    background:#111;
+    color:white;
+    position:sticky;
+    top:0;
+    z-index:1000;
+}
+
+.header{
+    max-width:1400px;
+    margin:auto;
+    padding:18px 20px;
+    display:flex;
+    align-items:center;
+    gap:25px;
+}
+
+.logo{
+    font-size:24px;
+    font-weight:900;
+    white-space:nowrap;
+}
+
+.search-box{
+    flex:1;
+    display:flex;
+}
+
+.search-box input{
+    width:100%;
+    padding:13px 16px;
+    border:none;
+    border-radius:8px 0 0 8px;
+    outline:none;
+}
+
+.search-box button{
+    border:none;
+    background:#e91e63;
+    color:white;
+    padding:0 20px;
+    border-radius:0 8px 8px 0;
+}
+
+.cart-button{
+    background:white;
+    color:#111;
+    border:0;
+    padding:12px 16px;
+    border-radius:8px;
+    white-space:nowrap;
+}
+
+.category-bar{
+    background:white;
+    border-bottom:1px solid #ddd;
+    position:sticky;
+    top:75px;
+    z-index:900;
+}
+
+.categories{
+    max-width:1400px;
+    margin:auto;
+    padding:12px 20px;
+    display:flex;
+    gap:10px;
+    overflow-x:auto;
+}
+
+.category-btn{
+    border:1px solid #ddd;
+    background:white;
+    padding:9px 16px;
+    border-radius:30px;
+    white-space:nowrap;
+}
+
+.category-btn.active,
+.category-btn:hover{
+    background:#111;
+    color:white;
+}
+
+.container{
+    max-width:1400px;
+    margin:auto;
+    padding:25px 20px;
+}
+
+.hero{
+    background:#111;
+    color:white;
+    border-radius:16px;
+    padding:50px 35px;
+    margin-bottom:25px;
+}
+
+.hero h1{
+    font-size:42px;
+    margin-bottom:10px;
+}
+
+.products{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:20px;
+}
+
+.product{
+    background:white;
+    border-radius:14px;
+    overflow:hidden;
+    box-shadow:0 4px 15px rgba(0,0,0,.07);
+    transition:.2s;
+}
+
+.product:hover{
+    transform:translateY(-3px);
+}
+
+.product-image{
+    height:280px;
+    background:#eee;
+    position:relative;
+}
+
+.product-image img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.product-info{
+    padding:16px;
+}
+
+.product-category{
+    color:#777;
+    font-size:13px;
+    margin-bottom:6px;
+}
+
+.product-name{
+    font-size:18px;
+    font-weight:700;
+    margin-bottom:10px;
+}
+
+.price{
+    font-size:20px;
+    font-weight:900;
+}
+
+.old-price{
+    color:#999;
+    text-decoration:line-through;
+    margin-left:8px;
+}
+
+.product-actions{
+    margin-top:14px;
+    display:flex;
+    gap:8px;
+}
+
+.product-actions button{
+    flex:1;
+    border:0;
+    padding:11px;
+    border-radius:8px;
+}
+
+.detail-btn{
+    background:#eee;
+}
+
+.buy-btn{
+    background:#111;
+    color:white;
+}
+
+.empty{
+    text-align:center;
+    padding:70px 20px;
+    color:#777;
+    grid-column:1/-1;
+}
+
+/* MODAL */
+
+.modal{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.7);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:5000;
+    padding:20px;
+}
+
+.modal.active{
+    display:flex;
+}
+
+.modal-box{
+    width:min(1000px,100%);
+    max-height:90vh;
+    overflow:auto;
+    background:white;
+    border-radius:16px;
+    padding:25px;
+    position:relative;
+}
+
+.close{
+    position:absolute;
+    top:15px;
+    right:15px;
+    width:38px;
+    height:38px;
+    border-radius:50%;
+    border:0;
+    background:#eee;
+    font-size:20px;
+}
+
+.detail{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:30px;
+}
+
+.detail-main{
+    height:500px;
+    background:#eee;
+    border-radius:12px;
+    overflow:hidden;
+}
+
+.detail-main img{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+}
+
+.thumbs{
+    display:flex;
+    gap:8px;
+    margin-top:10px;
+    overflow:auto;
+}
+
+.thumbs img{
+    width:70px;
+    height:70px;
+    object-fit:cover;
+    border-radius:8px;
+    border:2px solid transparent;
+    cursor:pointer;
+}
+
+.detail h2{
+    font-size:32px;
+    margin-bottom:10px;
+}
+
+.detail-price{
+    font-size:28px;
+    font-weight:900;
+    margin:15px 0;
+}
+
+.size-list{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin:10px 0 20px;
+}
+
+.size-btn{
+    border:1px solid #ccc;
+    background:white;
+    padding:10px 15px;
+    border-radius:7px;
+}
+
+.size-btn.selected{
+    background:#111;
+    color:white;
+}
+
+.size-btn.disabled{
+    opacity:.35;
+    cursor:not-allowed;
+}
+
+.big-buy{
+    width:100%;
+    border:0;
+    background:#e91e63;
+    color:white;
+    padding:15px;
+    border-radius:9px;
+    font-weight:bold;
+    font-size:17px;
+}
+
+/* CART */
+
+.cart-item{
+    display:flex;
+    gap:15px;
+    border-bottom:1px solid #ddd;
+    padding:15px 0;
+}
+
+.cart-item img{
+    width:80px;
+    height:80px;
+    object-fit:cover;
+    border-radius:8px;
+}
+
+.cart-item-info{
+    flex:1;
+}
+
+.remove-btn{
+    border:0;
+    background:#ffe5e5;
+    color:#c00;
+    padding:8px;
+    border-radius:6px;
+}
+
+.total{
+    font-size:24px;
+    font-weight:900;
+    text-align:right;
+    margin-top:20px;
+}
+
+.checkout{
+    margin-top:20px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+}
+
+.checkout input,
+.checkout textarea{
+    width:100%;
+    border:1px solid #ccc;
+    border-radius:8px;
+    padding:12px;
+}
+
+.checkout textarea{
+    min-height:100px;
+    grid-column:1/-1;
+}
+
+.checkout button{
+    grid-column:1/-1;
+    background:#111;
+    color:white;
+    border:0;
+    padding:15px;
+    border-radius:8px;
+}
+
+.payment-box{
+    background:#fff8dc;
+    border:1px solid #ead48a;
+    border-radius:10px;
+    padding:18px;
+    margin-top:15px;
+}
+
+.payment-box strong{
+    display:block;
+    margin-bottom:7px;
+}
+
+.copy{
+    border:0;
+    background:#111;
+    color:white;
+    padding:9px 12px;
+    border-radius:6px;
+    margin-top:8px;
+}
+
+.notice{
+    margin-top:12px;
+    color:#9a0000;
+    font-weight:bold;
+}
+
+.tracking-form{
+    display:flex;
+    gap:10px;
+}
+
+.tracking-form input{
+    flex:1;
+    padding:12px;
+    border:1px solid #ccc;
+    border-radius:8px;
+}
+
+.tracking-form button{
+    border:0;
+    background:#111;
+    color:white;
+    border-radius:8px;
+    padding:12px 18px;
+}
+
+/* MOBILE */
+
+@media(max-width:1000px){
+    .products{
+        grid-template-columns:repeat(3,1fr);
+    }
+}
+
+@media(max-width:700px){
+    .header{
+        flex-wrap:wrap;
+    }
+
+    .logo{
+        width:100%;
+    }
+
+    .search-box{
+        width:100%;
+        order:3;
+    }
+
+    .category-bar{
+        top:130px;
+    }
+
+    .products{
+        grid-template-columns:repeat(2,1fr);
+        gap:10px;
+    }
+
+    .product-image{
+        height:210px;
+    }
+
+    .detail{
+        grid-template-columns:1fr;
+    }
+
+    .detail-main{
+        height:350px;
+    }
+
+    .checkout{
+        grid-template-columns:1fr;
+    }
+}
+
+@media(max-width:450px){
+    .products{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .product-name{
+        font-size:15px;
+    }
+
+    .price{
+        font-size:17px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="header">
+
+        <div class="logo">
+            REZAN GİYİM
+        </div>
+
+        <div class="search-box">
+            <input
+                id="searchInput"
+                type="search"
+                placeholder="Ürün ara..."
+                autocomplete="off"
+            >
+
+            <button onclick="searchProducts()">
+                🔎 Ara
+            </button>
+        </div>
+
+        <button class="cart-button" onclick="openCart()">
+            🛒 Sepet
+            <span id="cartCount">0</span>
+        </button>
+
+    </div>
+</header>
+
+<div class="category-bar">
+    <div
+        class="categories"
+        id="categoryList"
+    ></div>
+</div>
+
+<main class="container">
+
+    <section class="hero">
+        <h1>REZAN GİYİM</h1>
+        <p>Tarzını keşfet.</p>
+    </section>
+
+    <section>
+        <div
+            class="products"
+            id="products"
+        ></div>
+    </section>
+
+</main>
+
+<!-- ÜRÜN DETAY -->
+
+<div
+    class="modal"
+    id="productModal"
+>
+    <div class="modal-box">
+
+        <button
+            class="close"
+            onclick="closeModal('productModal')"
+        >
+            ×
+        </button>
+
+        <div
+            class="detail"
+            id="productDetail"
+        ></div>
+
+    </div>
+</div>
+
+<!-- SEPET -->
+
+<div
+    class="modal"
+    id="cartModal"
+>
+    <div class="modal-box">
+
+        <button
+            class="close"
+            onclick="closeModal('cartModal')"
+        >
+            ×
+        </button>
+
+        <h2>🛒 Sepetim</h2>
+
+        <div id="cartItems"></div>
+
+        <div
+            class="total"
+            id="cartTotal"
+        >
+            0 TL
+        </div>
+
+        <div
+            id="checkoutArea"
+        ></div>
+
+    </div>
+</div>
+
+<!-- ÖDEME -->
+
+<div
+    class="modal"
+    id="paymentModal"
+>
+    <div class="modal-box">
+
+        <button
+            class="close"
+            onclick="closeModal('paymentModal')"
+        >
+            ×
+        </button>
+
+        <h2>💳 Havale / EFT</h2>
+
+        <div id="paymentInfo"></div>
+
+    </div>
+</div>
+
+<!-- SİPARİŞ TAKİP -->
+
+<div
+    class="modal"
+    id="trackingModal"
+>
+    <div class="modal-box">
+
+        <button
+            class="close"
+            onclick="closeModal('trackingModal')"
+        >
+            ×
+        </button>
+
+        <h2>📦 Sipariş Takibi</h2>
+
+        <br>
+
+        <div class="tracking-form">
+            <input
+                id="trackingOrderId"
+                placeholder="Sipariş numaranız"
+            >
+
+            <button onclick="trackOrder()">
+                Sorgula
+            </button>
+        </div>
+
+        <div
+            id="trackingResult"
+            style="margin-top:20px"
+        ></div>
+
+    </div>
+</div>
+
+<script>
+let products = [];
+let categories = [];
+let cart = [];
+
+let activeCategory = "Tümü";
+let searchText = "";
+
+let selectedProduct = null;
+let selectedSize = "";
+
+try {
+    cart = JSON.parse(
+        localStorage.getItem("rezan_cart") || "[]"
+    );
+} catch {
+    cart = [];
+}
+
+/* =========================================================
+   INIT
+========================================================= */
+
+document.addEventListener("DOMContentLoaded", async () => {
+
+    await loadCategories();
+    await loadProducts();
+
+    updateCartCount();
+
+    const searchInput =
+        document.getElementById("searchInput");
+
+    searchInput.addEventListener(
+        "input",
+        searchProducts
+    );
+});
+
+/* =========================================================
+   PRODUCTS
+========================================================= */
+
+async function loadProducts() {
+
+    try {
+
+        const response =
+            await fetch("/api/products");
+
+        if (!response.ok) {
+            throw new Error("Ürünler alınamadı.");
+        }
+
+        products = await response.json();
+
+        renderProducts();
+
+    } catch (error) {
+
+        console.error(error);
+
+        document.getElementById("products").innerHTML = `
+            <div class="empty">
+                Ürünler yüklenirken hata oluştu.
+            </div>
+        `;
+    }
+}
+
+/* =========================================================
+   CATEGORIES
+========================================================= */
+
+async function loadCategories() {
+
+    try {
+
+        const response =
+            await fetch("/api/categories");
+
+        const data =
+            await response.json();
+
+        categories =
+            Array.isArray(data.categories)
+                ? data.categories
+                : [];
+
+        renderCategories();
+
+    } catch (error) {
+
+        console.error(error);
+
+        categories = [];
+
+        renderCategories();
+    }
+}
+
+function renderCategories() {
+
+    const container =
+        document.getElementById("categoryList");
+
+    container.innerHTML = "";
+
+    const allButton =
+        document.createElement("button");
+
+    allButton.className =
+        "category-btn " +
+        (activeCategory === "Tümü" ? "active" : "");
+
+    allButton.textContent = "Tümü";
+
+    allButton.onclick = () => {
+
+        activeCategory = "Tümü";
+
+        renderCategories();
+        renderProducts();
+    };
+
+    container.appendChild(allButton);
+
+    categories.forEach(category => {
+
+        const button =
+            document.createElement("button");
+
+        button.className =
+            "category-btn " +
+            (activeCategory === category
+                ? "active"
+                : "");
+
+        button.textContent = category;
+
+        button.onclick = () => {
+
+            activeCategory = category;
+
+            renderCategories();
+            renderProducts();
+        };
+
+        container.appendChild(button);
+    });
+}
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+function searchProducts() {
+
+    searchText =
+        document
+            .getElementById("searchInput")
+            .value
+            .trim()
+            .toLocaleLowerCase("tr-TR");
+
+    renderProducts();
+}
+
+/* =========================================================
+   FILTER
+========================================================= */
+
+function getFilteredProducts() {
+
+    return products.filter(product => {
+
+        const categoryOK =
+            activeCategory === "Tümü" ||
+            String(product.category || "")
+                .toLocaleLowerCase("tr-TR") ===
+            activeCategory.toLocaleLowerCase("tr-TR");
+
+        const text =
+            (
+                String(product.name || "") +
+                " " +
+                String(product.category || "") +
+                " " +
+                String(product.description || "")
+            )
+            .toLocaleLowerCase("tr-TR");
+
+        const searchOK =
+            !searchText ||
+            text.includes(searchText);
+
+        return categoryOK && searchOK;
+    });
+}
+
+/* =========================================================
+   RENDER PRODUCTS
+========================================================= */
+
+function renderProducts() {
+
+    const container =
+        document.getElementById("products");
+
+    const filtered =
+        getFilteredProducts();
+
+    container.innerHTML = "";
+
+    if (filtered.length === 0) {
+
+        container.innerHTML = `
+            <div class="empty">
+                Aradığınız ürüne uygun ürün bulunamadı.
+            </div>
+        `;
+
+        return;
+    }
+
+    filtered.forEach(product => {
+
+        const card =
+            document.createElement("div");
+
+        card.className = "product";
+
+        const image =
+            product.images &&
+            product.images.length
+                ? product.images[0]
+                : "";
+
+        const imageHTML =
+            image
+                ? `<img src="${escapeHTML(image)}" alt="${escapeHTML(product.name)}">`
+                : `<div style="height:100%;display:flex;align-items:center;justify-content:center;color:#777">
+                    Görsel yok
+                   </div>`;
+
+        card.innerHTML = `
+            <div class="product-image">
+                ${imageHTML}
+            </div>
+
+            <div class="product-info">
+
+                <div class="product-category">
+                    ${escapeHTML(product.category || "Genel")}
+                </div>
+
+                <div class="product-name">
+                    ${escapeHTML(product.name)}
+                </div>
+
+                <div>
+                    <span class="price">
+                        ${formatPrice(product.price)}
+                    </span>
+
+                    ${
+                        Number(product.oldPrice) > Number(product.price)
+                            ? `
+                                <span class="old-price">
+                                    ${formatPrice(product.oldPrice)}
+                                </span>
+                              `
+                            : ""
+                    }
+                </div>
+
+                <div class="product-actions">
+
+                    <button
+                        class="detail-btn"
+                        onclick="openProduct('${escapeJS(product.id)}')"
+                    >
+                        İncele
+                    </button>
+
+                    <button
+                        class="buy-btn"
+                        onclick="openProduct('${escapeJS(product.id)}')"
+                    >
+                        Satın Al
+                    </button>
+
+                </div>
+
+            </div>
+        `;
+
+        container.appendChild(card);
+    });
+}
+
+/* =========================================================
+   PRODUCT DETAIL
+========================================================= */
+
+function openProduct(id) {
+
+    selectedProduct =
+        products.find(
+            p => String(p.id) === String(id)
+        );
+
+    if (!selectedProduct) return;
+
+    selectedSize = "";
+
+    renderProductDetail();
+
+    document
+        .getElementById("productModal")
+        .classList.add("active");
+}
+
+function renderProductDetail() {
+
+    const p = selectedProduct;
+
+    const images =
+        Array.isArray(p.images)
+            ? p.images
+            : [];
+
+    const mainImage =
+        images[0] || "";
+
+    let sizesHTML = "";
+
+    if (
+        Array.isArray(p.sizes) &&
+        p.sizes.length > 0
+    ) {
+
+        sizesHTML = `
+            <h3>Beden / Numara</h3>
+
+            <div class="size-list">
+
+                ${p.sizes.map(size => {
+
+                    const stock =
+                        Number(size.stock || 0);
+
+                    return `
+                        <button
+                            class="size-btn ${
+                                selectedSize === size.name
+                                    ? "selected"
+                                    : ""
+                            } ${
+                                stock <= 0
+                                    ? "disabled"
+                                    : ""
+                            }"
+                            ${
+                                stock <= 0
+                                    ? "disabled"
+                                    : `onclick="selectSize('${escapeJS(size.name)}')"`
+                            }
+                        >
+                            ${escapeHTML(size.name)}
+                            ${
+                                stock <= 0
+                                    ? " - Tükendi"
+                                    : ""
+                            }
+                        </button>
+                    `;
+
+                }).join("")}
+
+            </div>
+        `;
+
+    } else {
+
+        sizesHTML = `
+            <p>
+                Stok:
+                <strong>
+                    ${Number(p.stock || 0)}
+                </strong>
+            </p>
+        `;
+    }
+
+    document.getElementById("productDetail").innerHTML = `
+
+        <div>
+
+            <div class="detail-main">
+
+                ${
+                    mainImage
+                        ? `<img
+                            id="mainProductImage"
+                            src="${escapeHTML(mainImage)}"
+                            alt="${escapeHTML(p.name)}"
+                           >`
+                        : `<div style="
+                            height:100%;
+                            display:flex;
+                            align-items:center;
+                            justify-content:center;
+                            color:#777">
+                            Görsel yok
+                           </div>`
+                }
+
+            </div>
+
+            ${
+                images.length > 1
+                    ? `
+                    <div class="thumbs">
+
+                        ${images.map((img, index) => `
+                            <img
+                                src="${escapeHTML(img)}"
+                                onclick="changeMainImage('${escapeJS(img)}')"
+                                alt=""
+                            >
+                        `).join("")}
+
+                    </div>
+                    `
+                    : ""
+            }
+
+        </div>
+
+        <div>
+
+            <div class="product-category">
+                ${escapeHTML(p.category || "Genel")}
+            </div>
+
+            <h2>
+                ${escapeHTML(p.name)}
+            </h2>
+
+            <div class="detail-price">
+                ${formatPrice(p.price)}
+
+                ${
+                    Number(p.oldPrice) > Number(p.price)
+                        ? `
+                            <span class="old-price">
+                                ${formatPrice(p.oldPrice)}
+                            </span>
+                          `
+                        : ""
+                }
+            </div>
+
+            <p style="line-height:1.7;margin-bottom:20px">
+                ${escapeHTML(p.description || "Ürün açıklaması bulunmuyor.")}
+            </p>
+
+            ${sizesHTML}
+
+            <button
+                class="big-buy"
+                onclick="addSelectedProductToCart()"
+            >
+                🛒 Sepete Ekle
+            </button>
+
+        </div>
+    `;
+}
+
+function selectSize(size) {
+
+    selectedSize = size;
+
+    renderProductDetail();
+}
+
+function changeMainImage(src) {
+
+    const image =
+        document.getElementById(
+            "mainProductImage"
+        );
+
+    if (image) {
+        image.src = src;
+    }
+}
+
+/* =========================================================
+   CART
+========================================================= */
+
+function addSelectedProductToCart() {
+
+    const p = selectedProduct;
+
+    if (!p) return;
+
+    if (
+        Array.isArray(p.sizes) &&
+        p.sizes.length > 0 &&
+        !selectedSize
+    ) {
+        alert("Lütfen beden veya numara seçin.");
+        return;
+    }
+
+    const existing =
+        cart.find(item =>
+            String(item.productId) === String(p.id) &&
+            String(item.size || "") ===
+            String(selectedSize || "")
+        );
+
+    if (existing) {
+
+        existing.quantity += 1;
+
+    } else {
+
+        cart.push({
+            productId: p.id,
+            name: p.name,
+            price: Number(p.price || 0),
+            image: p.images?.[0] || "",
+            size: selectedSize || "",
+            quantity: 1
+        });
+    }
+
+    saveCart();
+    updateCartCount();
+
+    closeModal("productModal");
+
+    alert("Ürün sepete eklendi.");
+}
+
+function saveCart() {
+
+    localStorage.setItem(
+        "rezan_cart",
+        JSON.stringify(cart)
+    );
+}
+
+function updateCartCount() {
+
+    const count =
+        cart.reduce(
+            (sum, item) =>
+                sum + Number(item.quantity || 0),
+            0
+        );
+
+    document.getElementById(
+        "cartCount"
+    ).textContent = count;
+}
+
+/* =========================================================
+   CART MODAL
+========================================================= */
+
+function openCart() {
+
+    renderCart();
+
+    document
+        .getElementById("cartModal")
+        .classList.add("active");
+}
+
+function renderCart() {
+
+    const container =
+        document.getElementById("cartItems");
+
+    const checkout =
+        document.getElementById("checkoutArea");
+
+    container.innerHTML = "";
+    checkout.innerHTML = "";
+
+    if (cart.length === 0) {
+
+        container.innerHTML = `
+            <div class="empty">
+                Sepetiniz boş.
+            </div>
+        `;
+
+        document.getElementById(
+            "cartTotal"
+        ).textContent = "0 TL";
+
+        return;
+    }
+
+    let total = 0;
+
+    cart.forEach((item, index) => {
+
+        const itemTotal =
+            Number(item.price || 0) *
+            Number(item.quantity || 0);
+
+        total += itemTotal;
+
+        const div =
+            document.createElement("div");
+
+        div.className = "cart-item";
+
+        div.innerHTML = `
+
+            ${
+                item.image
+                    ? `<img src="${escapeHTML(item.image)}">`
+                    : ""
+            }
+
+            <div class="cart-item-info">
+
+                <strong>
+                    ${escapeHTML(item.name)}
+                </strong>
+
+                <div>
+                    ${
+                        item.size
+                            ? "Beden/Numara: " +
+                              escapeHTML(item.size)
+                            : ""
+                    }
+                </div>
+
+                <div>
+                    ${item.quantity} ×
+                    ${formatPrice(item.price)}
+                </div>
+
+            </div>
+
+            <button
+                class="remove-btn"
+                onclick="removeCartItem(${index})"
+            >
+                Sil
+            </button>
+        `;
+
+        container.appendChild(div);
+    });
+
+    document.getElementById(
+        "cartTotal"
+    ).textContent = formatPrice(total);
+
+    checkout.innerHTML = `
+
+        <h3 style="margin-top:25px">
+            Teslimat Bilgileri
+        </h3>
+
+        <div class="checkout">
+
+            <input id="cName" placeholder="Ad Soyad">
+            <input id="cPhone" placeholder="Telefon">
+
+            <input id="cEmail" placeholder="E-posta">
+            <input id="cCity" placeholder="İl">
+
+            <input id="cDistrict" placeholder="İlçe">
+            <input id="cNeighborhood" placeholder="Mahalle">
+
+            <input id="cBuilding" placeholder="Bina No">
+            <input id="cApartment" placeholder="Daire No">
+
+            <input id="cPostal" placeholder="Posta Kodu">
+
+            <textarea
+                id="cAddress"
+                placeholder="Açık Adres"
+            ></textarea>
+
+            <textarea
+                id="cNote"
+                placeholder="Sipariş Notu"
+            ></textarea>
+
+            <button onclick="createOrder()">
+                Siparişi Oluştur
+            </button>
+
+        </div>
+    `;
+}
+
+function removeCartItem(index) {
+
+    cart.splice(index, 1);
+
+    saveCart();
+    updateCartCount();
+    renderCart();
+}
+
+/* =========================================================
+   CREATE ORDER
+========================================================= */
+
+async function createOrder() {
+
+    if (cart.length === 0) {
+        alert("Sepet boş.");
+        return;
+    }
+
+    const customer = {
+
+        name:
+            document.getElementById("cName").value.trim(),
+
+        phone:
+            document.getElementById("cPhone").value.trim(),
+
+        email:
+            document.getElementById("cEmail").value.trim(),
+
+        city:
+            document.getElementById("cCity").value.trim(),
+
+        district:
+            document.getElementById("cDistrict").value.trim(),
+
+        neighborhood:
+            document
+                .getElementById("cNeighborhood")
+                .value.trim(),
+
+        buildingNo:
+            document
+                .getElementById("cBuilding")
+                .value.trim(),
+
+        apartmentNo:
+            document
+                .getElementById("cApartment")
+                .value.trim(),
+
+        postalCode:
+            document
+                .getElementById("cPostal")
+                .value.trim(),
+
+        address:
+            document
+                .getElementById("cAddress")
+                .value.trim(),
+
+        note:
+            document
+                .getElementById("cNote")
+                .value.trim()
+    };
+
+    if (
+        !customer.name ||
+        !customer.phone ||
+        !customer.city ||
+        !customer.district ||
+        !customer.address
+    ) {
+        alert("Lütfen gerekli teslimat bilgilerini doldurun.");
+        return;
+    }
+
+    try {
+
+        const response =
+            await fetch("/api/orders", {
+
+                method:"POST",
+
+                headers:{
+                    "Content-Type":"application/json"
+                },
+
+                body:JSON.stringify({
+                    customer,
+                    items:cart
+                })
+            });
+
+        const data =
+            await response.json();
+
+        if (!response.ok) {
+            throw new Error(
+                data.message ||
+                "Sipariş oluşturulamadı."
+            );
+        }
+
+        cart = [];
+
+        saveCart();
+        updateCartCount();
+
+        closeModal("cartModal");
+
+        showPayment(data.order);
+
+    } catch(error) {
+
+        alert(error.message);
+    }
+}
+
+/* =========================================================
+   PAYMENT
+========================================================= */
+
+async function showPayment(order) {
+
+    let payment = {};
+
+    try {
+
+        const response =
+            await fetch("/api/payment-info");
+
+        const data =
+            await response.json();
+
+        payment =
+            data.payment || {};
+
+    } catch {}
+
+    document.getElementById(
+        "paymentInfo"
+    ).innerHTML = `
+
+        <p>
+            Sipariş numaranız:
+            <strong>${escapeHTML(order.id)}</strong>
+        </p>
+
+        <p style="margin-top:10px">
+            Toplam:
+            <strong>
+                ${formatPrice(order.total)}
+            </strong>
+        </p>
+
+        <div class="payment-box">
+
+            <strong>Banka</strong>
+            ${escapeHTML(payment.bankName || "-")}
+
+            <br><br>
+
+            <strong>Hesap Sahibi</strong>
+            ${escapeHTML(payment.accountName || "-")}
+
+            <br><br>
+
+            <strong>IBAN</strong>
+            ${escapeHTML(payment.iban || "-")}
+
+            <br>
+
+            <button
+                class="copy"
+                onclick="copyText('${escapeJS(payment.iban || "")}')"
+            >
+                IBAN'ı Kopyala
+            </button>
+
+            <div class="notice">
+                ⚠️ ÖNEMLİ: Havale/EFT açıklama kısmını BOŞ BIRAKIN.
+                Açıklama yazılması halinde siparişiniz onaylanmayabilir.
+            </div>
+
+        </div>
+
+        <p style="margin-top:20px">
+            Ödeme yaptıktan sonra yönetici bankadan
+            ödemenizi kontrol edip siparişinizi onaylayacaktır.
+        </p>
+    `;
+
+    document
+        .getElementById("paymentModal")
+        .classList.add("active");
+}
+
+/* =========================================================
+   TRACKING
+========================================================= */
+
+function openTracking() {
+
+    document
+        .getElementById("trackingModal")
+        .classList.add("active");
+}
+
+async function trackOrder() {
+
+    const id =
+        document
+            .getElementById("trackingOrderId")
+            .value
+            .trim();
+
+    if (!id) return;
+
+    const result =
+        document.getElementById(
+            "trackingResult"
+        );
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/orders/" +
+                encodeURIComponent(id)
+            );
+
+        const data =
+            await response.json();
+
+        if (!response.ok) {
+            throw new Error(
+                data.message ||
+                "Sipariş bulunamadı."
+            );
+        }
+
+        const order = data.order;
+
+        result.innerHTML = `
+
+            <div class="payment-box">
+
+                <strong>
+                    Sipariş:
+                    ${escapeHTML(order.id)}
+                </strong>
+
+                <br>
+
+                Durum:
+                <strong>
+                    ${escapeHTML(order.status)}
+                </strong>
+
+                <br><br>
+
+                Ödeme:
+                ${escapeHTML(order.paymentStatus)}
+
+                <br><br>
+
+                Kargo:
+                ${escapeHTML(order.shippingStatus)}
+
+                ${
+                    order.shipping?.company
+                        ? `
+                            <br><br>
+                            Kargo firması:
+                            ${escapeHTML(order.shipping.company)}
+                          `
+                        : ""
+                }
+
+                ${
+                    order.shipping?.trackingNumber
+                        ? `
+                            <br>
+                            Takip numarası:
+                            <strong>
+                                ${escapeHTML(order.shipping.trackingNumber)}
+                            </strong>
+                          `
+                        : ""
+                }
+
+            </div>
+        `;
+
+    } catch(error) {
+
+        result.innerHTML = `
+            <p style="color:#c00">
+                ${escapeHTML(error.message)}
+            </p>
+        `;
+    }
+}
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+function formatPrice(value) {
+
+    return Number(value || 0).toLocaleString(
+        "tr-TR",
+        {
+            minimumFractionDigits:2,
+            maximumFractionDigits:2
+        }
+    ) + " TL";
+}
+
+function closeModal(id) {
+
+    document
+        .getElementById(id)
+        .classList.remove("active");
+}
+
+function copyText(text) {
+
+    navigator.clipboard
+        .writeText(text)
+        .then(() => alert("Kopyalandı."));
+}
+
+function escapeHTML(value) {
+
+    return String(value ?? "")
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+}
+
+function escapeJS(value) {
+
+    return String(value ?? "")
+        .replaceAll("\\","\\\\")
+        .replaceAll("'","\\'")
+        .replaceAll("\n","\\n")
+        .replaceAll("\r","\\r");
+}
+</script>
+
+</body>
+</html>
+```
