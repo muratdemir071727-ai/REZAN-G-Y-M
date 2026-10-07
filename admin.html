@@ -1,1022 +1,978 @@
+```html
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-
 <meta name="robots" content="noindex,nofollow,noarchive">
-
 <title>REZAN GİYİM ADMIN</title>
 
 <style>
-
-*{
-    box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
 body{
-    margin:0;
-    font-family:Arial,sans-serif;
-    background:#f3f4f6;
-    color:#111;
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f3f4f6;
+  color:#111;
 }
 
-button,
-input,
-textarea,
-select{
-    font:inherit;
+button,input,textarea,select{
+  font:inherit;
 }
 
 button{
-    cursor:pointer;
+  cursor:pointer;
 }
 
 .login{
-    min-height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    padding:20px;
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:20px;
 }
 
 .login-box{
-    width:400px;
-    max-width:100%;
-    background:white;
-    padding:30px;
-    border-radius:15px;
-    box-shadow:0 10px 40px rgba(0,0,0,.1);
+  width:400px;
+  max-width:100%;
+  background:white;
+  padding:30px;
+  border-radius:15px;
+  box-shadow:0 10px 40px rgba(0,0,0,.1);
 }
 
 .login-box h1{
-    margin-top:0;
+  margin-top:0;
 }
 
 .login-box input{
-    width:100%;
-    padding:13px;
-    border:1px solid #ccc;
-    border-radius:8px;
-    margin:10px 0;
+  width:100%;
+  padding:13px;
+  border:1px solid #ccc;
+  border-radius:8px;
+  margin:10px 0;
 }
 
 .btn{
-    border:0;
-    padding:11px 15px;
-    border-radius:8px;
-    background:#111;
-    color:white;
+  border:0;
+  padding:11px 15px;
+  border-radius:8px;
+  background:#111;
+  color:white;
 }
 
-.btn.green{
-    background:#16803c;
-}
-
-.btn.red{
-    background:#c62828;
-}
-
-.btn.gray{
-    background:#ddd;
-    color:#111;
-}
-
-.btn.blue{
-    background:#1976d2;
-}
-
-.btn.orange{
-    background:#ef6c00;
-}
+.btn.green{background:#16803c}
+.btn.red{background:#c62828}
+.btn.gray{background:#ddd;color:#111}
+.btn.blue{background:#1976d2}
+.btn.orange{background:#ef6c00}
 
 .admin{
-    display:none;
-    min-height:100vh;
+  display:none;
+  min-height:100vh;
 }
 
 .sidebar{
-    width:250px;
-    position:fixed;
-    left:0;
-    top:0;
-    bottom:0;
-    background:#111;
-    color:white;
-    padding:20px;
-    overflow-y:auto;
+  width:250px;
+  position:fixed;
+  left:0;
+  top:0;
+  bottom:0;
+  background:#111;
+  color:white;
+  padding:20px;
+  overflow-y:auto;
 }
 
 .sidebar h2{
-    margin-top:0;
+  margin-top:0;
 }
 
 .menu{
-    display:flex;
-    flex-direction:column;
-    gap:8px;
-    margin-top:30px;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  margin-top:30px;
 }
 
 .menu button{
-    border:0;
-    background:#222;
-    color:white;
-    text-align:left;
-    padding:13px;
-    border-radius:7px;
+  border:0;
+  background:#222;
+  color:white;
+  text-align:left;
+  padding:13px;
+  border-radius:7px;
 }
 
 .menu button:hover,
 .menu button.active{
-    background:#e91e63;
+  background:#e91e63;
 }
 
 .content{
-    margin-left:250px;
-    padding:25px;
+  margin-left:250px;
+  padding:25px;
 }
 
 .page{
-    display:none;
+  display:none;
 }
 
 .page.active{
-    display:block;
+  display:block;
 }
 
 .cards{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:15px;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:15px;
 }
 
 .card{
-    background:white;
-    border-radius:12px;
-    padding:20px;
-    box-shadow:0 3px 15px rgba(0,0,0,.06);
+  background:white;
+  border-radius:12px;
+  padding:20px;
+  box-shadow:0 3px 15px rgba(0,0,0,.06);
 }
 
 .card h3{
-    margin-top:0;
+  margin-top:0;
 }
 
 .table{
-    width:100%;
-    border-collapse:collapse;
-    background:white;
+  width:100%;
+  border-collapse:collapse;
+  background:white;
 }
 
 .table th,
 .table td{
-    padding:12px;
-    border-bottom:1px solid #ddd;
-    text-align:left;
-    vertical-align:middle;
+  padding:12px;
+  border-bottom:1px solid #ddd;
+  text-align:left;
+  vertical-align:middle;
 }
 
 .product-img{
-    width:70px;
-    height:70px;
-    object-fit:cover;
-    border-radius:7px;
+  width:70px;
+  height:70px;
+  object-fit:cover;
+  border-radius:7px;
 }
 
 .form{
-    background:white;
-    padding:20px;
-    border-radius:12px;
+  background:white;
+  padding:20px;
+  border-radius:12px;
 }
 
 .form-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:15px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:15px;
 }
 
 .form-group{
-    display:flex;
-    flex-direction:column;
-    gap:7px;
+  display:flex;
+  flex-direction:column;
+  gap:7px;
 }
 
 .form-group.full{
-    grid-column:1/-1;
+  grid-column:1/-1;
 }
 
 .form input,
 .form textarea,
 .form select{
-    padding:11px;
-    border:1px solid #ccc;
-    border-radius:7px;
+  padding:11px;
+  border:1px solid #ccc;
+  border-radius:7px;
 }
 
 .form textarea{
-    min-height:120px;
-    resize:vertical;
+  min-height:120px;
+  resize:vertical;
 }
 
 .images{
-    display:flex;
-    gap:10px;
-    flex-wrap:wrap;
-    margin-top:10px;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:10px;
 }
 
 .image-item{
-    position:relative;
+  position:relative;
 }
 
 .image-item img{
-    width:110px;
-    height:110px;
-    object-fit:cover;
-    border-radius:8px;
+  width:110px;
+  height:110px;
+  object-fit:cover;
+  border-radius:8px;
 }
 
 .image-item button{
-    position:absolute;
-    right:4px;
-    top:4px;
-    border:0;
-    background:#c00;
-    color:white;
-    border-radius:50%;
-    width:25px;
-    height:25px;
+  position:absolute;
+  right:4px;
+  top:4px;
+  border:0;
+  background:#c00;
+  color:white;
+  border-radius:50%;
+  width:25px;
+  height:25px;
 }
 
 .sizes{
-    display:flex;
-    flex-direction:column;
-    gap:8px;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
 }
 
 .size-row{
-    display:flex;
-    gap:8px;
+  display:flex;
+  gap:8px;
 }
 
 .size-row input{
-    flex:1;
+  flex:1;
 }
 
 .category-list{
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-    margin-top:20px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  margin-top:20px;
 }
 
 .category-item{
-    background:white;
-    border-radius:8px;
-    padding:14px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
+  background:white;
+  border-radius:8px;
+  padding:14px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
 }
 
 .order{
-    background:white;
-    padding:20px;
-    border-radius:12px;
-    margin-bottom:15px;
+  background:white;
+  padding:20px;
+  border-radius:12px;
+  margin-bottom:15px;
 }
 
 .order-actions{
-    display:flex;
-    flex-wrap:wrap;
-    gap:8px;
-    margin-top:15px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:15px;
 }
 
 .upload-box{
-    border:2px dashed #aaa;
-    padding:30px;
-    text-align:center;
-    border-radius:10px;
-    background:#fafafa;
+  border:2px dashed #aaa;
+  padding:30px;
+  text-align:center;
+  border-radius:10px;
+  background:#fafafa;
 }
 
 .category-select-row{
-    display:flex;
-    gap:8px;
-    align-items:flex-start;
+  display:flex;
+  gap:8px;
+  align-items:flex-start;
 }
 
 .category-select-row select{
-    flex:1;
+  flex:1;
 }
 
 .multi-category{
-    width:100%;
-    min-height:150px;
+  width:100%;
+  min-height:150px;
 }
 
 .help{
-    color:#666;
-    font-size:13px;
-    line-height:1.5;
+  color:#666;
+  font-size:13px;
+  line-height:1.5;
 }
 
 .tag-list{
-    display:flex;
-    flex-wrap:wrap;
-    gap:6px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
 }
 
 .tag{
-    background:#eee;
-    border-radius:20px;
-    padding:6px 10px;
-    font-size:13px;
+  background:#eee;
+  border-radius:20px;
+  padding:6px 10px;
+  font-size:13px;
 }
 
 .review-box{
-    background:#f7f7f7;
-    border:1px solid #ddd;
-    border-radius:10px;
-    padding:12px;
-    margin-top:10px;
+  background:#f7f7f7;
+  border:1px solid #ddd;
+  border-radius:10px;
+  padding:12px;
+  margin-top:10px;
 }
 
 .stars{
-    color:#f5a000;
-    letter-spacing:2px;
+  color:#f5a000;
+  letter-spacing:2px;
 }
 
 .hero-admin-card{
-    background:white;
-    border-radius:14px;
-    padding:15px;
-    margin-bottom:15px;
-    box-shadow:0 3px 15px rgba(0,0,0,.06);
+  background:white;
+  border-radius:14px;
+  padding:15px;
+  margin-bottom:15px;
+  box-shadow:0 3px 15px rgba(0,0,0,.06);
 }
 
 .hero-admin-grid{
-    display:grid;
-    grid-template-columns:180px 1fr;
-    gap:18px;
-    align-items:start;
+  display:grid;
+  grid-template-columns:180px 1fr;
+  gap:18px;
+  align-items:start;
 }
 
 .hero-admin-image{
-    width:180px;
-    height:110px;
-    object-fit:cover;
-    border-radius:10px;
-    background:#eee;
+  width:180px;
+  height:110px;
+  object-fit:cover;
+  border-radius:10px;
+  background:#eee;
 }
 
 .hero-form{
-    background:#fff;
-    border-radius:12px;
-    padding:20px;
-    margin-bottom:20px;
-    border:1px solid #ddd;
+  background:#fff;
+  border-radius:12px;
+  padding:20px;
+  margin-bottom:20px;
+  border:1px solid #ddd;
 }
 
 .hero-preview{
-    width:100%;
-    max-width:500px;
-    height:230px;
-    object-fit:cover;
-    border-radius:12px;
-    margin-top:10px;
-    background:#eee;
+  width:100%;
+  max-width:500px;
+  height:230px;
+  object-fit:cover;
+  border-radius:12px;
+  margin-top:10px;
+  background:#eee;
 }
 
 .empty-box{
-    background:white;
-    padding:25px;
-    border-radius:12px;
-    color:#666;
+  background:white;
+  padding:25px;
+  border-radius:12px;
+  color:#666;
 }
 
 .notice-box{
-    padding:15px;
-    border-radius:10px;
-    background:#fff3cd;
-    border:1px solid #ffe69c;
-    margin-bottom:15px;
+  padding:15px;
+  border-radius:10px;
+  background:#fff3cd;
+  border:1px solid #ffe69c;
+  margin-bottom:15px;
 }
 
 .success-box{
-    padding:15px;
-    border-radius:10px;
-    background:#d1e7dd;
-    border:1px solid #badbcc;
+  padding:15px;
+  border-radius:10px;
+  background:#d1e7dd;
+  border:1px solid #badbcc;
 }
 
 .danger-box{
-    padding:15px;
-    border-radius:10px;
-    background:#f8d7da;
-    border:1px solid #f5c2c7;
+  padding:15px;
+  border-radius:10px;
+  background:#f8d7da;
+  border:1px solid #f5c2c7;
 }
 
 .slide-buttons{
-    display:flex;
-    flex-wrap:wrap;
-    gap:8px;
-    margin-top:12px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:12px;
 }
 
 .small{
-    font-size:13px;
+  font-size:13px;
+}
+
+.featured-box{
+  grid-column:1/-1;
+  background:linear-gradient(135deg,#fff7e6,#fff1cc);
+  border:2px solid #f0a000;
+  border-radius:12px;
+  padding:16px;
+}
+
+.featured-label{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-weight:bold;
+  cursor:pointer;
+  font-size:16px;
+}
+
+.featured-label input{
+  width:20px;
+  height:20px;
+  cursor:pointer;
+}
+
+.featured-status{
+  margin-top:8px;
+  color:#7a5100;
+  font-size:13px;
+}
+
+.offer-tag{
+  display:inline-block;
+  background:#ff9800;
+  color:#fff;
+  padding:5px 9px;
+  border-radius:15px;
+  font-size:12px;
+  font-weight:bold;
 }
 
 @media(max-width:1000px){
-
-    .cards{
-        grid-template-columns:1fr 1fr;
-    }
-
+  .cards{
+    grid-template-columns:1fr 1fr;
+  }
 }
 
 @media(max-width:800px){
+  .sidebar{
+    width:100%;
+    position:relative;
+    bottom:auto;
+  }
 
-    .sidebar{
-        width:100%;
-        position:relative;
-        bottom:auto;
-    }
+  .content{
+    margin-left:0;
+  }
 
-    .content{
-        margin-left:0;
-    }
+  .cards{
+    grid-template-columns:1fr 1fr;
+  }
 
-    .cards{
-        grid-template-columns:1fr 1fr;
-    }
+  .form-grid{
+    grid-template-columns:1fr;
+  }
 
-    .form-grid{
-        grid-template-columns:1fr;
-    }
+  .category-select-row{
+    flex-direction:column;
+    align-items:stretch;
+  }
 
-    .category-select-row{
-        flex-direction:column;
-        align-items:stretch;
-    }
+  .hero-admin-grid{
+    grid-template-columns:1fr;
+  }
 
-    .hero-admin-grid{
-        grid-template-columns:1fr;
-    }
+  .hero-admin-image{
+    width:100%;
+    height:200px;
+  }
 
-    .hero-admin-image{
-        width:100%;
-        height:200px;
-    }
-
+  .featured-box{
+    grid-column:auto;
+  }
 }
 
 @media(max-width:500px){
+  .cards{
+    grid-template-columns:1fr;
+  }
 
-    .cards{
-        grid-template-columns:1fr;
-    }
+  .content{
+    padding:15px;
+  }
 
-    .content{
-        padding:15px;
-    }
-
-    .table{
-        display:block;
-        overflow-x:auto;
-    }
-
+  .table{
+    display:block;
+    overflow-x:auto;
+  }
 }
-
 </style>
-
 </head>
 
 <body>
 
 <!-- =====================================================
-     LOGIN
+LOGIN
 ===================================================== -->
 
-<div
-    class="login"
-    id="loginScreen"
->
+<div class="login" id="loginScreen">
+  <div class="login-box">
+    <h1>REZAN GİYİM</h1>
+    <p>Admin Paneli</p>
 
-    <div class="login-box">
+    <input
+      id="loginPassword"
+      type="password"
+      placeholder="Admin şifresi"
+      onkeydown="if(event.key==='Enter') login()"
+    >
 
-        <h1>REZAN GİYİM</h1>
+    <button
+      class="btn"
+      style="width:100%"
+      onclick="login()"
+    >
+      Giriş Yap
+    </button>
 
-        <p>Admin Paneli</p>
-
-        <input
-            id="loginPassword"
-            type="password"
-            placeholder="Admin şifresi"
-            onkeydown="if(event.key==='Enter') login()"
-        >
-
-        <button
-            class="btn"
-            style="width:100%"
-            onclick="login()"
-        >
-            Giriş Yap
-        </button>
-
-        <p id="loginMessage"></p>
-
-    </div>
-
+    <p id="loginMessage"></p>
+  </div>
 </div>
 
-
 <!-- =====================================================
-     ADMIN
+ADMIN
 ===================================================== -->
 
-<div
-    class="admin"
-    id="adminScreen"
->
+<div class="admin" id="adminScreen">
 
-    <aside class="sidebar">
+  <aside class="sidebar">
 
-        <h2>REZAN GİYİM</h2>
+    <h2>REZAN GİYİM</h2>
 
-        <div class="menu">
+    <div class="menu">
 
-            <button
-                onclick="showPage('dashboard',this)"
-                class="active"
-            >
-                📊 Dashboard
-            </button>
+      <button
+        onclick="showPage('dashboard',this)"
+        class="active"
+      >
+        📊 Dashboard
+      </button>
 
-            <button
-                onclick="showPage('orders',this)"
-            >
-                📦 Siparişler
-            </button>
+      <button
+        onclick="showPage('orders',this)"
+      >
+        📦 Siparişler
+      </button>
 
-            <button
-                onclick="showPage('products',this)"
-            >
-                🛍️ Ürünler
-            </button>
+      <button
+        onclick="showPage('products',this)"
+      >
+        🛍️ Ürünler
+      </button>
 
-            <button
-                onclick="showPage('categories',this)"
-            >
-                🗂️ Kategoriler
-            </button>
+      <button
+        onclick="showPage('categories',this)"
+      >
+        🗂️ Kategoriler
+      </button>
 
-            <button
-                onclick="showPage('homepage',this)"
-            >
-                🖼️ Ana Sayfa / Vitrin
-            </button>
+      <button
+        onclick="showPage('homepage',this)"
+      >
+        🖼️ Ana Sayfa / Vitrin
+      </button>
 
-            <button
-                onclick="showPage('payment',this)"
-            >
-                💳 Ödeme Ayarları
-            </button>
+      <button
+        onclick="showPage('payment',this)"
+      >
+        💳 Ödeme Ayarları
+      </button>
 
-            <button
-                onclick="showPage('password',this)"
-            >
-                🔐 Şifre
-            </button>
+      <button
+        onclick="showPage('password',this)"
+      >
+        🔐 Şifre
+      </button>
 
-            <button
-                onclick="logout()"
-            >
-                🚪 Çıkış
-            </button>
+      <button onclick="logout()">
+        🚪 Çıkış
+      </button>
+
+    </div>
+  </aside>
+
+  <main class="content">
+
+    <!-- =================================================
+    DASHBOARD
+    ================================================= -->
+
+    <section
+      class="page active"
+      id="page-dashboard"
+    >
+
+      <h1>Dashboard</h1>
+
+      <div
+        class="cards"
+        id="dashboardCards"
+      ></div>
+
+    </section>
+
+    <!-- =================================================
+    ORDERS
+    ================================================= -->
+
+    <section
+      class="page"
+      id="page-orders"
+    >
+
+      <h1>📦 Siparişler</h1>
+
+      <div id="ordersList"></div>
+
+    </section>
+
+    <!-- =================================================
+    PRODUCTS
+    ================================================= -->
+
+    <section
+      class="page"
+      id="page-products"
+    >
+
+      <h1>🛍️ Ürünler</h1>
+
+      <button
+        class="btn green"
+        onclick="newProduct()"
+      >
+        + Yeni Ürün
+      </button>
+
+      <br><br>
+
+      <div id="productList"></div>
+
+    </section>
+
+    <!-- =================================================
+    CATEGORIES
+    ================================================= -->
+
+    <section
+      class="page"
+      id="page-categories"
+    >
+
+      <h1>🗂️ Kategoriler</h1>
+
+      <div class="form">
+
+        <h3>Yeni Kategori Ekle</h3>
+
+        <div style="display:flex;gap:10px;max-width:600px;">
+
+          <input
+            id="newCategory"
+            placeholder="Örn: Tişört"
+            style="flex:1;padding:12px;border:1px solid #ccc;border-radius:7px;"
+            onkeydown="if(event.key==='Enter') addCategory()"
+          >
+
+          <button
+            class="btn green"
+            onclick="addCategory()"
+          >
+            Kategori Ekle
+          </button>
 
         </div>
 
-    </aside>
+      </div>
 
+      <br>
 
-    <main class="content">
+      <div
+        class="category-list"
+        id="categoryAdminList"
+      ></div>
 
+    </section>
 
-        <!-- =================================================
-             DASHBOARD
-        ================================================== -->
+    <!-- =================================================
+    HOMEPAGE
+    ================================================= -->
 
-        <section
-            class="page active"
-            id="page-dashboard"
-        >
+    <section
+      class="page"
+      id="page-homepage"
+    >
 
-            <h1>Dashboard</h1>
+      <h1>🖼️ Ana Sayfa / Vitrin Yönetimi</h1>
 
-            <div
-                class="cards"
-                id="dashboardCards"
-            ></div>
+      <div class="notice-box">
 
-        </section>
+        <strong>Nasıl çalışır?</strong>
 
+        <p>
+          Buraya eklediğiniz görseller REZAN GİYİM ana sayfasındaki
+          büyük vitrin alanında otomatik olarak sırayla gösterilecektir.
+        </p>
 
-        <!-- =================================================
-             ORDERS
-        ================================================== -->
+        <p class="small">
+          Birden fazla görsel ekleyebilir, başlık/açıklama yazabilir
+          ve sıralamayı değiştirebilirsiniz.
+        </p>
 
-        <section
-            class="page"
-            id="page-orders"
-        >
+      </div>
 
-            <h1>📦 Siparişler</h1>
+      <div class="hero-form">
 
-            <div id="ordersList"></div>
+        <h2>Yeni Vitrin Görseli</h2>
 
-        </section>
+        <div class="form-grid">
 
+          <div class="form-group">
 
-        <!-- =================================================
-             PRODUCTS
-        ================================================== -->
+            <label>Görsel</label>
 
-        <section
-            class="page"
-            id="page-products"
-        >
+            <input
+              id="heroImageInput"
+              type="file"
+              accept="image/jpeg,image/png,image/webp,image/gif"
+              onchange="previewHeroImage(this)"
+            >
 
-            <h1>🛍️ Ürünler</h1>
+            <img
+              id="heroPreview"
+              class="hero-preview"
+              style="display:none"
+            >
+
+          </div>
+
+          <div class="form-group">
+
+            <label>Başlık</label>
+
+            <input
+              id="heroTitle"
+              placeholder="Örn: Yeni Sezon"
+            >
+
+          </div>
+
+          <div class="form-group full">
+
+            <label>Açıklama</label>
+
+            <textarea
+              id="heroText"
+              placeholder="Örn: Yeni sezon ürünlerini keşfet."
+            ></textarea>
+
+          </div>
+
+          <div class="form-group">
+
+            <label>Buton Yazısı</label>
+
+            <input
+              id="heroButtonText"
+              value="Şimdi Keşfet"
+              placeholder="Şimdi Keşfet"
+            >
+
+          </div>
+
+          <div class="form-group">
+
+            <label>Buton Bağlantısı</label>
+
+            <input
+              id="heroButtonLink"
+              placeholder="#products"
+              value="#products"
+            >
+
+          </div>
+
+          <div class="form-group full">
 
             <button
-                class="btn green"
-                onclick="newProduct()"
+              class="btn green"
+              onclick="addHeroSlide()"
             >
-                + Yeni Ürün
+              + Vitrine Ekle
             </button>
 
-            <br><br>
+          </div>
 
-            <div id="productList"></div>
+        </div>
 
-        </section>
+      </div>
 
+      <h2>Mevcut Vitrinler</h2>
 
-        <!-- =================================================
-             CATEGORIES
-        ================================================== -->
+      <div id="heroSlidesList"></div>
 
-        <section
-            class="page"
-            id="page-categories"
-        >
+    </section>
 
-            <h1>🗂️ Kategoriler</h1>
+    <!-- =================================================
+    PAYMENT
+    ================================================= -->
 
-            <div class="form">
+    <section
+      class="page"
+      id="page-payment"
+    >
 
-                <h3>Yeni Kategori Ekle</h3>
+      <h1>💳 Ödeme Ayarları</h1>
 
-                <div style="
-                    display:flex;
-                    gap:10px;
-                    max-width:600px;
-                ">
+      <div class="form">
 
-                    <input
-                        id="newCategory"
-                        placeholder="Örn: Tişört"
-                        style="
-                            flex:1;
-                            padding:12px;
-                            border:1px solid #ccc;
-                            border-radius:7px;
-                        "
-                        onkeydown="if(event.key==='Enter') addCategory()"
-                    >
+        <div class="form-grid">
 
-                    <button
-                        class="btn green"
-                        onclick="addCategory()"
-                    >
-                        Kategori Ekle
-                    </button>
+          <div class="form-group">
 
-                </div>
+            <label>Banka</label>
 
-            </div>
+            <input id="bankName">
 
-            <br>
+          </div>
 
-            <div
-                class="category-list"
-                id="categoryAdminList"
-            ></div>
+          <div class="form-group">
 
-        </section>
+            <label>Hesap Sahibi</label>
 
+            <input id="accountName">
 
-        <!-- =================================================
-             HOMEPAGE
-        ================================================== -->
+          </div>
 
-        <section
-            class="page"
-            id="page-homepage"
-        >
+          <div class="form-group full">
 
-            <h1>🖼️ Ana Sayfa / Vitrin Yönetimi</h1>
+            <label>IBAN</label>
 
-            <div class="notice-box">
+            <input id="iban">
 
-                <strong>Nasıl çalışır?</strong>
+          </div>
 
-                <p>
-                    Buraya eklediğiniz görseller REZAN GİYİM
-                    ana sayfasındaki büyük vitrin alanında
-                    otomatik olarak sırayla gösterilecektir.
-                </p>
+          <div class="form-group full">
 
-                <p class="small">
-                    Birden fazla görsel ekleyebilir,
-                    başlık/açıklama yazabilir ve sıralamayı
-                    değiştirebilirsiniz.
-                </p>
+            <label>
+              ⚠️ Müşteriye Gösterilecek Önemli Açıklama
+            </label>
+
+            <textarea
+              id="paymentDescription"
+              placeholder="lütfen açıklamayı boş bırakın yoksa sipariş gerçekleştirilmez"
+            ></textarea>
+
+            <div class="help">
+
+              Bu alan müşterinin ödeme ekranında
+              ödeme bilgilerinin altında gösterilir.
+
+              <br>
+
+              Boş bırakırsanız sistem otomatik olarak:
+
+              <strong>
+                lütfen açıklamayı boş bırakın yoksa sipariş gerçekleştirilmez
+              </strong>
+
+              yazısını kullanır.
 
             </div>
 
+          </div>
 
-            <div class="hero-form">
+          <div class="form-group full">
 
-                <h2>Yeni Vitrin Görseli</h2>
+            <button
+              class="btn green"
+              onclick="savePayment()"
+            >
+              💾 Ödeme Bilgilerini Kaydet
+            </button>
 
-                <div class="form-grid">
+          </div>
 
-                    <div class="form-group">
+        </div>
 
-                        <label>Görsel</label>
+      </div>
 
-                        <input
-                            id="heroImageInput"
-                            type="file"
-                            accept="image/jpeg,image/png,image/webp,image/gif"
-                            onchange="previewHeroImage(this)"
-                        >
+    </section>
 
-                        <img
-                            id="heroPreview"
-                            class="hero-preview"
-                            style="display:none"
-                        >
+    <!-- =================================================
+    PASSWORD
+    ================================================= -->
 
-                    </div>
+    <section
+      class="page"
+      id="page-password"
+    >
 
+      <h1>🔐 Şifre Değiştir</h1>
 
-                    <div class="form-group">
+      <div class="form">
 
-                        <label>Başlık</label>
+        <div class="form-grid">
 
-                        <input
-                            id="heroTitle"
-                            placeholder="Örn: Yeni Sezon"
-                        >
+          <div class="form-group">
 
-                    </div>
+            <label>Eski Şifre</label>
 
+            <input
+              id="oldPassword"
+              type="password"
+            >
 
-                    <div class="form-group full">
+          </div>
 
-                        <label>Açıklama</label>
+          <div class="form-group">
 
-                        <textarea
-                            id="heroText"
-                            placeholder="Örn: Yeni sezon ürünlerini keşfet."
-                        ></textarea>
+            <label>Yeni Şifre</label>
 
-                    </div>
+            <input
+              id="newPassword"
+              type="password"
+            >
 
+          </div>
 
-                    <div class="form-group">
+          <div class="form-group full">
 
-                        <label>Buton Yazısı</label>
+            <button
+              class="btn green"
+              onclick="changePassword()"
+            >
+              Şifreyi Değiştir
+            </button>
 
-                        <input
-                            id="heroButtonText"
-                            value="Şimdi Keşfet"
-                            placeholder="Şimdi Keşfet"
-                        >
+          </div>
 
-                    </div>
+        </div>
 
+      </div>
 
-                    <div class="form-group">
+    </section>
 
-                        <label>Buton Bağlantısı</label>
-
-                        <input
-                            id="heroButtonLink"
-                            placeholder="#products"
-                            value="#products"
-                        >
-
-                    </div>
-
-
-                    <div class="form-group full">
-
-                        <button
-                            class="btn green"
-                            onclick="addHeroSlide()"
-                        >
-                            + Vitrine Ekle
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <h2>Mevcut Vitrinler</h2>
-
-            <div id="heroSlidesList"></div>
-
-        </section>
-
-
-        <!-- =================================================
-             PAYMENT
-        ================================================== -->
-
-        <section
-            class="page"
-            id="page-payment"
-        >
-
-            <h1>💳 Ödeme Ayarları</h1>
-
-            <div class="form">
-
-                <div class="form-grid">
-
-                    <div class="form-group">
-
-                        <label>Banka</label>
-
-                        <input
-                            id="bankName"
-                        >
-
-                    </div>
-
-
-                    <div class="form-group">
-
-                        <label>Hesap Sahibi</label>
-
-                        <input
-                            id="accountName"
-                        >
-
-                    </div>
-
-
-                    <div class="form-group full">
-
-                        <label>IBAN</label>
-
-                        <input
-                            id="iban"
-                        >
-
-                    </div>
-
-
-                    <div class="form-group full">
-
-                        <label>
-                            ⚠️ Müşteriye Gösterilecek Önemli Açıklama
-                        </label>
-
-                        <textarea
-                            id="paymentDescription"
-                            placeholder="lütfen açıklamayı boş bırakın yoksa sipariş gerçekleştirilmez"
-                        ></textarea>
-
-                        <div class="help">
-
-                            Bu alan müşterinin ödeme ekranında
-                            ödeme bilgilerinin altında gösterilir.
-
-                            <br>
-
-                            Boş bırakırsanız sistem otomatik olarak:
-
-                            <strong>
-                                lütfen açıklamayı boş bırakın yoksa sipariş gerçekleştirilmez
-                            </strong>
-
-                            yazısını kullanır.
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="form-group full">
-
-                        <button
-                            class="btn green"
-                            onclick="savePayment()"
-                        >
-                            💾 Ödeme Bilgilerini Kaydet
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- =================================================
-             PASSWORD
-        ================================================== -->
-
-        <section
-            class="page"
-            id="page-password"
-        >
-
-            <h1>🔐 Şifre Değiştir</h1>
-
-            <div class="form">
-
-                <div class="form-grid">
-
-                    <div class="form-group">
-
-                        <label>Eski Şifre</label>
-
-                        <input
-                            id="oldPassword"
-                            type="password"
-                        >
-
-                    </div>
-
-
-                    <div class="form-group">
-
-                        <label>Yeni Şifre</label>
-
-                        <input
-                            id="newPassword"
-                            type="password"
-                        >
-
-                    </div>
-
-
-                    <div class="form-group full">
-
-                        <button
-                            class="btn green"
-                            onclick="changePassword()"
-                        >
-                            Şifreyi Değiştir
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-    </main>
-
+  </main>
 </div>
-
 
 <script>
 
 /* =========================================================
-   GLOBAL
+GLOBAL
 ========================================================= */
 
 let products = [];
 let categories = [];
 let orders = [];
-
 let heroSlides = [];
 
 let editingProductId = null;
@@ -1024,4074 +980,3921 @@ let uploadedImages = [];
 
 
 /* =========================================================
-   SABİT ÖDEME AÇIKLAMASI
+SABİT ÖDEME AÇIKLAMASI
 ========================================================= */
 
 const DEFAULT_PAYMENT_DESCRIPTION =
-    "lütfen açıklamayı boş bırakın yoksa sipariş gerçekleştirilmez";
+  "lütfen açıklamayı boş bırakın yoksa sipariş gerçekleştirilmez";
 
 
 /* =========================================================
-   API
+API
 ========================================================= */
 
 async function apiFetch(url, options = {}) {
 
-    options.credentials = "same-origin";
+  options.credentials = "same-origin";
 
-    const response =
-        await fetch(url, options);
+  const response = await fetch(url, options);
 
-    let data = {};
+  let data = {};
 
-    try {
+  try {
+    data = await response.json();
+  } catch {}
 
-        data =
-            await response.json();
+  if (
+    response.status === 401 ||
+    (
+      data &&
+      data.success === false &&
+      data.message === "Yetkisiz erişim."
+    )
+  ) {
 
-    } catch {}
+    alert(
+      "Admin oturumunuz sona ermiş. Lütfen tekrar giriş yapın."
+    );
 
-    if (
-        response.status === 401 ||
-        (
-            data &&
-            data.success === false &&
-            data.message === "Yetkisiz erişim."
-        )
-    ) {
+    document.getElementById("loginScreen").style.display = "flex";
+    document.getElementById("adminScreen").style.display = "none";
 
-        alert(
-            "Admin oturumunuz sona ermiş. Lütfen tekrar giriş yapın."
-        );
+    throw new Error("Admin oturumu sona erdi.");
+  }
 
-        document.getElementById(
-            "loginScreen"
-        ).style.display = "flex";
-
-        document.getElementById(
-            "adminScreen"
-        ).style.display = "none";
-
-        throw new Error(
-            "Admin oturumu sona erdi."
-        );
-    }
-
-    return {
-        response,
-        data
-    };
+  return {
+    response,
+    data
+  };
 }
 
 
 /* =========================================================
-   DOM READY
+DOM READY
 ========================================================= */
 
 document.addEventListener(
-    "DOMContentLoaded",
-    checkSession
+  "DOMContentLoaded",
+  checkSession
 );
 
 
 /* =========================================================
-   SESSION
+SESSION
 ========================================================= */
 
 async function checkSession() {
 
-    try {
+  try {
 
-        const response =
-            await fetch(
-                "/api/admin/session",
-                {
-                    method:"GET",
-                    credentials:"same-origin"
-                }
-            );
+    const response = await fetch(
+      "/api/admin/session",
+      {
+        method:"GET",
+        credentials:"same-origin"
+      }
+    );
 
-        const data =
-            await response.json();
+    const data = await response.json();
 
-        if (data.loggedIn === true) {
+    if (data.loggedIn === true) {
 
-            showAdmin();
+      showAdmin();
 
-        } else {
+    } else {
 
-            document.getElementById(
-                "loginScreen"
-            ).style.display = "flex";
+      document.getElementById("loginScreen").style.display = "flex";
+      document.getElementById("adminScreen").style.display = "none";
 
-            document.getElementById(
-                "adminScreen"
-            ).style.display = "none";
-        }
-
-    } catch(error) {
-
-        document.getElementById(
-            "loginScreen"
-        ).style.display = "flex";
-
-        document.getElementById(
-            "adminScreen"
-        ).style.display = "none";
     }
+
+  } catch(error) {
+
+    document.getElementById("loginScreen").style.display = "flex";
+    document.getElementById("adminScreen").style.display = "none";
+
+  }
 }
 
 
 /* =========================================================
-   LOGIN
+LOGIN
 ========================================================= */
 
 async function login() {
 
-    const password =
-        document
-            .getElementById("loginPassword")
-            .value;
+  const password =
+    document.getElementById("loginPassword").value;
 
-    const message =
-        document.getElementById(
-            "loginMessage"
-        );
+  const message =
+    document.getElementById("loginMessage");
 
-    message.textContent = "";
+  message.textContent = "";
 
-    if (!password) {
+  if (!password) {
 
-        message.style.color = "red";
+    message.style.color = "red";
+    message.textContent =
+      "Lütfen admin şifresini girin.";
 
-        message.textContent =
-            "Lütfen admin şifresini girin.";
+    return;
+  }
 
-        return;
+  try {
+
+    const response = await fetch(
+      "/api/admin/login",
+      {
+        method:"POST",
+        credentials:"same-origin",
+        headers:{
+          "Content-Type":"application/json"
+        },
+        body:JSON.stringify({
+          password
+        })
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+
+      throw new Error(
+        data.message || "Giriş başarısız."
+      );
+
     }
 
-    try {
+    message.style.color = "green";
+    message.textContent = "Giriş başarılı.";
 
-        const response =
-            await fetch(
-                "/api/admin/login",
-                {
-                    method:"POST",
-                    credentials:"same-origin",
-                    headers:{
-                        "Content-Type":
-                            "application/json"
-                    },
-                    body:
-                        JSON.stringify({
-                            password
-                        })
-                }
-            );
+    showAdmin();
 
-        const data =
-            await response.json();
+  } catch(error) {
 
-        if (!response.ok) {
+    message.style.color = "red";
+    message.textContent = error.message;
 
-            throw new Error(
-                data.message ||
-                "Giriş başarısız."
-            );
-        }
-
-        message.style.color = "green";
-
-        message.textContent =
-            "Giriş başarılı.";
-
-        showAdmin();
-
-    } catch(error) {
-
-        message.style.color = "red";
-
-        message.textContent =
-            error.message;
-    }
+  }
 }
 
 
 function showAdmin() {
 
-    document.getElementById(
-        "loginScreen"
-    ).style.display = "none";
+  document.getElementById("loginScreen").style.display = "none";
+  document.getElementById("adminScreen").style.display = "block";
 
-    document.getElementById(
-        "adminScreen"
-    ).style.display = "block";
-
-    loadAll();
+  loadAll();
 }
 
 
 async function logout() {
 
-    try {
+  try {
 
-        await fetch(
-            "/api/admin/logout",
-            {
-                method:"POST",
-                credentials:"same-origin"
-            }
-        );
+    await fetch(
+      "/api/admin/logout",
+      {
+        method:"POST",
+        credentials:"same-origin"
+      }
+    );
 
-    } catch {}
+  } catch {}
 
-    location.reload();
+  location.reload();
 }
 
 
 /* =========================================================
-   NAVIGATION
+NAVIGATION
 ========================================================= */
 
 async function showPage(page, button) {
 
-    document
-        .querySelectorAll(".page")
-        .forEach(p =>
-            p.classList.remove("active")
-        );
+  document
+    .querySelectorAll(".page")
+    .forEach(
+      p => p.classList.remove("active")
+    );
 
-    document
-        .querySelectorAll(".menu button")
-        .forEach(b =>
-            b.classList.remove("active")
-        );
+  document
+    .querySelectorAll(".menu button")
+    .forEach(
+      b => b.classList.remove("active")
+    );
 
-    const pageElement =
-        document.getElementById(
-            "page-" + page
-        );
+  const pageElement =
+    document.getElementById("page-" + page);
 
-    if (pageElement) {
+  if (pageElement) {
 
-        pageElement.classList.add("active");
+    pageElement.classList.add("active");
+
+  }
+
+  if (button) {
+
+    button.classList.add("active");
+
+  }
+
+  try {
+
+    if (page === "orders") {
+
+      await loadOrders();
+
     }
 
-    if (button) {
+    if (page === "products") {
 
-        button.classList.add("active");
+      await loadCategories();
+      await loadProducts();
+
     }
 
-    try {
+    if (page === "categories") {
 
-        if (page === "orders") {
+      await loadCategories();
 
-            await loadOrders();
-        }
-
-        if (page === "products") {
-
-            await loadCategories();
-            await loadProducts();
-        }
-
-        if (page === "categories") {
-
-            await loadCategories();
-        }
-
-        if (page === "homepage") {
-
-            await loadHomepage();
-        }
-
-        if (page === "payment") {
-
-            await loadPayment();
-        }
-
-    } catch(error) {
-
-        console.error(
-            "Sayfa yükleme hatası:",
-            error
-        );
     }
+
+    if (page === "homepage") {
+
+      await loadHomepage();
+
+    }
+
+    if (page === "payment") {
+
+      await loadPayment();
+
+    }
+
+  } catch(error) {
+
+    console.error(
+      "Sayfa yükleme hatası:",
+      error
+    );
+
+  }
 }
 
 
 /* =========================================================
-   LOAD ALL
+LOAD ALL
 ========================================================= */
 
 async function loadAll() {
 
-    try {
+  try {
 
-        await Promise.all([
-            loadProducts(),
-            loadOrders(),
-            loadCategories(),
-            loadPayment(),
-            loadHomepage()
-        ]);
+    await Promise.all([
+      loadProducts(),
+      loadOrders(),
+      loadCategories(),
+      loadPayment(),
+      loadHomepage()
+    ]);
 
-        updateDashboard();
+    updateDashboard();
 
-    } catch(error) {
+  } catch(error) {
 
-        console.error(error);
-    }
+    console.error(error);
+
+  }
 }
 
 
 /* =========================================================
-   PRODUCTS
+PRODUCTS
 ========================================================= */
 
 async function loadProducts() {
 
-    try {
+  try {
 
-        const result =
-            await apiFetch(
-                "/api/products"
-            );
+    const result =
+      await apiFetch("/api/products");
 
-        if (!result.response.ok) {
+    if (!result.response.ok) {
 
-            throw new Error(
-                result.data.message ||
-                "Ürünler yüklenemedi."
-            );
-        }
+      throw new Error(
+        result.data.message ||
+        "Ürünler yüklenemedi."
+      );
 
-        products =
-            Array.isArray(result.data)
-                ? result.data
-                : (
-                    Array.isArray(result.data.products)
-                        ? result.data.products
-                        : []
-                );
+    }
 
-        renderProducts();
-
-        updateDashboard();
-
-    } catch(error) {
-
-        console.error(
-            "Ürün yükleme hatası:",
-            error
+    products =
+      Array.isArray(result.data)
+        ? result.data
+        : (
+          Array.isArray(result.data.products)
+            ? result.data.products
+            : []
         );
 
-        throw error;
-    }
+    renderProducts();
+    updateDashboard();
+
+  } catch(error) {
+
+    console.error(
+      "Ürün yükleme hatası:",
+      error
+    );
+
+    throw error;
+  }
 }
 
 
 /* =========================================================
-   PRODUCT CATEGORIES
+PRODUCT CATEGORIES
 ========================================================= */
 
 function getProductCategories(product) {
 
-    if (
-        product &&
-        Array.isArray(product.categories)
-    ) {
+  if (
+    product &&
+    Array.isArray(product.categories)
+  ) {
 
-        return product.categories
-            .map(item => {
+    return product.categories
+      .map(item => {
 
-                if (
-                    item &&
-                    typeof item === "object"
-                ) {
+        if (
+          item &&
+          typeof item === "object"
+        ) {
 
-                    return String(
-                        item.name ??
-                        ""
-                    ).trim();
-                }
+          return String(
+            item.name ?? ""
+          ).trim();
 
-                return String(
-                    item ??
-                    ""
-                ).trim();
+        }
 
-            })
-            .filter(Boolean);
-    }
+        return String(
+          item ?? ""
+        ).trim();
 
-    if (
-        product &&
-        product.category
-    ) {
+      })
+      .filter(Boolean);
+  }
 
-        return [
-            String(
-                product.category
-            ).trim()
-        ];
-    }
+  if (
+    product &&
+    product.category
+  ) {
 
-    return [];
+    return [
+      String(product.category).trim()
+    ];
+
+  }
+
+  return [];
 }
 
 
 /* =========================================================
-   RENDER PRODUCTS
+RENDER PRODUCTS
 ========================================================= */
 
 function renderProducts() {
 
-    const container =
-        document.getElementById(
-            "productList"
-        );
+  const container =
+    document.getElementById("productList");
 
-    if (!container) return;
+  if (!container) return;
 
-    if (products.length === 0) {
-
-        container.innerHTML = `
-            <div class="card">
-                Henüz ürün yok.
-            </div>
-        `;
-
-        return;
-    }
+  if (products.length === 0) {
 
     container.innerHTML = `
-
-        <table class="table">
-
-            <thead>
-
-                <tr>
-
-                    <th>Görsel</th>
-
-                    <th>Ürün</th>
-
-                    <th>Kategoriler</th>
-
-                    <th>Fiyat</th>
-
-                    <th>Stok</th>
-
-                    <th>Yorum</th>
-
-                    <th>İşlem</th>
-
-                </tr>
-
-            </thead>
-
-            <tbody>
-
-                ${products.map(product => {
-
-                    const image =
-                        product.images?.[0] || "";
-
-                    const stock =
-                        getTotalStock(product);
-
-                    const productCategories =
-                        getProductCategories(product);
-
-                    const reviews =
-                        Array.isArray(product.reviews)
-                            ? product.reviews
-                            : [];
-
-                    return `
-
-                        <tr>
-
-                            <td>
-
-                                ${
-                                    image
-                                        ? `
-                                            <img
-                                                class="product-img"
-                                                src="${escapeHTML(image)}"
-                                            >
-                                          `
-                                        : "-"
-                                }
-
-                            </td>
-
-
-                            <td>
-
-                                <strong>
-                                    ${escapeHTML(product.name)}
-                                </strong>
-
-                            </td>
-
-
-                            <td>
-
-                                <div class="tag-list">
-
-                                    ${
-                                        productCategories.length
-                                            ? productCategories
-                                                .map(category => `
-                                                    <span class="tag">
-                                                        ${escapeHTML(category)}
-                                                    </span>
-                                                `)
-                                                .join("")
-                                            : "-"
-                                    }
-
-                                </div>
-
-                            </td>
-
-
-                            <td>
-                                ${formatPrice(product.price)}
-                            </td>
-
-
-                            <td>
-                                ${stock}
-                            </td>
-
-
-                            <td>
-
-                                <button
-                                    class="btn blue"
-                                    onclick="showReviews('${escapeJS(product.id)}')"
-                                >
-                                    ⭐ ${reviews.length}
-                                </button>
-
-                            </td>
-
-
-                            <td>
-
-                                <div style="
-                                    display:flex;
-                                    gap:6px;
-                                    flex-wrap:wrap;
-                                ">
-
-                                    <button
-                                        class="btn"
-                                        onclick="editProduct('${escapeJS(product.id)}')"
-                                    >
-                                        Düzenle
-                                    </button>
-
-
-                                    <button
-                                        class="btn red"
-                                        onclick="deleteProduct('${escapeJS(product.id)}')"
-                                    >
-                                        Sil
-                                    </button>
-
-                                </div>
-
-                            </td>
-
-                        </tr>
-
-                    `;
-
-                }).join("")}
-
-            </tbody>
-
-        </table>
-
+      <div class="card">
+        Henüz ürün yok.
+      </div>
     `;
+
+    return;
+  }
+
+  container.innerHTML = `
+    <table class="table">
+
+      <thead>
+
+        <tr>
+          <th>Görsel</th>
+          <th>Ürün</th>
+          <th>Kategoriler</th>
+          <th>Durum</th>
+          <th>Fiyat</th>
+          <th>Stok</th>
+          <th>Yorum</th>
+          <th>İşlem</th>
+        </tr>
+
+      </thead>
+
+      <tbody>
+
+        ${products.map(product => {
+
+          const image =
+            product.images?.[0] || "";
+
+          const stock =
+            getTotalStock(product);
+
+          const productCategories =
+            getProductCategories(product);
+
+          const reviews =
+            Array.isArray(product.reviews)
+              ? product.reviews
+              : [];
+
+          return `
+
+            <tr>
+
+              <td>
+
+                ${
+                  image
+                    ? `
+                      <img
+                        class="product-img"
+                        src="${escapeHTML(image)}"
+                      >
+                    `
+                    : "-"
+                }
+
+              </td>
+
+              <td>
+
+                <strong>
+                  ${escapeHTML(product.name)}
+                </strong>
+
+              </td>
+
+              <td>
+
+                <div class="tag-list">
+
+                  ${
+                    productCategories.length
+                      ? productCategories
+                          .map(category => `
+                            <span class="tag">
+                              ${escapeHTML(category)}
+                            </span>
+                          `)
+                          .join("")
+                      : "-"
+                  }
+
+                </div>
+
+              </td>
+
+              <td>
+
+                ${
+                  product.isFeaturedOffer === true
+
+                    ? `
+                      <span class="offer-tag">
+                        🏷️ Fırsat Ürünü
+                      </span>
+                    `
+
+                    : `
+                      <span class="small">
+                        Normal
+                      </span>
+                    `
+                }
+
+              </td>
+
+              <td>
+                ${formatPrice(product.price)}
+              </td>
+
+              <td>
+                ${stock}
+              </td>
+
+              <td>
+
+                <button
+                  class="btn blue"
+                  onclick="showReviews('${escapeJS(product.id)}')"
+                >
+                  ⭐ ${reviews.length}
+                </button>
+
+              </td>
+
+              <td>
+
+                <div
+                  style="
+                    display:flex;
+                    gap:6px;
+                    flex-wrap:wrap;
+                  "
+                >
+
+                  <button
+                    class="btn"
+                    onclick="editProduct('${escapeJS(product.id)}')"
+                  >
+                    Düzenle
+                  </button>
+
+                  <button
+                    class="btn red"
+                    onclick="deleteProduct('${escapeJS(product.id)}')"
+                  >
+                    Sil
+                  </button>
+
+                </div>
+
+              </td>
+
+            </tr>
+
+          `;
+
+        }).join("")}
+
+      </tbody>
+
+    </table>
+  `;
 }
 
 
 /* =========================================================
-   STOCK
+STOCK
 ========================================================= */
 
 function getTotalStock(product) {
 
-    if (
-        Array.isArray(product.sizes) &&
-        product.sizes.length
-    ) {
+  if (
+    Array.isArray(product.sizes) &&
+    product.sizes.length
+  ) {
 
-        return product.sizes.reduce(
-            (sum, item) =>
-                sum + Number(item.stock || 0),
-            0
-        );
-    }
-
-    return Number(
-        product.stock || 0
+    return product.sizes.reduce(
+      (sum,item) =>
+        sum + Number(item.stock || 0),
+      0
     );
+
+  }
+
+  return Number(
+    product.stock || 0
+  );
 }
 
 
 /* =========================================================
-   NEW PRODUCT
+NEW PRODUCT
 ========================================================= */
 
 async function newProduct() {
 
-    editingProductId = null;
+  editingProductId = null;
+  uploadedImages = [];
 
-    uploadedImages = [];
+  try {
 
-    try {
+    await loadCategories();
+    showProductForm();
 
-        await loadCategories();
+  } catch(error) {
 
-        showProductForm();
+    alert(
+      "Kategoriler yüklenemedi: " +
+      error.message
+    );
 
-    } catch(error) {
-
-        alert(
-            "Kategoriler yüklenemedi: " +
-            error.message
-        );
-    }
+  }
 }
 
 
 /* =========================================================
-   EDIT PRODUCT
+EDIT PRODUCT
 ========================================================= */
 
 async function editProduct(id) {
 
-    const product =
-        products.find(
-            p =>
-                String(p.id) ===
-                String(id)
-        );
+  const product =
+    products.find(
+      p => String(p.id) === String(id)
+    );
 
-    if (!product) return;
+  if (!product) return;
 
-    try {
+  try {
 
-        await loadCategories();
+    await loadCategories();
 
-    } catch(error) {
+  } catch(error) {
 
-        alert(
-            "Kategoriler yüklenemedi: " +
-            error.message
-        );
+    alert(
+      "Kategoriler yüklenemedi: " +
+      error.message
+    );
 
-        return;
-    }
+    return;
+  }
 
-    editingProductId =
-        product.id;
+  editingProductId = product.id;
 
-    uploadedImages =
-        Array.isArray(product.images)
-            ? [...product.images]
-            : [];
+  uploadedImages =
+    Array.isArray(product.images)
+      ? [...product.images]
+      : [];
 
-    showProductForm(product);
+  showProductForm(product);
 }
 
 
 /* =========================================================
-   PRODUCT FORM
+PRODUCT FORM
 ========================================================= */
 
 function showProductForm(product = null) {
 
-    const container =
-        document.getElementById(
-            "productList"
-        );
-
-    const isEdit =
-        product !== null;
-
-
-    const selectedCategories =
-        getProductCategories(product);
-
-
-    const categoryOptions =
-        categories.length
-            ? categories
-                .map(category => {
-
-                    const categoryName =
-                        String(
-                            category?.name ??
-                            category ??
-                            ""
-                        ).trim();
-
-                    if (!categoryName) {
-                        return "";
-                    }
-
-                    const selected =
-                        selectedCategories.some(
-                            item =>
-                                normalizeTurkish(item) ===
-                                normalizeTurkish(categoryName)
-                        );
-
-                    return `
-
-                        <option
-                            value="${escapeHTML(categoryName)}"
-                            ${selected ? "selected" : ""}
-                        >
-                            ${escapeHTML(categoryName)}
-                        </option>
-
-                    `;
-
-                })
-                .join("")
-            : `
-
-                <option value="" disabled>
-                    Henüz kategori eklenmemiş
-                </option>
-
-              `;
-
-
-    container.innerHTML = `
-
-        <div class="form">
-
-            <h2>
-                ${
-                    isEdit
-                        ? "Ürünü Düzenle"
-                        : "Yeni Ürün Ekle"
-                }
-            </h2>
-
-            <br>
-
-
-            <div class="form-grid">
-
-
-                <!-- ÜRÜN ADI -->
-
-                <div class="form-group">
-
-                    <label>
-                        Ürün Adı
-                    </label>
-
-                    <input
-                        id="pName"
-                        value="${escapeHTML(product?.name || "")}"
-                    >
-
-                </div>
-
-
-                <!-- ÇOKLU KATEGORİ -->
-
-                <div class="form-group">
-
-                    <label>
-                        Kategoriler
-                    </label>
-
-                    <div class="category-select-row">
-
-                        <select
-                            id="pCategories"
-                            class="multi-category"
-                            multiple
-                        >
-
-                            ${categoryOptions}
-
-                        </select>
-
-
-                        <button
-                            type="button"
-                            class="btn gray"
-                            onclick="refreshProductCategories()"
-                        >
-                            🔄 Yenile
-                        </button>
-
-                    </div>
-
-
-                    <div class="help">
-
-                        Birden fazla kategori seçmek için
-                        bilgisayarda <strong>CTRL</strong>
-                        tuşuna basılı tutarak kategorileri
-                        seçebilirsiniz.
-
-                        <br><br>
-
-                        Örneğin bir ürünü aynı anda:
-
-                        <strong>
-                            Kadın + Tişört + Yeni Sezon
-                        </strong>
-
-                        kategorilerine koyabilirsiniz.
-
-                    </div>
-
-                </div>
-
-
-                <!-- FİYAT -->
-
-                <div class="form-group">
-
-                    <label>
-                        Satış Fiyatı
-                    </label>
-
-                    <input
-                        id="pPrice"
-                        type="number"
-                        value="${product?.price || ""}"
-                    >
-
-                </div>
-
-
-                <!-- ESKİ FİYAT -->
-
-                <div class="form-group">
-
-                    <label>
-                        Eski Fiyat
-                    </label>
-
-                    <input
-                        id="pOldPrice"
-                        type="number"
-                        value="${product?.oldPrice || ""}"
-                    >
-
-                </div>
-
-
-                <!-- AÇIKLAMA -->
-
-                <div class="form-group full">
-
-                    <label>
-                        Açıklama
-                    </label>
-
-                    <textarea
-                        id="pDescription"
-                    >${escapeHTML(product?.description || "")}</textarea>
-
-                </div>
-
-
-                <!-- GÖRSELLER -->
-
-                <div class="form-group full">
-
-                    <label>
-                        Ürün Görselleri
-                    </label>
-
-                    <div class="upload-box">
-
-                        <input
-                            id="imageInput"
-                            type="file"
-                            accept="image/jpeg,image/png,image/webp,image/gif"
-                            multiple
-                            onchange="uploadImages(this.files)"
-                        >
-
-                        <p>
-                            Birden fazla görsel seçebilirsiniz.
-                        </p>
-
-                    </div>
-
-
-                    <div
-                        class="images"
-                        id="imagePreview"
-                    ></div>
-
-                </div>
-
-
-                <!-- BEDEN -->
-
-                <div class="form-group full">
-
-                    <label>
-                        Beden / Numara ve Stok
-                    </label>
-
-                    <div class="sizes">
-
-                        <div
-                            class="size-row"
-                            id="sizeRows"
-                        ></div>
-
-
-                        <div style="
-                            display:flex;
-                            gap:8px;
-                            flex-wrap:wrap;
-                        ">
-
-                            <button
-                                type="button"
-                                class="btn gray"
-                                onclick="addPresetSizes(['S','M','L','XL','XXL'])"
-                            >
-                                S-M-L-XL-XXL
-                            </button>
-
-
-                            <button
-                                type="button"
-                                class="btn gray"
-                                onclick="addPresetSizes(['36','37','38','39','40','41','42','43','44','45'])"
-                            >
-                                Ayakkabı 36-45
-                            </button>
-
-
-                            <button
-                                type="button"
-                                class="btn gray"
-                                onclick="addPresetSizes(['28','30','32','34','36','38','40','42'])"
-                            >
-                                Pantolon
-                            </button>
-
-
-                            <button
-                                type="button"
-                                class="btn gray"
-                                onclick="addSizeRow()"
-                            >
-                                + Beden Ekle
-                            </button>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <!-- GENEL STOK -->
-
-                <div class="form-group">
-
-                    <label>
-                        Beden kullanılmıyorsa genel stok
-                    </label>
-
-                    <input
-                        id="pStock"
-                        type="number"
-                        min="0"
-                        value="${product?.stock || 0}"
-                    >
-
-                </div>
-
-
-                <!-- BUTTONS -->
-
-                <div class="form-group full">
-
-                    <div style="
-                        display:flex;
-                        gap:10px;
-                        flex-wrap:wrap;
-                    ">
-
-                        <button
-                            class="btn green"
-                            onclick="saveProduct()"
-                        >
-                            💾 Ürünü Kaydet
-                        </button>
-
-
-                        <button
-                            class="btn gray"
-                            onclick="loadProducts()"
-                        >
-                            İptal
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </div>
+  const container =
+    document.getElementById("productList");
+
+  const isEdit =
+    product !== null;
+
+  const selectedCategories =
+    getProductCategories(product);
+
+  const categoryOptions =
+    categories.length
+
+      ? categories
+          .map(category => {
+
+            const categoryName =
+              String(
+                category?.name ??
+                category ??
+                ""
+              ).trim();
+
+            if (!categoryName) {
+              return "";
+            }
+
+            const selected =
+              selectedCategories.some(
+                item =>
+                  normalizeTurkish(item) ===
+                  normalizeTurkish(categoryName)
+              );
+
+            return `
+              <option
+                value="${escapeHTML(categoryName)}"
+                ${selected ? "selected" : ""}
+              >
+                ${escapeHTML(categoryName)}
+              </option>
+            `;
+
+          })
+          .join("")
+
+      : `
+          <option value="" disabled>
+            Henüz kategori eklenmemiş
+          </option>
+        `;
+
+  const isFeaturedOffer =
+    product?.isFeaturedOffer === true ||
+    product?.featuredOffer === true ||
+    product?.isOpportunity === true;
+
+  container.innerHTML = `
+
+    <div class="form">
+
+      <h2>
+        ${
+          isEdit
+            ? "Ürünü Düzenle"
+            : "Yeni Ürün Ekle"
+        }
+      </h2>
+
+      <br>
+
+      <div class="form-grid">
+
+        <!-- ÜRÜN ADI -->
+
+        <div class="form-group">
+
+          <label>
+            Ürün Adı
+          </label>
+
+          <input
+            id="pName"
+            value="${escapeHTML(product?.name || "")}"
+          >
 
         </div>
 
-    `;
+
+        <!-- ÇOKLU KATEGORİ -->
+
+        <div class="form-group">
+
+          <label>
+            Kategoriler
+          </label>
+
+          <div class="category-select-row">
+
+            <select
+              id="pCategories"
+              class="multi-category"
+              multiple
+            >
+
+              ${categoryOptions}
+
+            </select>
+
+            <button
+              type="button"
+              class="btn gray"
+              onclick="refreshProductCategories()"
+            >
+              🔄 Yenile
+            </button>
+
+          </div>
+
+          <div class="help">
+
+            Birden fazla kategori seçmek için
+            bilgisayarda <strong>CTRL</strong> tuşuna
+            basılı tutarak kategorileri seçebilirsiniz.
+
+            <br><br>
+
+            Örneğin bir ürünü aynı anda:
+
+            <strong>
+              Kadın + Tişört + Yeni Sezon
+            </strong>
+
+            kategorilerine koyabilirsiniz.
+
+          </div>
+
+        </div>
 
 
-    renderUploadedImages();
+        <!-- FİYAT -->
+
+        <div class="form-group">
+
+          <label>
+            Satış Fiyatı
+          </label>
+
+          <input
+            id="pPrice"
+            type="number"
+            value="${product?.price || ""}"
+          >
+
+        </div>
 
 
-    const existingSizes =
-        Array.isArray(product?.sizes)
-            ? product.sizes
-            : [];
+        <!-- ESKİ FİYAT -->
+
+        <div class="form-group">
+
+          <label>
+            Eski Fiyat
+          </label>
+
+          <input
+            id="pOldPrice"
+            type="number"
+            value="${product?.oldPrice || ""}"
+          >
+
+        </div>
 
 
-    existingSizes.forEach(size =>
-        addSizeRow(
-            size.name,
-            size.stock
-        )
+        <!-- AÇIKLAMA -->
+
+        <div class="form-group full">
+
+          <label>
+            Açıklama
+          </label>
+
+          <textarea id="pDescription">${escapeHTML(
+            product?.description || ""
+          )}</textarea>
+
+        </div>
+
+
+        <!-- FIRSAT ÜRÜNÜ -->
+
+        <div class="featured-box">
+
+          <label class="featured-label">
+
+            <input
+              type="checkbox"
+              id="pFeaturedOffer"
+              ${isFeaturedOffer ? "checked" : ""}
+            >
+
+            🏷️ Fırsat Ürünü olarak işaretle
+
+          </label>
+
+          <div class="featured-status">
+
+            Bu seçenek aktif olduğunda ürün,
+            REZAN GİYİM ana sayfasındaki
+
+            <strong>
+              🏷️ Fırsat Ürünleri
+            </strong>
+
+            bölümünde gösterilecektir.
+
+          </div>
+
+        </div>
+
+
+        <!-- GÖRSELLER -->
+
+        <div class="form-group full">
+
+          <label>
+            Ürün Görselleri
+          </label>
+
+          <div class="upload-box">
+
+            <input
+              id="imageInput"
+              type="file"
+              accept="image/jpeg,image/png,image/webp,image/gif"
+              multiple
+              onchange="uploadImages(this.files)"
+            >
+
+            <p>
+              Birden fazla görsel seçebilirsiniz.
+            </p>
+
+          </div>
+
+          <div
+            class="images"
+            id="imagePreview"
+          ></div>
+
+        </div>
+
+
+        <!-- BEDEN -->
+
+        <div class="form-group full">
+
+          <label>
+            Beden / Numara ve Stok
+          </label>
+
+          <div class="sizes">
+
+            <div
+              class="size-row"
+              id="sizeRows"
+            ></div>
+
+            <div
+              style="
+                display:flex;
+                gap:8px;
+                flex-wrap:wrap;
+              "
+            >
+
+              <button
+                type="button"
+                class="btn gray"
+                onclick="addPresetSizes(['S','M','L','XL','XXL'])"
+              >
+                S-M-L-XL-XXL
+              </button>
+
+              <button
+                type="button"
+                class="btn gray"
+                onclick="addPresetSizes(['36','37','38','39','40','41','42','43','44','45'])"
+              >
+                Ayakkabı 36-45
+              </button>
+
+              <button
+                type="button"
+                class="btn gray"
+                onclick="addPresetSizes(['28','30','32','34','36','38','40','42'])"
+              >
+                Pantolon
+              </button>
+
+              <button
+                type="button"
+                class="btn gray"
+                onclick="addSizeRow()"
+              >
+                + Beden Ekle
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- GENEL STOK -->
+
+        <div class="form-group">
+
+          <label>
+            Beden kullanılmıyorsa genel stok
+          </label>
+
+          <input
+            id="pStock"
+            type="number"
+            min="0"
+            value="${product?.stock || 0}"
+          >
+
+        </div>
+
+
+        <!-- BUTTONS -->
+
+        <div class="form-group full">
+
+          <div
+            style="
+              display:flex;
+              gap:10px;
+              flex-wrap:wrap;
+            "
+          >
+
+            <button
+              class="btn green"
+              onclick="saveProduct()"
+            >
+              💾 Ürünü Kaydet
+            </button>
+
+            <button
+              class="btn gray"
+              onclick="loadProducts()"
+            >
+              İptal
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  `;
+
+  renderUploadedImages();
+
+  const existingSizes =
+    Array.isArray(product?.sizes)
+      ? product.sizes
+      : [];
+
+  existingSizes.forEach(size => {
+
+    addSizeRow(
+      size.name,
+      size.stock
     );
+
+  });
 }
 
 
 /* =========================================================
-   REFRESH CATEGORIES
+REFRESH CATEGORIES
 ========================================================= */
 
 async function refreshProductCategories() {
 
-    const select =
-        document.getElementById(
-            "pCategories"
-        );
+  const select =
+    document.getElementById("pCategories");
 
-    if (!select) return;
+  if (!select) return;
 
+  const selectedBefore =
+    Array.from(select.selectedOptions)
+      .map(option => option.value);
 
-    const selectedBefore =
-        Array.from(
-            select.selectedOptions
+  try {
+
+    await loadCategories();
+
+    const updatedSelect =
+      document.getElementById("pCategories");
+
+    if (!updatedSelect) return;
+
+    updatedSelect.innerHTML = "";
+
+    categories.forEach(category => {
+
+      const categoryName =
+        String(
+          category?.name ??
+          category ??
+          ""
+        ).trim();
+
+      if (!categoryName) return;
+
+      const option =
+        document.createElement("option");
+
+      option.value =
+        categoryName;
+
+      option.textContent =
+        categoryName;
+
+      if (
+        selectedBefore.some(
+          value =>
+            normalizeTurkish(value) ===
+            normalizeTurkish(categoryName)
         )
-        .map(
-            option =>
-                option.value
-        );
+      ) {
 
+        option.selected = true;
 
-    try {
+      }
 
-        await loadCategories();
+      updatedSelect.appendChild(option);
 
+    });
 
-        const updatedSelect =
-            document.getElementById(
-                "pCategories"
-            );
+    alert(
+      categories.length +
+      " kategori yüklendi."
+    );
 
-        if (!updatedSelect) return;
+  } catch(error) {
 
+    alert(
+      "Kategoriler yenilenemedi: " +
+      error.message
+    );
 
-        updatedSelect.innerHTML = "";
-
-
-        categories.forEach(category => {
-
-            const categoryName =
-                String(
-                    category?.name ??
-                    category ??
-                    ""
-                ).trim();
-
-            if (!categoryName) return;
-
-
-            const option =
-                document.createElement(
-                    "option"
-                );
-
-            option.value =
-                categoryName;
-
-            option.textContent =
-                categoryName;
-
-
-            if (
-                selectedBefore.some(
-                    value =>
-                        normalizeTurkish(value) ===
-                        normalizeTurkish(categoryName)
-                )
-            ) {
-
-                option.selected = true;
-            }
-
-
-            updatedSelect.appendChild(
-                option
-            );
-
-        });
-
-
-        alert(
-            categories.length +
-            " kategori yüklendi."
-        );
-
-    } catch(error) {
-
-        alert(
-            "Kategoriler yenilenemedi: " +
-            error.message
-        );
-    }
+  }
 }
 
 
 /* =========================================================
-   SIZES
+SIZES
 ========================================================= */
 
 function addSizeRow(
-    name = "",
-    stock = 0
+  name = "",
+  stock = 0
 ) {
 
-    const container =
-        document.getElementById(
-            "sizeRows"
-        );
+  const container =
+    document.getElementById("sizeRows");
 
-    if (!container) return;
+  if (!container) return;
 
+  const row =
+    document.createElement("div");
 
-    const row =
-        document.createElement(
-            "div"
-        );
+  row.className =
+    "size-row";
 
-    row.className =
-        "size-row";
+  row.innerHTML = `
 
+    <input
+      class="size-name"
+      placeholder="Beden/Numara"
+      value="${escapeHTML(name)}"
+    >
 
-    row.innerHTML = `
+    <input
+      class="size-stock"
+      type="number"
+      min="0"
+      placeholder="Stok"
+      value="${Number(stock || 0)}"
+    >
 
-        <input
-            class="size-name"
-            placeholder="Beden/Numara"
-            value="${escapeHTML(name)}"
-        >
+    <button
+      type="button"
+      class="btn red"
+      onclick="this.parentElement.remove()"
+    >
+      ×
+    </button>
 
+  `;
 
-        <input
-            class="size-stock"
-            type="number"
-            min="0"
-            placeholder="Stok"
-            value="${Number(stock || 0)}"
-        >
-
-
-        <button
-            type="button"
-            class="btn red"
-            onclick="this.parentElement.remove()"
-        >
-            ×
-        </button>
-
-    `;
-
-
-    container.appendChild(row);
+  container.appendChild(row);
 }
 
 
 function addPresetSizes(sizes) {
 
-    const container =
-        document.getElementById(
-            "sizeRows"
-        );
+  const container =
+    document.getElementById("sizeRows");
 
-    if (!container) return;
+  if (!container) return;
 
+  container.innerHTML = "";
 
-    container.innerHTML = "";
+  sizes.forEach(size => {
 
-
-    sizes.forEach(size =>
-        addSizeRow(
-            size,
-            0
-        )
+    addSizeRow(
+      size,
+      0
     );
+
+  });
 }
 
 
 /* =========================================================
-   IMAGE UPLOAD
+IMAGE UPLOAD
 ========================================================= */
 
 async function uploadImages(files) {
 
-    if (
-        !files ||
-        !files.length
-    ) return;
+  if (!files || !files.length) {
+    return;
+  }
 
+  for (const file of files) {
 
-    for (
-        const file of files
-    ) {
+    try {
 
-        try {
+      const formData =
+        new FormData();
 
-            const formData =
-                new FormData();
+      formData.append(
+        "images",
+        file
+      );
 
+      const result =
+        await apiFetch(
+          "/api/upload",
+          {
+            method:"POST",
+            body:formData
+          }
+        );
 
-            formData.append(
-                "images",
-                file
-            );
+      if (!result.response.ok) {
 
+        throw new Error(
+          result.data.message ||
+          "Görsel yüklenemedi."
+        );
 
-            const result =
-                await apiFetch(
-                    "/api/upload",
-                    {
-                        method:"POST",
-                        body:formData
-                    }
-                );
+      }
 
+      const returned =
+        result.data.files ||
+        result.data.images ||
+        [];
 
-            if (!result.response.ok) {
+      if (Array.isArray(returned)) {
 
-                throw new Error(
-                    result.data.message ||
-                    "Görsel yüklenemedi."
-                );
-            }
+        returned.forEach(item => {
 
+          const url =
+            typeof item === "string"
+              ? item
+              : (
+                item.url ||
+                item.path ||
+                item.location
+              );
 
-            const returned =
-                result.data.files ||
-                result.data.images ||
-                [];
+          if (url) {
 
+            uploadedImages.push(url);
 
-            if (
-                Array.isArray(returned)
-            ) {
+          }
 
-                returned.forEach(item => {
+        });
 
-                    const url =
-                        typeof item === "string"
-                            ? item
-                            : item.url ||
-                              item.path ||
-                              item.location;
+      }
 
+    } catch(error) {
 
-                    if (url) {
-
-                        uploadedImages.push(
-                            url
-                        );
-                    }
-
-                });
-
-            }
-
-        } catch(error) {
-
-            alert(
-                "Görsel yüklenemedi: " +
-                error.message
-            );
-        }
+      alert(
+        "Görsel yüklenemedi: " +
+        error.message
+      );
 
     }
+  }
 
-
-    renderUploadedImages();
+  renderUploadedImages();
 }
 
 
 /* =========================================================
-   RENDER IMAGES
+RENDER IMAGES
 ========================================================= */
 
 function renderUploadedImages() {
 
-    const container =
-        document.getElementById(
-            "imagePreview"
-        );
+  const container =
+    document.getElementById(
+      "imagePreview"
+    );
 
-    if (!container) return;
+  if (!container) return;
 
+  container.innerHTML =
+    uploadedImages
+      .map(
+        (image,index) => `
 
-    container.innerHTML =
-        uploadedImages
-            .map(
-                (image,index) => `
+          <div class="image-item">
 
-                    <div class="image-item">
+            <img
+              src="${escapeHTML(image)}"
+            >
 
-                        <img
-                            src="${escapeHTML(image)}"
-                        >
+            <button
+              type="button"
+              onclick="removeImage(${index})"
+            >
+              ×
+            </button>
 
-                        <button
-                            type="button"
-                            onclick="removeImage(${index})"
-                        >
-                            ×
-                        </button>
+          </div>
 
-                    </div>
-
-                `
-            )
-            .join("");
+        `
+      )
+      .join("");
 }
 
 
 function removeImage(index) {
 
-    uploadedImages.splice(
-        index,
-        1
-    );
+  uploadedImages.splice(
+    index,
+    1
+  );
 
-    renderUploadedImages();
+  renderUploadedImages();
 }
 
 
 /* =========================================================
-   SAVE PRODUCT
+SAVE PRODUCT
 ========================================================= */
 
 async function saveProduct() {
 
-    const name =
-        document.getElementById(
-            "pName"
-        ).value.trim();
+  const name =
+    document
+      .getElementById("pName")
+      .value
+      .trim();
+
+  const categorySelect =
+    document.getElementById(
+      "pCategories"
+    );
+
+  const selectedCategories =
+    categorySelect
+
+      ? Array.from(
+          categorySelect.selectedOptions
+        )
+        .map(
+          option =>
+            option.value.trim()
+        )
+        .filter(Boolean)
+
+      : [];
+
+  const price =
+    Number(
+      document.getElementById("pPrice").value || 0
+    );
+
+  const oldPrice =
+    Number(
+      document.getElementById("pOldPrice").value || 0
+    );
+
+  const description =
+    document.getElementById(
+      "pDescription"
+    ).value;
+
+  const stock =
+    Number(
+      document.getElementById("pStock").value || 0
+    );
+
+  const featuredCheckbox =
+    document.getElementById(
+      "pFeaturedOffer"
+    );
+
+  const isFeaturedOffer =
+    featuredCheckbox
+      ? featuredCheckbox.checked
+      : false;
+
+  const sizeRows =
+    document.querySelectorAll(
+      "#sizeRows .size-row"
+    );
+
+  const sizes = [];
+
+  sizeRows.forEach(row => {
+
+    const sizeName =
+      row
+        .querySelector(".size-name")
+        .value
+        .trim();
+
+    const sizeStock =
+      Number(
+        row
+          .querySelector(".size-stock")
+          .value || 0
+      );
+
+    if (sizeName) {
+
+      sizes.push({
+        name:sizeName,
+        stock:sizeStock
+      });
+
+    }
+  });
 
 
-    const categorySelect =
-        document.getElementById(
-            "pCategories"
+  if (!name) {
+
+    alert(
+      "Ürün adı gerekli."
+    );
+
+    return;
+  }
+
+
+  if (selectedCategories.length === 0) {
+
+    alert(
+      "Lütfen en az bir kategori seçin."
+    );
+
+    return;
+  }
+
+
+  const payload = {
+
+    name,
+
+    categories:
+      selectedCategories,
+
+    category:
+      selectedCategories[0],
+
+    price,
+
+    oldPrice,
+
+    description,
+
+    images:
+      uploadedImages,
+
+    sizes,
+
+    stock,
+
+    isFeaturedOffer
+
+  };
+
+
+  try {
+
+    let result;
+
+    if (editingProductId !== null) {
+
+      result =
+        await apiFetch(
+          "/api/products/" +
+          encodeURIComponent(
+            editingProductId
+          ),
+          {
+            method:"PUT",
+            headers:{
+              "Content-Type":
+                "application/json"
+            },
+            body:
+              JSON.stringify(payload)
+          }
         );
 
+    } else {
 
-    const selectedCategories =
-        categorySelect
-            ? Array.from(
-                categorySelect.selectedOptions
-              )
-              .map(
-                  option =>
-                      option.value.trim()
-              )
-              .filter(Boolean)
-            : [];
-
-
-    const price =
-        Number(
-            document.getElementById(
-                "pPrice"
-            ).value || 0
+      result =
+        await apiFetch(
+          "/api/products",
+          {
+            method:"POST",
+            headers:{
+              "Content-Type":
+                "application/json"
+            },
+            body:
+              JSON.stringify(payload)
+          }
         );
 
-
-    const oldPrice =
-        Number(
-            document.getElementById(
-                "pOldPrice"
-            ).value || 0
-        );
-
-
-    const description =
-        document.getElementById(
-            "pDescription"
-        ).value;
-
-
-    const stock =
-        Number(
-            document.getElementById(
-                "pStock"
-            ).value || 0
-        );
-
-
-    const sizeRows =
-        document.querySelectorAll(
-            "#sizeRows .size-row"
-        );
-
-
-    const sizes = [];
-
-
-    sizeRows.forEach(row => {
-
-        const sizeName =
-            row.querySelector(
-                ".size-name"
-            ).value.trim();
-
-
-        const sizeStock =
-            Number(
-                row.querySelector(
-                    ".size-stock"
-                ).value || 0
-            );
-
-
-        if (sizeName) {
-
-            sizes.push({
-                name:sizeName,
-                stock:sizeStock
-            });
-
-        }
-
-    });
-
-
-    if (!name) {
-
-        alert(
-            "Ürün adı gerekli."
-        );
-
-        return;
     }
 
 
-    if (
-        selectedCategories.length === 0
-    ) {
+    if (!result.response.ok) {
 
-        alert(
-            "Lütfen en az bir kategori seçin."
-        );
+      throw new Error(
+        result.data.message ||
+        "Ürün kaydedilemedi."
+      );
 
-        return;
     }
 
 
-    const payload = {
+    alert(
+      "Ürün başarıyla kaydedildi."
+    );
 
-        name,
+    editingProductId = null;
+    uploadedImages = [];
 
-        categories:
-            selectedCategories,
+    await loadProducts();
 
-        /*
-         * Eski sistemle uyumluluk için
-         * ilk kategoriyi category olarak
-         * da gönderiyoruz.
-         */
+  } catch(error) {
 
-        category:
-            selectedCategories[0],
+    alert(
+      error.message
+    );
 
-        price,
-
-        oldPrice,
-
-        description,
-
-        images:
-            uploadedImages,
-
-        sizes,
-
-        stock
-
-    };
-
-
-    try {
-
-        let result;
-
-
-        if (
-            editingProductId !== null
-        ) {
-
-            result =
-                await apiFetch(
-                    "/api/products/" +
-                    encodeURIComponent(
-                        editingProductId
-                    ),
-                    {
-                        method:"PUT",
-
-                        headers:{
-                            "Content-Type":
-                                "application/json"
-                        },
-
-                        body:
-                            JSON.stringify(
-                                payload
-                            )
-                    }
-                );
-
-        } else {
-
-            result =
-                await apiFetch(
-                    "/api/products",
-                    {
-                        method:"POST",
-
-                        headers:{
-                            "Content-Type":
-                                "application/json"
-                        },
-
-                        body:
-                            JSON.stringify(
-                                payload
-                            )
-                    }
-                );
-        }
-
-
-        if (
-            !result.response.ok
-        ) {
-
-            throw new Error(
-                result.data.message ||
-                "Ürün kaydedilemedi."
-            );
-        }
-
-
-        alert(
-            "Ürün başarıyla kaydedildi."
-        );
-
-
-        editingProductId =
-            null;
-
-        uploadedImages =
-            [];
-
-
-        await loadProducts();
-
-    } catch(error) {
-
-        alert(
-            error.message
-        );
-    }
+  }
 }
 
 
 /* =========================================================
-   DELETE PRODUCT
+DELETE PRODUCT
 ========================================================= */
 
 async function deleteProduct(id) {
 
-    if (
-        !confirm(
-            "Bu ürünü silmek istediğinizden emin misiniz?"
-        )
-    ) {
+  if (
+    !confirm(
+      "Bu ürünü silmek istediğinizden emin misiniz?"
+    )
+  ) {
 
-        return;
-    }
+    return;
+  }
 
+  try {
 
-    try {
-
-        const result =
-            await apiFetch(
-                "/api/products/" +
-                encodeURIComponent(id),
-                {
-                    method:"DELETE"
-                }
-            );
-
-
-        if (
-            !result.response.ok
-        ) {
-
-            throw new Error(
-                result.data.message ||
-                "Ürün silinemedi."
-            );
+    const result =
+      await apiFetch(
+        "/api/products/" +
+        encodeURIComponent(id),
+        {
+          method:"DELETE"
         }
+      );
 
+    if (!result.response.ok) {
 
-        await loadProducts();
+      throw new Error(
+        result.data.message ||
+        "Ürün silinemedi."
+      );
 
-    } catch(error) {
-
-        alert(
-            error.message
-        );
     }
+
+    await loadProducts();
+
+  } catch(error) {
+
+    alert(
+      error.message
+    );
+
+  }
 }
 
 
 /* =========================================================
-   REVIEWS
+REVIEWS
 ========================================================= */
 
 function showReviews(productId) {
 
-    const product =
-        products.find(
-            p =>
-                String(p.id) ===
-                String(productId)
-        );
+  const product =
+    products.find(
+      p =>
+        String(p.id) ===
+        String(productId)
+    );
+
+  if (!product) return;
+
+  const reviews =
+    Array.isArray(product.reviews)
+      ? product.reviews
+      : [];
+
+  if (!reviews.length) {
+
+    alert(
+      "Bu üründe henüz yorum bulunmuyor."
+    );
+
+    return;
+  }
 
 
-    if (!product) return;
+  const reviewText =
+    reviews
+      .map(review => {
 
+        const rating =
+          Number(
+            review.rating || 0
+          );
 
-    const reviews =
-        Array.isArray(product.reviews)
-            ? product.reviews
-            : [];
-
-
-    if (!reviews.length) {
-
-        alert(
-            "Bu üründe henüz yorum bulunmuyor."
-        );
-
-        return;
-    }
-
-
-    const reviewText =
-        reviews
-            .map(
-                review => {
-
-                    const stars =
-                        "★".repeat(
-                            Number(
-                                review.rating || 0
-                            )
-                        ) +
-                        "☆".repeat(
-                            Math.max(
-                                0,
-                                5 -
-                                Number(
-                                    review.rating || 0
-                                )
-                            )
-                        );
-
-
-                    return `
-
-                        <div
-                            class="review-box"
-                            id="review-${escapeHTML(review.id)}"
-                        >
-
-                            <strong>
-                                ${escapeHTML(
-                                    review.name ||
-                                    "Müşteri"
-                                )}
-                            </strong>
-
-                            <div class="stars">
-                                ${stars}
-                            </div>
-
-                            <p>
-                                ${escapeHTML(
-                                    review.text ||
-                                    review.comment ||
-                                    ""
-                                )}
-                            </p>
-
-                            <small>
-                                ${escapeHTML(
-                                    review.createdAt ||
-                                    ""
-                                )}
-                            </small>
-
-                            <br><br>
-
-                            <button
-                                class="btn red"
-                                onclick="deleteReview(
-                                    '${escapeJS(product.id)}',
-                                    '${escapeJS(review.id)}'
-                                )"
-                            >
-                                Yorumu Sil
-                            </button>
-
-                        </div>
-
-                    `;
-
-                }
+        const stars =
+          "★".repeat(rating) +
+          "☆".repeat(
+            Math.max(
+              0,
+              5 - rating
             )
-            .join("");
+          );
 
+        return `
 
-    const modal =
-        document.createElement(
-            "div"
-        );
+          <div
+            class="review-box"
+            id="review-${escapeHTML(review.id)}"
+          >
 
+            <strong>
+              ${escapeHTML(
+                review.name ||
+                "Müşteri"
+              )}
+            </strong>
 
-    modal.id =
-        "reviewsModal";
-
-
-    modal.style.cssText = `
-        position:fixed;
-        inset:0;
-        background:rgba(0,0,0,.65);
-        z-index:9999;
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        padding:20px;
-    `;
-
-
-    modal.innerHTML = `
-
-        <div
-            style="
-                background:white;
-                width:700px;
-                max-width:100%;
-                max-height:90vh;
-                overflow:auto;
-                border-radius:15px;
-                padding:25px;
-            "
-        >
-
-            <div style="
-                display:flex;
-                justify-content:space-between;
-                gap:10px;
-                align-items:center;
-            ">
-
-                <h2>
-                    ⭐ ${escapeHTML(product.name)}
-                    — Yorumlar
-                </h2>
-
-                <button
-                    class="btn gray"
-                    onclick="document.getElementById('reviewsModal').remove()"
-                >
-                    Kapat
-                </button>
-
+            <div class="stars">
+              ${stars}
             </div>
 
-            ${reviewText}
+            <p>
+              ${escapeHTML(
+                review.text ||
+                review.comment ||
+                ""
+              )}
+            </p>
 
-        </div>
+            <small>
+              ${escapeHTML(
+                review.createdAt ||
+                ""
+              )}
+            </small>
 
-    `;
+            <br><br>
 
+            <button
+              class="btn red"
+              onclick="
+                deleteReview(
+                  '${escapeJS(product.id)}',
+                  '${escapeJS(review.id)}'
+                )
+              "
+            >
+              Yorumu Sil
+            </button>
 
-    document.body.appendChild(
-        modal
-    );
-}
+          </div>
 
+        `;
 
-async function deleteReview(
-    productId,
-    reviewId
-) {
-
-    if (
-        !confirm(
-            "Bu yorumu silmek istediğinize emin misiniz?"
-        )
-    ) {
-
-        return;
-    }
-
-
-    try {
-
-        const result =
-            await apiFetch(
-                "/api/products/" +
-                encodeURIComponent(productId) +
-                "/reviews/" +
-                encodeURIComponent(reviewId),
-                {
-                    method:"DELETE"
-                }
-            );
+      })
+      .join("");
 
 
-        if (
-            !result.response.ok
-        ) {
+  const modal =
+    document.createElement("div");
 
-            throw new Error(
-                result.data.message ||
-                "Yorum silinemedi."
-            );
-        }
+  modal.id =
+    "reviewsModal";
 
-
-        const modal =
-            document.getElementById(
-                "reviewsModal"
-            );
-
-
-        if (modal) {
-
-            modal.remove();
-        }
+  modal.style.cssText = `
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.65);
+    z-index:9999;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+  `;
 
 
-        await loadProducts();
+  modal.innerHTML = `
 
+    <div
+      style="
+        background:white;
+        width:700px;
+        max-width:100%;
+        max-height:90vh;
+        overflow:auto;
+        border-radius:15px;
+        padding:25px;
+      "
+    >
 
-        alert(
-            "Yorum silindi."
-        );
+      <div
+        style="
+          display:flex;
+          justify-content:space-between;
+          gap:10px;
+          align-items:center;
+        "
+      >
 
-    } catch(error) {
+        <h2>
+          ⭐ ${escapeHTML(product.name)}
+          — Yorumlar
+        </h2>
 
-        alert(
-            error.message
-        );
-    }
+        <button
+          class="btn gray"
+          onclick="
+            document
+              .getElementById('reviewsModal')
+              .remove()
+          "
+        >
+          Kapat
+        </button>
+
+      </div>
+
+      ${reviewText}
+
+    </div>
+
+  `;
+
+  document.body.appendChild(modal);
 }
 
 
 /* =========================================================
-   CATEGORIES
+DELETE REVIEW
+========================================================= */
+
+async function deleteReview(
+  productId,
+  reviewId
+) {
+
+  if (
+    !confirm(
+      "Bu yorumu silmek istediğinize emin misiniz?"
+    )
+  ) {
+
+    return;
+  }
+
+  try {
+
+    const result =
+      await apiFetch(
+        "/api/products/" +
+        encodeURIComponent(productId) +
+        "/reviews/" +
+        encodeURIComponent(reviewId),
+        {
+          method:"DELETE"
+        }
+      );
+
+    if (!result.response.ok) {
+
+      throw new Error(
+        result.data.message ||
+        "Yorum silinemedi."
+      );
+
+    }
+
+    const modal =
+      document.getElementById(
+        "reviewsModal"
+      );
+
+    if (modal) {
+
+      modal.remove();
+
+    }
+
+    await loadProducts();
+
+    alert(
+      "Yorum silindi."
+    );
+
+  } catch(error) {
+
+    alert(
+      error.message
+    );
+
+  }
+}
+
+
+/* =========================================================
+CATEGORIES
 ========================================================= */
 
 async function loadCategories() {
 
-    try {
+  try {
 
-        const result =
-            await apiFetch(
-                "/api/categories"
-            );
+    const result =
+      await apiFetch(
+        "/api/categories"
+      );
+
+    if (!result.response.ok) {
+
+      throw new Error(
+        result.data.message ||
+        "Kategoriler yüklenemedi."
+      );
+
+    }
+
+    const data =
+      result.data;
+
+    const rawCategories =
+      Array.isArray(data)
+
+        ? data
+
+        : (
+          Array.isArray(data.categories)
+            ? data.categories
+            : []
+        );
 
 
-        if (
-            !result.response.ok
-        ) {
+    categories =
+      rawCategories
 
-            throw new Error(
-                result.data.message ||
-                "Kategoriler yüklenemedi."
-            );
+        .map(category => {
+
+          if (
+            category &&
+            typeof category === "object"
+          ) {
+
+            return {
+              id:String(
+                category.id ?? ""
+              ),
+
+              name:String(
+                category.name ?? ""
+              ).trim()
+            };
+
+          }
+
+          return {
+            id:"",
+            name:String(
+              category ?? ""
+            ).trim()
+          };
+
+        })
+
+        .filter(
+          category =>
+            category.name
+        );
+
+
+    const unique = [];
+
+    categories.forEach(
+      category => {
+
+        const exists =
+          unique.some(
+            item =>
+              normalizeTurkish(
+                item.name
+              ) ===
+              normalizeTurkish(
+                category.name
+              )
+          );
+
+        if (!exists) {
+
+          unique.push(
+            category
+          );
+
         }
 
-
-        const data =
-            result.data;
-
-
-        const rawCategories =
-            Array.isArray(data)
-                ? data
-                : (
-                    Array.isArray(
-                        data.categories
-                    )
-                        ? data.categories
-                        : []
-                );
+      }
+    );
 
 
-        categories =
-            rawCategories
-                .map(category => {
+    categories =
+      unique;
 
-                    if (
-                        category &&
-                        typeof category === "object"
-                    ) {
+    renderCategoriesAdmin();
 
-                        return {
+    return categories;
 
-                            id:
-                                String(
-                                    category.id ??
-                                    ""
-                                ),
+  } catch(error) {
 
-                            name:
-                                String(
-                                    category.name ??
-                                    ""
-                                ).trim()
+    console.error(
+      "Kategori yükleme hatası:",
+      error
+    );
 
-                        };
-                    }
-
-
-                    return {
-
-                        id:"",
-
-                        name:
-                            String(
-                                category ??
-                                ""
-                            ).trim()
-
-                    };
-
-                })
-                .filter(
-                    category =>
-                        category.name
-                );
-
-
-        const unique = [];
-
-
-        categories.forEach(category => {
-
-            const exists =
-                unique.some(
-                    item =>
-                        normalizeTurkish(
-                            item.name
-                        ) ===
-                        normalizeTurkish(
-                            category.name
-                        )
-                );
-
-
-            if (!exists) {
-
-                unique.push(
-                    category
-                );
-            }
-
-        });
-
-
-        categories =
-            unique;
-
-
-        renderCategoriesAdmin();
-
-
-        return categories;
-
-    } catch(error) {
-
-        console.error(
-            "Kategori yükleme hatası:",
-            error
-        );
-
-        throw error;
-    }
-}
-
-
-function renderCategoriesAdmin() {
-
-    const container =
-        document.getElementById(
-            "categoryAdminList"
-        );
-
-
-    if (!container) return;
-
-
-    if (
-        !categories.length
-    ) {
-
-        container.innerHTML = `
-
-            <div class="card">
-                Henüz kategori yok.
-            </div>
-
-        `;
-
-        return;
-    }
-
-
-    container.innerHTML =
-        categories
-            .map(
-                category => `
-
-                    <div class="category-item">
-
-                        <strong>
-                            ${escapeHTML(
-                                category.name
-                            )}
-                        </strong>
-
-
-                        <button
-                            class="btn red"
-                            onclick="deleteCategory(
-                                '${escapeJS(category.id)}'
-                            )"
-                        >
-                            Kategoriyi Sil
-                        </button>
-
-                    </div>
-
-                `
-            )
-            .join("");
+    throw error;
+  }
 }
 
 
 /* =========================================================
-   ADD CATEGORY
+RENDER CATEGORIES
+========================================================= */
+
+function renderCategoriesAdmin() {
+
+  const container =
+    document.getElementById(
+      "categoryAdminList"
+    );
+
+  if (!container) return;
+
+  if (!categories.length) {
+
+    container.innerHTML = `
+      <div class="card">
+        Henüz kategori yok.
+      </div>
+    `;
+
+    return;
+  }
+
+
+  container.innerHTML =
+    categories
+
+      .map(
+        category => `
+
+          <div class="category-item">
+
+            <strong>
+              ${escapeHTML(
+                category.name
+              )}
+            </strong>
+
+            <button
+              class="btn red"
+              onclick="
+                deleteCategory(
+                  '${escapeJS(category.id)}'
+                )
+              "
+            >
+              Kategoriyi Sil
+            </button>
+
+          </div>
+
+        `
+      )
+
+      .join("");
+}
+
+
+/* =========================================================
+ADD CATEGORY
 ========================================================= */
 
 async function addCategory() {
 
-    const input =
-        document.getElementById(
-            "newCategory"
-        );
+  const input =
+    document.getElementById(
+      "newCategory"
+    );
 
+  const name =
+    input.value.trim();
 
-    const name =
-        input.value.trim();
+  if (!name) {
 
+    alert(
+      "Kategori adı girin."
+    );
 
-    if (!name) {
+    return;
+  }
 
-        alert(
-            "Kategori adı girin."
-        );
+  try {
 
-        return;
-    }
-
-
-    try {
-
-        const result =
-            await apiFetch(
-                "/api/categories",
-                {
-                    method:"POST",
-
-                    headers:{
-                        "Content-Type":
-                            "application/json"
-                    },
-
-                    body:
-                        JSON.stringify({
-                            name
-                        })
-                }
-            );
-
-
-        if (
-            !result.response.ok
-        ) {
-
-            throw new Error(
-                result.data.message ||
-                "Kategori eklenemedi."
-            );
+    const result =
+      await apiFetch(
+        "/api/categories",
+        {
+          method:"POST",
+          headers:{
+            "Content-Type":
+              "application/json"
+          },
+          body:
+            JSON.stringify({
+              name
+            })
         }
+      );
 
+    if (!result.response.ok) {
 
-        await loadCategories();
+      throw new Error(
+        result.data.message ||
+        "Kategori eklenemedi."
+      );
 
-
-        input.value = "";
-
-
-        alert(
-            "Kategori başarıyla eklendi."
-        );
-
-    } catch(error) {
-
-        alert(
-            error.message
-        );
     }
+
+    await loadCategories();
+
+    input.value = "";
+
+    alert(
+      "Kategori başarıyla eklendi."
+    );
+
+  } catch(error) {
+
+    alert(
+      error.message
+    );
+
+  }
 }
 
 
 /* =========================================================
-   DELETE CATEGORY
+DELETE CATEGORY
 ========================================================= */
 
 async function deleteCategory(id) {
 
-    const category =
-        categories.find(
-            item =>
-                String(item.id) ===
-                String(id)
-        );
+  const category =
+    categories.find(
+      item =>
+        String(item.id) ===
+        String(id)
+    );
+
+  const name =
+    category?.name ||
+    "Bu kategori";
 
 
-    const name =
-        category?.name ||
-        "Bu kategori";
+  if (
+    !confirm(
+      `"${name}" kategorisini silmek istediğinizden emin misiniz?`
+    )
+  ) {
+
+    return;
+  }
 
 
-    if (
-        !confirm(
-            `"${name}" kategorisini silmek istediğinizden emin misiniz?`
-        )
-    ) {
+  if (!id) {
 
-        return;
-    }
+    alert(
+      "Kategori ID'si bulunamadı."
+    );
 
-
-    if (!id) {
-
-        alert(
-            "Kategori ID'si bulunamadı."
-        );
-
-        return;
-    }
+    return;
+  }
 
 
-    try {
+  try {
 
-        const result =
-            await apiFetch(
-                "/api/categories/" +
-                encodeURIComponent(id),
-                {
-                    method:"DELETE"
-                }
-            );
-
-
-        if (
-            !result.response.ok
-        ) {
-
-            throw new Error(
-                result.data.message ||
-                "Kategori silinemedi."
-            );
+    const result =
+      await apiFetch(
+        "/api/categories/" +
+        encodeURIComponent(id),
+        {
+          method:"DELETE"
         }
+      );
 
+    if (!result.response.ok) {
 
-        await loadCategories();
+      throw new Error(
+        result.data.message ||
+        "Kategori silinemedi."
+      );
 
-
-        alert(
-            "Kategori silindi."
-        );
-
-    } catch(error) {
-
-        alert(
-            error.message
-        );
     }
+
+    await loadCategories();
+
+    alert(
+      "Kategori silindi."
+    );
+
+  } catch(error) {
+
+    alert(
+      error.message
+    );
+
+  }
 }
 
 
 /* =========================================================
-   ORDERS
+ORDERS
 ========================================================= */
 
 async function loadOrders() {
 
-    try {
+  try {
 
-        const result =
-            await apiFetch(
-                "/api/orders"
-            );
+    const result =
+      await apiFetch(
+        "/api/orders"
+      );
 
+    if (!result.response.ok) {
 
-        if (
-            !result.response.ok
-        ) {
+      throw new Error(
+        result.data.message ||
+        "Siparişler yüklenemedi."
+      );
 
-            throw new Error(
-                result.data.message ||
-                "Siparişler yüklenemedi."
-            );
-        }
+    }
 
+    const data =
+      result.data;
 
-        const data =
-            result.data;
+    orders =
+      Array.isArray(data)
 
+        ? data
 
-        orders =
-            Array.isArray(data)
-                ? data
-                : (
-                    Array.isArray(
-                        data.orders
-                    )
-                        ? data.orders
-                        : []
-                );
-
-
-        renderOrders();
-
-
-        updateDashboard();
-
-    } catch(error) {
-
-        console.error(
-            "Sipariş yükleme hatası:",
-            error
+        : (
+          Array.isArray(data.orders)
+            ? data.orders
+            : []
         );
 
-        throw error;
-    }
+
+    renderOrders();
+    updateDashboard();
+
+  } catch(error) {
+
+    console.error(
+      "Siparişler yükleme hatası:",
+      error
+    );
+
+    throw error;
+  }
 }
 
 
 /* =========================================================
-   RENDER ORDERS
+RENDER ORDERS
 ========================================================= */
 
 function renderOrders() {
 
-    const container =
-        document.getElementById(
-            "ordersList"
-        );
+  const container =
+    document.getElementById(
+      "ordersList"
+    );
 
+  if (!container) return;
 
-    if (!container) return;
+  if (!orders.length) {
 
+    container.innerHTML = `
+      <div class="card">
+        Henüz sipariş yok.
+      </div>
+    `;
 
-    if (!orders.length) {
+    return;
+  }
 
-        container.innerHTML = `
 
-            <div class="card">
-                Henüz sipariş yok.
-            </div>
+  container.innerHTML =
+    orders
 
-        `;
+      .slice()
+      .reverse()
 
-        return;
-    }
+      .map(
+        order => `
 
+          <div class="order">
 
-    container.innerHTML =
-        orders
-            .slice()
-            .reverse()
-            .map(
-                order => `
+            <h3>
+              ${escapeHTML(order.id)}
+            </h3>
 
-                    <div class="order">
+            <p>
+              <strong>Müşteri:</strong>
+              ${escapeHTML(
+                order.customer?.name || ""
+              )}
+            </p>
 
-                        <h3>
-                            ${escapeHTML(order.id)}
-                        </h3>
+            <p>
+              <strong>Telefon:</strong>
+              ${escapeHTML(
+                order.customer?.phone || ""
+              )}
+            </p>
 
+            <p>
+              <strong>E-posta:</strong>
+              ${escapeHTML(
+                order.customer?.email || ""
+              )}
+            </p>
 
-                        <p>
-                            <strong>Müşteri:</strong>
-                            ${escapeHTML(
-                                order.customer?.name ||
-                                ""
-                            )}
-                        </p>
+            <p>
 
+              <strong>Adres:</strong>
 
-                        <p>
-                            <strong>Telefon:</strong>
-                            ${escapeHTML(
-                                order.customer?.phone ||
-                                ""
-                            )}
-                        </p>
+              <br>
 
+              ${escapeHTML(
+                order.customer?.city || ""
+              )}
 
-                        <p>
-                            <strong>E-posta:</strong>
-                            ${escapeHTML(
-                                order.customer?.email ||
-                                ""
-                            )}
-                        </p>
+              /
 
+              ${escapeHTML(
+                order.customer?.district || ""
+              )}
 
-                        <p>
+              /
 
-                            <strong>Adres:</strong>
+              ${escapeHTML(
+                order.customer?.neighborhood || ""
+              )}
 
-                            <br>
+              <br>
 
-                            ${escapeHTML(
-                                order.customer?.city ||
-                                ""
-                            )}
+              ${escapeHTML(
+                order.customer?.address || ""
+              )}
 
-                            /
+              <br>
 
-                            ${escapeHTML(
-                                order.customer?.district ||
-                                ""
-                            )}
+              Bina:
+              ${escapeHTML(
+                order.customer?.buildingNo || "-"
+              )}
 
-                            /
+              |
 
-                            ${escapeHTML(
-                                order.customer?.neighborhood ||
-                                ""
-                            )}
+              Daire:
+              ${escapeHTML(
+                order.customer?.apartmentNo || "-"
+              )}
 
-                            <br>
+            </p>
 
-                            ${escapeHTML(
-                                order.customer?.address ||
-                                ""
-                            )}
 
-                            <br>
+            ${
+              order.customer?.note
 
-                            Bina:
-                            ${escapeHTML(
-                                order.customer?.buildingNo ||
-                                "-"
-                            )}
+                ? `
 
-                            |
+                  <div class="notice-box">
 
-                            Daire:
-                            ${escapeHTML(
-                                order.customer?.apartmentNo ||
-                                "-"
-                            )}
+                    <strong>
+                      📝 Sipariş Notu
+                    </strong>
 
-                        </p>
+                    <p>
+                      ${escapeHTML(
+                        order.customer.note
+                      )}
+                    </p>
 
-
-                        ${
-                            order.customer?.note
-                                ? `
-
-                                    <div class="notice-box">
-
-                                        <strong>
-                                            📝 Sipariş Notu
-                                        </strong>
-
-                                        <p>
-                                            ${escapeHTML(
-                                                order.customer.note
-                                            )}
-                                        </p>
-
-                                    </div>
-
-                                  `
-                                : ""
-                        }
-
-
-                        <hr>
-
-
-                        <strong>
-                            Ürünler:
-                        </strong>
-
-
-                        <ul>
-
-                            ${
-                                (order.items || [])
-                                    .map(
-                                        item => `
-
-                                            <li>
-
-                                                ${escapeHTML(
-                                                    item.name
-                                                )}
-
-                                                ${
-                                                    item.size
-                                                        ? " - " +
-                                                          escapeHTML(
-                                                              item.size
-                                                          )
-                                                        : ""
-                                                }
-
-                                                ×
-                                                ${item.quantity}
-
-                                            </li>
-
-                                        `
-                                    )
-                                    .join("")
-                            }
-
-                        </ul>
-
-
-                        <h3>
-
-                            Toplam:
-                            ${formatPrice(
-                                order.total
-                            )}
-
-                        </h3>
-
-
-                        <p>
-
-                            <strong>
-                                Ödeme:
-                            </strong>
-
-                            ${escapeHTML(
-                                order.paymentStatus ||
-                                "-"
-                            )}
-
-                        </p>
-
-
-                        <p>
-
-                            <strong>
-                                Durum:
-                            </strong>
-
-                            ${escapeHTML(
-                                order.orderStatus ||
-                                "-"
-                            )}
-
-                        </p>
-
-
-                        ${
-                            order.shipping?.company
-                                ? `
-
-                                    <p>
-
-                                        <strong>
-                                            Kargo:
-                                        </strong>
-
-                                        ${escapeHTML(
-                                            order.shipping.company
-                                        )}
-
-                                        <br>
-
-                                        Takip:
-                                        ${escapeHTML(
-                                            order.shipping.trackingNumber
-                                        )}
-
-                                    </p>
-
-                                  `
-                                : ""
-                        }
-
-
-                        <div class="order-actions">
-
-
-                            <button
-                                class="btn green"
-                                onclick="confirmPayment(
-                                    '${escapeJS(order.id)}'
-                                )"
-                            >
-                                ÖDEMEYİ ONAYLA
-                            </button>
-
-
-                            <button
-                                class="btn gray"
-                                onclick="paymentNotReceived(
-                                    '${escapeJS(order.id)}'
-                                )"
-                            >
-                                ÖDEME ALINMADI
-                            </button>
-
-
-                            <button
-                                class="btn"
-                                onclick="shippingForm(
-                                    '${escapeJS(order.id)}'
-                                )"
-                            >
-                                KARGO GİR
-                            </button>
-
-
-                            <button
-                                class="btn red"
-                                onclick="cancelOrder(
-                                    '${escapeJS(order.id)}'
-                                )"
-                            >
-                                SİPARİŞİ İPTAL ET
-                            </button>
-
-
-                        </div>
-
-
-                    </div>
+                  </div>
 
                 `
-            )
-            .join("");
+
+                : ""
+            }
+
+
+            <hr>
+
+
+            <strong>
+              Ürünler:
+            </strong>
+
+            <ul>
+
+              ${
+                (order.items || [])
+
+                  .map(
+                    item => `
+
+                      <li>
+
+                        ${escapeHTML(
+                          item.name
+                        )}
+
+                        ${
+                          item.size
+                            ? " - " +
+                              escapeHTML(
+                                item.size
+                              )
+                            : ""
+                        }
+
+                        ×
+                        ${item.quantity}
+
+                      </li>
+
+                    `
+                  )
+
+                  .join("")
+              }
+
+            </ul>
+
+
+            <h3>
+              Toplam:
+              ${formatPrice(order.total)}
+            </h3>
+
+
+            <p>
+
+              <strong>
+                Ödeme:
+              </strong>
+
+              ${escapeHTML(
+                order.paymentStatus || "-"
+              )}
+
+            </p>
+
+
+            <p>
+
+              <strong>
+                Durum:
+              </strong>
+
+              ${escapeHTML(
+                order.orderStatus || "-"
+              )}
+
+            </p>
+
+
+            ${
+              order.shipping?.company
+
+                ? `
+
+                  <p>
+
+                    <strong>
+                      Kargo:
+                    </strong>
+
+                    ${escapeHTML(
+                      order.shipping.company
+                    )}
+
+                    <br>
+
+                    Takip:
+                    ${escapeHTML(
+                      order.shipping.trackingNumber
+                    )}
+
+                  </p>
+
+                `
+
+                : ""
+            }
+
+
+            <div class="order-actions">
+
+              <button
+                class="btn green"
+                onclick="
+                  confirmPayment(
+                    '${escapeJS(order.id)}'
+                  )
+                "
+              >
+                ÖDEMEYİ ONAYLA
+              </button>
+
+
+              <button
+                class="btn gray"
+                onclick="
+                  paymentNotReceived(
+                    '${escapeJS(order.id)}'
+                  )
+                "
+              >
+                ÖDEME ALINMADI
+              </button>
+
+
+              <button
+                class="btn"
+                onclick="
+                  shippingForm(
+                    '${escapeJS(order.id)}'
+                  )
+                "
+              >
+                KARGO GİR
+              </button>
+
+
+              <button
+                class="btn red"
+                onclick="
+                  cancelOrder(
+                    '${escapeJS(order.id)}'
+                  )
+                "
+              >
+                SİPARİŞİ İPTAL ET
+              </button>
+
+            </div>
+
+          </div>
+
+        `
+      )
+
+      .join("");
 }
 
 
 /* =========================================================
-   ORDER ACTIONS
+ORDER ACTIONS
 ========================================================= */
 
 async function confirmPayment(id) {
 
-    await orderAction(
-        "/api/orders/" +
-        encodeURIComponent(id) +
-        "/confirm-payment",
-        "POST"
-    );
+  await orderAction(
+    "/api/orders/" +
+    encodeURIComponent(id) +
+    "/confirm-payment",
+    "POST"
+  );
 }
 
 
 async function paymentNotReceived(id) {
 
-    await orderAction(
-        "/api/orders/" +
-        encodeURIComponent(id) +
-        "/payment-not-received",
-        "POST"
-    );
+  await orderAction(
+    "/api/orders/" +
+    encodeURIComponent(id) +
+    "/payment-not-received",
+    "POST"
+  );
 }
 
 
 async function cancelOrder(id) {
 
-    if (
-        !confirm(
-            "Sipariş iptal edilsin mi?"
-        )
-    ) {
+  if (
+    !confirm(
+      "Sipariş iptal edilsin mi?"
+    )
+  ) {
 
-        return;
-    }
+    return;
+  }
 
-
-    await orderAction(
-        "/api/orders/" +
-        encodeURIComponent(id) +
-        "/cancel",
-        "POST"
-    );
+  await orderAction(
+    "/api/orders/" +
+    encodeURIComponent(id) +
+    "/cancel",
+    "POST"
+  );
 }
 
 
 async function orderAction(
-    url,
-    method
+  url,
+  method
 ) {
 
-    try {
+  try {
 
-        const result =
-            await apiFetch(
-                url,
-                {
-                    method
-                }
-            );
+    const result =
+      await apiFetch(
+        url,
+        {method}
+      );
 
+    if (!result.response.ok) {
 
-        if (
-            !result.response.ok
-        ) {
+      throw new Error(
+        result.data.message ||
+        "İşlem başarısız."
+      );
 
-            throw new Error(
-                result.data.message ||
-                "İşlem başarısız."
-            );
-        }
-
-
-        await loadOrders();
-
-    } catch(error) {
-
-        alert(
-            error.message
-        );
     }
+
+    await loadOrders();
+
+  } catch(error) {
+
+    alert(
+      error.message
+    );
+
+  }
 }
 
 
 /* =========================================================
-   SHIPPING
+SHIPPING
 ========================================================= */
 
 async function shippingForm(id) {
 
-    const company =
-        prompt(
-            "Kargo firması:"
-        );
+  const company =
+    prompt(
+      "Kargo firması:"
+    );
+
+  if (!company) return;
+
+  const tracking =
+    prompt(
+      "Takip numarası:"
+    );
+
+  if (!tracking) return;
 
 
-    if (!company) return;
+  try {
 
-
-    const tracking =
-        prompt(
-            "Takip numarası:"
-        );
-
-
-    if (!tracking) return;
-
-
-    try {
-
-        const result =
-            await apiFetch(
-                "/api/orders/" +
-                encodeURIComponent(id) +
-                "/shipping",
-                {
-                    method:"POST",
-
-                    headers:{
-                        "Content-Type":
-                            "application/json"
-                    },
-
-                    body:
-                        JSON.stringify({
-
-                            company,
-
-                            trackingNumber:
-                                tracking
-
-                        })
-                }
-            );
-
-
-        if (
-            !result.response.ok
-        ) {
-
-            throw new Error(
-                result.data.message ||
-                "Kargo kaydedilemedi."
-            );
+    const result =
+      await apiFetch(
+        "/api/orders/" +
+        encodeURIComponent(id) +
+        "/shipping",
+        {
+          method:"POST",
+          headers:{
+            "Content-Type":
+              "application/json"
+          },
+          body:
+            JSON.stringify({
+              company,
+              trackingNumber:
+                tracking
+            })
         }
+      );
 
+    if (!result.response.ok) {
 
-        await loadOrders();
+      throw new Error(
+        result.data.message ||
+        "Kargo kaydedilemedi."
+      );
 
-    } catch(error) {
-
-        alert(
-            error.message
-        );
     }
+
+    await loadOrders();
+
+  } catch(error) {
+
+    alert(
+      error.message
+    );
+
+  }
 }
 
 
 /* =========================================================
-   PAYMENT LOAD
+PAYMENT LOAD
 ========================================================= */
 
 async function loadPayment() {
 
-    try {
+  try {
 
-        const result =
-            await apiFetch(
-                "/api/payment-info"
-            );
+    const result =
+      await apiFetch(
+        "/api/payment-info"
+      );
 
+    if (!result.response.ok) {
 
-        if (
-            !result.response.ok
-        ) {
+      throw new Error(
+        result.data.message ||
+        "Ödeme bilgileri alınamadı."
+      );
 
-            throw new Error(
-                result.data.message ||
-                "Ödeme bilgileri alınamadı."
-            );
-        }
-
-
-        const payment =
-            result.data.paymentInfo ||
-            result.data.payment ||
-            {};
-
-
-        const bank =
-            document.getElementById(
-                "bankName"
-            );
-
-
-        const account =
-            document.getElementById(
-                "accountName"
-            );
-
-
-        const iban =
-            document.getElementById(
-                "iban"
-            );
-
-
-        const description =
-            document.getElementById(
-                "paymentDescription"
-            );
-
-
-        if (bank) {
-
-            bank.value =
-                payment.bankName ||
-                "";
-        }
-
-
-        if (account) {
-
-            account.value =
-                payment.accountName ||
-                "";
-        }
-
-
-        if (iban) {
-
-            iban.value =
-                payment.iban ||
-                "";
-        }
-
-
-        if (description) {
-
-            description.value =
-                payment.description ||
-                DEFAULT_PAYMENT_DESCRIPTION;
-        }
-
-
-    } catch(error) {
-
-        console.error(
-            "Ödeme bilgisi yükleme hatası:",
-            error
-        );
     }
+
+    const payment =
+      result.data.paymentInfo ||
+      result.data.payment ||
+      {};
+
+
+    const bank =
+      document.getElementById(
+        "bankName"
+      );
+
+    const account =
+      document.getElementById(
+        "accountName"
+      );
+
+    const iban =
+      document.getElementById(
+        "iban"
+      );
+
+    const description =
+      document.getElementById(
+        "paymentDescription"
+      );
+
+
+    if (bank) {
+
+      bank.value =
+        payment.bankName || "";
+
+    }
+
+    if (account) {
+
+      account.value =
+        payment.accountName || "";
+
+    }
+
+    if (iban) {
+
+      iban.value =
+        payment.iban || "";
+
+    }
+
+    if (description) {
+
+      description.value =
+        payment.description ||
+        DEFAULT_PAYMENT_DESCRIPTION;
+
+    }
+
+  } catch(error) {
+
+    console.error(
+      "Ödeme bilgisi yükleme hatası:",
+      error
+    );
+
+  }
 }
 
 
 /* =========================================================
-   PAYMENT SAVE
+PAYMENT SAVE
 ========================================================= */
 
 async function savePayment() {
 
-    let description =
-        document.getElementById(
-            "paymentDescription"
-        ).value.trim();
+  let description =
+    document
+      .getElementById(
+        "paymentDescription"
+      )
+      .value
+      .trim();
 
 
-    if (!description) {
+  if (!description) {
 
-        description =
-            DEFAULT_PAYMENT_DESCRIPTION;
-    }
+    description =
+      DEFAULT_PAYMENT_DESCRIPTION;
 
-
-    const payment = {
-
-        bankName:
-            document.getElementById(
-                "bankName"
-            ).value.trim(),
+  }
 
 
-        accountName:
-            document.getElementById(
-                "accountName"
-            ).value.trim(),
+  const payment = {
+
+    bankName:
+      document
+        .getElementById("bankName")
+        .value
+        .trim(),
+
+    accountName:
+      document
+        .getElementById("accountName")
+        .value
+        .trim(),
+
+    iban:
+      document
+        .getElementById("iban")
+        .value
+        .trim(),
+
+    description
+
+  };
 
 
-        iban:
-            document.getElementById(
-                "iban"
-            ).value.trim(),
+  try {
 
-
-        description
-
-    };
-
-
-    try {
-
-        const result =
-            await apiFetch(
-                "/api/payment-info",
-                {
-                    method:"PUT",
-
-                    headers:{
-                        "Content-Type":
-                            "application/json"
-                    },
-
-                    body:
-                        JSON.stringify(
-                            payment
-                        )
-                }
-            );
-
-
-        if (
-            !result.response.ok
-        ) {
-
-            throw new Error(
-                result.data.message ||
-                "Kaydedilemedi."
-            );
+    const result =
+      await apiFetch(
+        "/api/payment-info",
+        {
+          method:"PUT",
+          headers:{
+            "Content-Type":
+              "application/json"
+          },
+          body:
+            JSON.stringify(payment)
         }
+      );
 
 
-        alert(
-            "Ödeme bilgileri kaydedildi."
-        );
+    if (!result.response.ok) {
 
+      throw new Error(
+        result.data.message ||
+        "Kaydedilemedi."
+      );
 
-    } catch(error) {
-
-        alert(
-            error.message
-        );
     }
+
+
+    alert(
+      "Ödeme bilgileri kaydedildi."
+    );
+
+  } catch(error) {
+
+    alert(
+      error.message
+    );
+
+  }
 }
 
 
 /* =========================================================
-   HOMEPAGE / HERO
+HOMEPAGE / HERO
 ========================================================= */
 
 async function loadHomepage() {
 
-    try {
+  try {
 
-        const result =
-            await apiFetch(
-                "/api/admin/homepage"
-            );
-
-
-        if (
-            !result.response.ok
-        ) {
-
-            throw new Error(
-                result.data.message ||
-                "Ana sayfa bilgileri alınamadı."
-            );
-        }
+    const result =
+      await apiFetch(
+        "/api/admin/homepage"
+      );
 
 
-        const data =
-            result.data;
+    if (!result.response.ok) {
+
+      throw new Error(
+        result.data.message ||
+        "Ana sayfa bilgileri alınamadı."
+      );
+
+    }
 
 
-        heroSlides =
-            Array.isArray(
-                data.slides
-            )
-                ? data.slides
-                : (
-                    Array.isArray(
-                        data.homepage?.slides
-                    )
-                        ? data.homepage.slides
-                        : []
-                );
+    const data =
+      result.data;
 
 
-        renderHeroSlides();
+    heroSlides =
+      Array.isArray(data.slides)
 
-    } catch(error) {
+        ? data.slides
 
-        console.error(
-            "Homepage yükleme hatası:",
-            error
+        : (
+          Array.isArray(
+            data.homepage?.slides
+          )
+
+            ? data.homepage.slides
+
+            : []
         );
 
-        const container =
-            document.getElementById(
-                "heroSlidesList"
-            );
+
+    renderHeroSlides();
+
+  } catch(error) {
+
+    console.error(
+      "Homepage yükleme hatası:",
+      error
+    );
 
 
-        if (container) {
+    const container =
+      document.getElementById(
+        "heroSlidesList"
+      );
 
-            container.innerHTML = `
 
-                <div class="danger-box">
+    if (container) {
 
-                    Ana sayfa vitrinleri
-                    yüklenemedi.
+      container.innerHTML = `
 
-                    <br><br>
+        <div class="danger-box">
 
-                    ${escapeHTML(
-                        error.message
-                    )}
+          Ana sayfa vitrinleri yüklenemedi.
 
-                </div>
+          <br><br>
 
-            `;
-        }
+          ${escapeHTML(
+            error.message
+          )}
+
+        </div>
+
+      `;
+
     }
+  }
 }
 
 
 /* =========================================================
-   HERO IMAGE PREVIEW
+HERO IMAGE PREVIEW
 ========================================================= */
 
 function previewHeroImage(input) {
 
-    const preview =
-        document.getElementById(
-            "heroPreview"
-        );
+  const preview =
+    document.getElementById(
+      "heroPreview"
+    );
 
 
-    if (
-        !preview ||
-        !input.files ||
-        !input.files[0]
-    ) {
+  if (
+    !preview ||
+    !input.files ||
+    !input.files[0]
+  ) {
 
-        if (preview) {
+    if (preview) {
 
-            preview.style.display =
-                "none";
-        }
+      preview.style.display =
+        "none";
 
-        return;
     }
 
-
-    const file =
-        input.files[0];
-
-
-    const reader =
-        new FileReader();
+    return;
+  }
 
 
-    reader.onload =
-        function(event) {
-
-            preview.src =
-                event.target.result;
-
-            preview.style.display =
-                "block";
-        };
+  const file =
+    input.files[0];
 
 
-    reader.readAsDataURL(file);
+  const reader =
+    new FileReader();
+
+
+  reader.onload =
+    function(event) {
+
+      preview.src =
+        event.target.result;
+
+      preview.style.display =
+        "block";
+
+    };
+
+
+  reader.readAsDataURL(file);
 }
 
 
 /* =========================================================
-   ADD HERO SLIDE
+ADD HERO SLIDE
 ========================================================= */
 
 async function addHeroSlide() {
 
-    const fileInput =
-        document.getElementById(
-            "heroImageInput"
-        );
+  const fileInput =
+    document.getElementById(
+      "heroImageInput"
+    );
+
+  const title =
+    document
+      .getElementById("heroTitle")
+      .value
+      .trim();
+
+  const text =
+    document
+      .getElementById("heroText")
+      .value
+      .trim();
+
+  const buttonText =
+    document
+      .getElementById("heroButtonText")
+      .value
+      .trim();
+
+  const buttonLink =
+    document
+      .getElementById("heroButtonLink")
+      .value
+      .trim();
 
 
-    const title =
-        document.getElementById(
-            "heroTitle"
-        ).value.trim();
+  if (
+    !fileInput.files ||
+    !fileInput.files[0]
+  ) {
+
+    alert(
+      "Lütfen bir vitrin görseli seçin."
+    );
+
+    return;
+  }
 
 
-    const text =
-        document.getElementById(
-            "heroText"
-        ).value.trim();
+  try {
+
+    const formData =
+      new FormData();
+
+    formData.append(
+      "images",
+      fileInput.files[0]
+    );
 
 
-    const buttonText =
-        document.getElementById(
-            "heroButtonText"
-        ).value.trim();
+    const uploadResult =
+      await apiFetch(
+        "/api/upload",
+        {
+          method:"POST",
+          body:formData
+        }
+      );
 
 
-    const buttonLink =
-        document.getElementById(
-            "heroButtonLink"
-        ).value.trim();
+    if (!uploadResult.response.ok) {
+
+      throw new Error(
+        uploadResult.data.message ||
+        "Vitrin görseli yüklenemedi."
+      );
+
+    }
+
+
+    const returned =
+      uploadResult.data.files ||
+      uploadResult.data.images ||
+      [];
+
+
+    let image = "";
 
 
     if (
-        !fileInput.files ||
-        !fileInput.files[0]
+      Array.isArray(returned) &&
+      returned.length
     ) {
 
-        alert(
-            "Lütfen bir vitrin görseli seçin."
-        );
+      const item =
+        returned[0];
 
-        return;
+      image =
+        typeof item === "string"
+
+          ? item
+
+          : (
+            item.url ||
+            item.path ||
+            item.location ||
+            ""
+          );
+
     }
 
 
-    try {
+    if (!image) {
 
-        /*
-         * Önce resmi /api/upload
-         * üzerinden yüklüyoruz.
-         */
+      throw new Error(
+        "Yüklenen görsel adresi alınamadı."
+      );
 
-        const formData =
-            new FormData();
-
-
-        formData.append(
-            "images",
-            fileInput.files[0]
-        );
-
-
-        const uploadResult =
-            await apiFetch(
-                "/api/upload",
-                {
-                    method:"POST",
-                    body:formData
-                }
-            );
-
-
-        if (
-            !uploadResult.response.ok
-        ) {
-
-            throw new Error(
-                uploadResult.data.message ||
-                "Vitrin görseli yüklenemedi."
-            );
-        }
-
-
-        const returned =
-            uploadResult.data.files ||
-            uploadResult.data.images ||
-            [];
-
-
-        let image = "";
-
-
-        if (
-            Array.isArray(returned) &&
-            returned.length
-        ) {
-
-            const item =
-                returned[0];
-
-
-            image =
-                typeof item === "string"
-                    ? item
-                    : item.url ||
-                      item.path ||
-                      item.location ||
-                      "";
-        }
-
-
-        if (!image) {
-
-            throw new Error(
-                "Yüklenen görsel adresi alınamadı."
-            );
-        }
-
-
-        /*
-         * Şimdi vitrin kaydını oluşturuyoruz.
-         */
-
-        const slide = {
-
-            image,
-
-            title,
-
-            text,
-
-            buttonText,
-
-            buttonLink
-
-        };
-
-
-        const result =
-            await apiFetch(
-                "/api/homepage/slides",
-                {
-                    method:"POST",
-
-                    headers:{
-                        "Content-Type":
-                            "application/json"
-                    },
-
-                    body:
-                        JSON.stringify(
-                            slide
-                        )
-                }
-            );
-
-
-        if (
-            !result.response.ok
-        ) {
-
-            throw new Error(
-                result.data.message ||
-                "Vitrin kaydedilemedi."
-            );
-        }
-
-
-        alert(
-            "Vitrin başarıyla eklendi."
-        );
-
-
-        document.getElementById(
-            "heroImageInput"
-        ).value = "";
-
-
-        document.getElementById(
-            "heroTitle"
-        ).value = "";
-
-
-        document.getElementById(
-            "heroText"
-        ).value = "";
-
-
-        document.getElementById(
-            "heroButtonText"
-        ).value =
-            "Şimdi Keşfet";
-
-
-        document.getElementById(
-            "heroButtonLink"
-        ).value =
-            "#products";
-
-
-        document.getElementById(
-            "heroPreview"
-        ).style.display =
-            "none";
-
-
-        await loadHomepage();
-
-    } catch(error) {
-
-        alert(
-            error.message
-        );
     }
+
+
+    const slide = {
+
+      image,
+      title,
+      text,
+      buttonText,
+      buttonLink
+
+    };
+
+
+    const result =
+      await apiFetch(
+        "/api/homepage/slides",
+        {
+          method:"POST",
+          headers:{
+            "Content-Type":
+              "application/json"
+          },
+          body:
+            JSON.stringify(slide)
+        }
+      );
+
+
+    if (!result.response.ok) {
+
+      throw new Error(
+        result.data.message ||
+        "Vitrin kaydedilemedi."
+      );
+
+    }
+
+
+    alert(
+      "Vitrin başarıyla eklendi."
+    );
+
+
+    document.getElementById(
+      "heroImageInput"
+    ).value = "";
+
+    document.getElementById(
+      "heroTitle"
+    ).value = "";
+
+    document.getElementById(
+      "heroText"
+    ).value = "";
+
+    document.getElementById(
+      "heroButtonText"
+    ).value =
+      "Şimdi Keşfet";
+
+    document.getElementById(
+      "heroButtonLink"
+    ).value =
+      "#products";
+
+    document.getElementById(
+      "heroPreview"
+    ).style.display =
+      "none";
+
+
+    await loadHomepage();
+
+  } catch(error) {
+
+    alert(
+      error.message
+    );
+
+  }
 }
 
 
 /* =========================================================
-   RENDER HERO SLIDES
+RENDER HERO SLIDES
 ========================================================= */
 
 function renderHeroSlides() {
 
-    const container =
-        document.getElementById(
-            "heroSlidesList"
-        );
+  const container =
+    document.getElementById(
+      "heroSlidesList"
+    );
+
+  if (!container) return;
 
 
-    if (!container) return;
+  if (!heroSlides.length) {
+
+    container.innerHTML = `
+
+      <div class="empty-box">
+
+        Henüz ana sayfa vitrini eklenmemiş.
+
+        <br><br>
+
+        Yukarıdaki alandan ilk vitrin
+        görselinizi ekleyebilirsiniz.
+
+      </div>
+
+    `;
+
+    return;
+  }
 
 
-    if (!heroSlides.length) {
+  container.innerHTML =
+    heroSlides
 
-        container.innerHTML = `
+      .map(
+        (slide,index) => `
 
-            <div class="empty-box">
+          <div class="hero-admin-card">
 
-                Henüz ana sayfa vitrini
-                eklenmemiş.
+            <div class="hero-admin-grid">
 
-                <br><br>
+              <img
+                class="hero-admin-image"
+                src="${escapeHTML(
+                  slide.image || ""
+                )}"
+              >
 
-                Yukarıdaki alandan ilk
-                vitrin görselinizi ekleyebilirsiniz.
+              <div>
+
+                <h3>
+
+                  ${escapeHTML(
+                    slide.title ||
+                    "Başlıksız Vitrin"
+                  )}
+
+                </h3>
+
+
+                ${
+                  slide.text
+
+                    ? `
+
+                      <p>
+                        ${escapeHTML(
+                          slide.text
+                        )}
+                      </p>
+
+                    `
+
+                    : ""
+                }
+
+
+                ${
+                  slide.buttonText
+
+                    ? `
+
+                      <p>
+
+                        <strong>
+                          Buton:
+                        </strong>
+
+                        ${escapeHTML(
+                          slide.buttonText
+                        )}
+
+                        ${
+                          slide.buttonLink
+
+                            ? `
+                              → ${escapeHTML(
+                                slide.buttonLink
+                              )}
+                            `
+
+                            : ""
+                        }
+
+                      </p>
+
+                    `
+
+                    : ""
+                }
+
+
+                <small>
+                  Sıra:
+                  ${index + 1}
+                </small>
+
+
+                <div class="slide-buttons">
+
+
+                  ${
+                    index > 0
+
+                      ? `
+
+                        <button
+                          class="btn gray"
+                          onclick="
+                            moveHeroSlide(
+                              '${escapeJS(slide.id)}',
+                              'up'
+                            )
+                          "
+                        >
+                          ⬆️ Yukarı
+                        </button>
+
+                      `
+
+                      : ""
+                  }
+
+
+                  ${
+                    index <
+                    heroSlides.length - 1
+
+                      ? `
+
+                        <button
+                          class="btn gray"
+                          onclick="
+                            moveHeroSlide(
+                              '${escapeJS(slide.id)}',
+                              'down'
+                            )
+                          "
+                        >
+                          ⬇️ Aşağı
+                        </button>
+
+                      `
+
+                      : ""
+                  }
+
+
+                  <button
+                    class="btn blue"
+                    onclick="
+                      editHeroSlide(
+                        '${escapeJS(slide.id)}'
+                      )
+                    "
+                  >
+                    ✏️ Düzenle
+                  </button>
+
+
+                  <button
+                    class="btn red"
+                    onclick="
+                      deleteHeroSlide(
+                        '${escapeJS(slide.id)}'
+                      )
+                    "
+                  >
+                    🗑️ Sil
+                  </button>
+
+
+                </div>
+
+              </div>
 
             </div>
 
-        `;
+          </div>
 
-        return;
-    }
+        `
+      )
 
-
-    container.innerHTML =
-        heroSlides
-            .map(
-                (slide,index) => `
-
-                    <div
-                        class="hero-admin-card"
-                    >
-
-                        <div class="hero-admin-grid">
-
-
-                            <img
-                                class="hero-admin-image"
-                                src="${escapeHTML(
-                                    slide.image ||
-                                    ""
-                                )}"
-                            >
-
-
-                            <div>
-
-                                <h3>
-
-                                    ${escapeHTML(
-                                        slide.title ||
-                                        "Başlıksız Vitrin"
-                                    )}
-
-                                </h3>
-
-
-                                ${
-                                    slide.text
-                                        ? `
-                                            <p>
-                                                ${escapeHTML(
-                                                    slide.text
-                                                )}
-                                            </p>
-                                          `
-                                        : ""
-                                }
-
-
-                                ${
-                                    slide.buttonText
-                                        ? `
-                                            <p>
-                                                <strong>
-                                                    Buton:
-                                                </strong>
-
-                                                ${escapeHTML(
-                                                    slide.buttonText
-                                                )}
-
-                                                ${
-                                                    slide.buttonLink
-                                                        ? `
-                                                            →
-                                                            ${escapeHTML(
-                                                                slide.buttonLink
-                                                            )}
-                                                          `
-                                                        : ""
-                                                }
-
-                                            </p>
-                                          `
-                                        : ""
-                                }
-
-
-                                <small>
-
-                                    Sıra:
-                                    ${index + 1}
-
-                                </small>
-
-
-                                <div class="slide-buttons">
-
-
-                                    ${
-                                        index > 0
-                                            ? `
-                                                <button
-                                                    class="btn gray"
-                                                    onclick="moveHeroSlide(
-                                                        '${escapeJS(slide.id)}',
-                                                        'up'
-                                                    )"
-                                                >
-                                                    ⬆️ Yukarı
-                                                </button>
-                                              `
-                                            : ""
-                                    }
-
-
-                                    ${
-                                        index <
-                                        heroSlides.length - 1
-                                            ? `
-                                                <button
-                                                    class="btn gray"
-                                                    onclick="moveHeroSlide(
-                                                        '${escapeJS(slide.id)}',
-                                                        'down'
-                                                    )"
-                                                >
-                                                    ⬇️ Aşağı
-                                                </button>
-                                              `
-                                            : ""
-                                    }
-
-
-                                    <button
-                                        class="btn blue"
-                                        onclick="editHeroSlide(
-                                            '${escapeJS(slide.id)}'
-                                        )"
-                                    >
-                                        ✏️ Düzenle
-                                    </button>
-
-
-                                    <button
-                                        class="btn red"
-                                        onclick="deleteHeroSlide(
-                                            '${escapeJS(slide.id)}'
-                                        )"
-                                    >
-                                        🗑️ Sil
-                                    </button>
-
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                `
-            )
-            .join("");
+      .join("");
 }
 
 
 /* =========================================================
-   EDIT HERO SLIDE
+EDIT HERO
 ========================================================= */
 
 async function editHeroSlide(id) {
 
-    const slide =
-        heroSlides.find(
-            item =>
-                String(item.id) ===
-                String(id)
-        );
+  const slide =
+    heroSlides.find(
+      item =>
+        String(item.id) ===
+        String(id)
+    );
+
+  if (!slide) return;
 
 
-    if (!slide) return;
+  const title =
+    prompt(
+      "Vitrin başlığı:",
+      slide.title || ""
+    );
+
+  if (title === null) return;
 
 
-    const title =
-        prompt(
-            "Vitrin başlığı:",
-            slide.title || ""
-        );
+  const text =
+    prompt(
+      "Vitrin açıklaması:",
+      slide.text || ""
+    );
+
+  if (text === null) return;
 
 
-    if (title === null) return;
+  const buttonText =
+    prompt(
+      "Buton yazısı:",
+      slide.buttonText ||
+      "Şimdi Keşfet"
+    );
+
+  if (buttonText === null) return;
 
 
-    const text =
-        prompt(
-            "Vitrin açıklaması:",
-            slide.text || ""
-        );
+  const buttonLink =
+    prompt(
+      "Buton bağlantısı:",
+      slide.buttonLink ||
+      "#products"
+    );
+
+  if (buttonLink === null) return;
 
 
-    if (text === null) return;
+  try {
 
-
-    const buttonText =
-        prompt(
-            "Buton yazısı:",
-            slide.buttonText ||
-            "Şimdi Keşfet"
-        );
-
-
-    if (buttonText === null) return;
-
-
-    const buttonLink =
-        prompt(
-            "Buton bağlantısı:",
-            slide.buttonLink ||
-            "#products"
-        );
-
-
-    if (buttonLink === null) return;
-
-
-    try {
-
-        const result =
-            await apiFetch(
-                "/api/homepage/slides/" +
-                encodeURIComponent(id),
-                {
-                    method:"PUT",
-
-                    headers:{
-                        "Content-Type":
-                            "application/json"
-                    },
-
-                    body:
-                        JSON.stringify({
-
-                            title,
-
-                            text,
-
-                            buttonText,
-
-                            buttonLink
-
-                        })
-                }
-            );
-
-
-        if (
-            !result.response.ok
-        ) {
-
-            throw new Error(
-                result.data.message ||
-                "Vitrin düzenlenemedi."
-            );
+    const result =
+      await apiFetch(
+        "/api/homepage/slides/" +
+        encodeURIComponent(id),
+        {
+          method:"PUT",
+          headers:{
+            "Content-Type":
+              "application/json"
+          },
+          body:
+            JSON.stringify({
+              title,
+              text,
+              buttonText,
+              buttonLink
+            })
         }
+      );
 
 
-        await loadHomepage();
+    if (!result.response.ok) {
 
+      throw new Error(
+        result.data.message ||
+        "Vitrin düzenlenemedi."
+      );
 
-        alert(
-            "Vitrin güncellendi."
-        );
-
-    } catch(error) {
-
-        alert(
-            error.message
-        );
     }
+
+
+    await loadHomepage();
+
+    alert(
+      "Vitrin güncellendi."
+    );
+
+  } catch(error) {
+
+    alert(
+      error.message
+    );
+
+  }
 }
 
 
 /* =========================================================
-   DELETE HERO
+DELETE HERO
 ========================================================= */
 
 async function deleteHeroSlide(id) {
 
-    if (
-        !confirm(
-            "Bu vitrin görselini silmek istediğinize emin misiniz?"
-        )
-    ) {
+  if (
+    !confirm(
+      "Bu vitrin görselini silmek istediğinize emin misiniz?"
+    )
+  ) {
 
-        return;
-    }
-
-
-    try {
-
-        const result =
-            await apiFetch(
-                "/api/homepage/slides/" +
-                encodeURIComponent(id),
-                {
-                    method:"DELETE"
-                }
-            );
+    return;
+  }
 
 
-        if (
-            !result.response.ok
-        ) {
+  try {
 
-            throw new Error(
-                result.data.message ||
-                "Vitrin silinemedi."
-            );
+    const result =
+      await apiFetch(
+        "/api/homepage/slides/" +
+        encodeURIComponent(id),
+        {
+          method:"DELETE"
         }
+      );
 
 
-        await loadHomepage();
+    if (!result.response.ok) {
 
+      throw new Error(
+        result.data.message ||
+        "Vitrin silinemedi."
+      );
 
-        alert(
-            "Vitrin silindi."
-        );
-
-    } catch(error) {
-
-        alert(
-            error.message
-        );
     }
+
+
+    await loadHomepage();
+
+    alert(
+      "Vitrin silindi."
+    );
+
+  } catch(error) {
+
+    alert(
+      error.message
+    );
+
+  }
 }
 
 
 /* =========================================================
-   MOVE HERO
+MOVE HERO
 ========================================================= */
 
 async function moveHeroSlide(
-    id,
-    direction
+  id,
+  direction
 ) {
 
-    const currentIndex =
-        heroSlides.findIndex(
-            slide =>
-                String(slide.id) ===
-                String(id)
-        );
+  const currentIndex =
+    heroSlides.findIndex(
+      slide =>
+        String(slide.id) ===
+        String(id)
+    );
 
 
-    if (
-        currentIndex === -1
-    ) {
-
-        return;
-    }
+  if (currentIndex === -1) {
+    return;
+  }
 
 
-    let targetIndex;
+  let targetIndex;
 
 
-    if (
-        direction === "up"
-    ) {
+  if (direction === "up") {
 
-        targetIndex =
-            currentIndex - 1;
+    targetIndex =
+      currentIndex - 1;
 
-    } else {
+  } else {
 
-        targetIndex =
-            currentIndex + 1;
-    }
+    targetIndex =
+      currentIndex + 1;
 
-
-    if (
-        targetIndex < 0 ||
-        targetIndex >= heroSlides.length
-    ) {
-
-        return;
-    }
+  }
 
 
-    const newOrder =
-        heroSlides.map(
-            slide =>
-                slide.id
-        );
+  if (
+    targetIndex < 0 ||
+    targetIndex >= heroSlides.length
+  ) {
+
+    return;
+  }
 
 
-    const temp =
-        newOrder[currentIndex];
+  const newOrder =
+    heroSlides.map(
+      slide => slide.id
+    );
 
 
-    newOrder[currentIndex] =
-        newOrder[targetIndex];
+  const temp =
+    newOrder[currentIndex];
 
 
-    newOrder[targetIndex] =
-        temp;
+  newOrder[currentIndex] =
+    newOrder[targetIndex];
 
 
-    try {
-
-        const result =
-            await apiFetch(
-                "/api/homepage/slides/reorder",
-                {
-                    method:"PUT",
-
-                    headers:{
-                        "Content-Type":
-                            "application/json"
-                    },
-
-                    body:
-                        JSON.stringify({
-                            order:
-                                newOrder
-                        })
-                }
-            );
+  newOrder[targetIndex] =
+    temp;
 
 
-        if (
-            !result.response.ok
-        ) {
+  try {
 
-            throw new Error(
-                result.data.message ||
-                "Vitrin sırası değiştirilemedi."
-            );
+    const result =
+      await apiFetch(
+        "/api/homepage/slides/reorder",
+        {
+          method:"PUT",
+          headers:{
+            "Content-Type":
+              "application/json"
+          },
+          body:
+            JSON.stringify({
+              order:newOrder
+            })
         }
+      );
 
 
-        await loadHomepage();
+    if (!result.response.ok) {
 
-    } catch(error) {
+      throw new Error(
+        result.data.message ||
+        "Vitrin sırası değiştirilemedi."
+      );
 
-        alert(
-            error.message
-        );
     }
+
+
+    await loadHomepage();
+
+  } catch(error) {
+
+    alert(
+      error.message
+    );
+
+  }
 }
 
 
 /* =========================================================
-   PASSWORD
+PASSWORD
 ========================================================= */
 
 async function changePassword() {
 
-    const oldPassword =
-        document.getElementById(
-            "oldPassword"
-        ).value;
+  const oldPassword =
+    document.getElementById(
+      "oldPassword"
+    ).value;
+
+  const newPassword =
+    document.getElementById(
+      "newPassword"
+    ).value;
 
 
-    const newPassword =
-        document.getElementById(
-            "newPassword"
-        ).value;
+  if (
+    !oldPassword ||
+    !newPassword
+  ) {
+
+    alert(
+      "Eski ve yeni şifreyi girin."
+    );
+
+    return;
+  }
 
 
-    try {
+  try {
 
-        const result =
-            await apiFetch(
-                "/api/admin/change-password",
-                {
-                    method:"POST",
-
-                    headers:{
-                        "Content-Type":
-                            "application/json"
-                    },
-
-                    body:
-                        JSON.stringify({
-
-                            oldPassword,
-
-                            newPassword
-
-                        })
-                }
-            );
-
-
-        if (
-            !result.response.ok
-        ) {
-
-            throw new Error(
-                result.data.message ||
-                "Şifre değiştirilemedi."
-            );
+    const result =
+      await apiFetch(
+        "/api/admin/change-password",
+        {
+          method:"POST",
+          headers:{
+            "Content-Type":
+              "application/json"
+          },
+          body:
+            JSON.stringify({
+              oldPassword,
+              newPassword
+            })
         }
+      );
 
 
-        alert(
-            "Şifre başarıyla değiştirildi."
-        );
+    if (!result.response.ok) {
 
+      throw new Error(
+        result.data.message ||
+        "Şifre değiştirilemedi."
+      );
 
-        document.getElementById(
-            "oldPassword"
-        ).value = "";
-
-
-        document.getElementById(
-            "newPassword"
-        ).value = "";
-
-    } catch(error) {
-
-        alert(
-            error.message
-        );
     }
+
+
+    alert(
+      "Şifre başarıyla değiştirildi."
+    );
+
+
+    document.getElementById(
+      "oldPassword"
+    ).value = "";
+
+    document.getElementById(
+      "newPassword"
+    ).value = "";
+
+  } catch(error) {
+
+    alert(
+      error.message
+    );
+
+  }
 }
 
 
 /* =========================================================
-   DASHBOARD
+DASHBOARD
 ========================================================= */
 
 function updateDashboard() {
 
-    const container =
-        document.getElementById(
-            "dashboardCards"
-        );
+  const container =
+    document.getElementById(
+      "dashboardCards"
+    );
+
+  if (!container) return;
 
 
-    if (!container) return;
+  const waitingPayment =
+    orders.filter(
+      o =>
+        o.paymentStatus === "pending" ||
+        o.orderStatus ===
+          "Ödeme bekleniyor"
+    ).length;
 
 
-    const waitingPayment =
-        orders.filter(
-            o =>
-                o.paymentStatus ===
-                "pending" ||
-                o.orderStatus ===
-                "Ödeme bekleniyor"
-        ).length;
+  const approved =
+    orders.filter(
+      o =>
+        o.paymentStatus === "paid"
+    ).length;
 
 
-    const approved =
-        orders.filter(
-            o =>
-                o.paymentStatus ===
-                "paid"
-        ).length;
+  const reviewCount =
+    products.reduce(
+      (sum,product) =>
+        sum +
+        (
+          Array.isArray(
+            product.reviews
+          )
+            ? product.reviews.length
+            : 0
+        ),
+      0
+    );
 
 
-    const reviewCount =
-        products.reduce(
-            (sum, product) =>
-                sum +
-                (
-                    Array.isArray(
-                        product.reviews
-                    )
-                        ? product.reviews.length
-                        : 0
-                ),
-            0
-        );
+  const featuredCount =
+    products.filter(
+      product =>
+        product.isFeaturedOffer === true
+    ).length;
 
 
-    container.innerHTML = `
+  container.innerHTML = `
+
+    <div class="card">
+
+      <h3>
+        Ürün
+      </h3>
+
+      <strong>
+        ${products.length}
+      </strong>
+
+    </div>
 
 
-        <div class="card">
+    <div class="card">
 
-            <h3>
-                Ürün
-            </h3>
+      <h3>
+        Sipariş
+      </h3>
 
-            <strong>
-                ${products.length}
-            </strong>
+      <strong>
+        ${orders.length}
+      </strong>
 
-        </div>
-
-
-        <div class="card">
-
-            <h3>
-                Sipariş
-            </h3>
-
-            <strong>
-                ${orders.length}
-            </strong>
-
-        </div>
+    </div>
 
 
-        <div class="card">
+    <div class="card">
 
-            <h3>
-                Ödeme Bekleyen
-            </h3>
+      <h3>
+        Ödeme Bekleyen
+      </h3>
 
-            <strong>
-                ${waitingPayment}
-            </strong>
+      <strong>
+        ${waitingPayment}
+      </strong>
 
-        </div>
+    </div>
 
 
-        <div class="card">
+    <div class="card">
 
-            <h3>
-                Toplam Yorum
-            </h3>
+      <h3>
+        Toplam Yorum
+      </h3>
 
-            <strong>
-                ${reviewCount}
-            </strong>
+      <strong>
+        ${reviewCount}
+      </strong>
 
-        </div>
+    </div>
 
-    `;
+
+    <div class="card">
+
+      <h3>
+        🏷️ Fırsat Ürünü
+      </h3>
+
+      <strong>
+        ${featuredCount}
+      </strong>
+
+    </div>
+
+  `;
 }
 
 
 /* =========================================================
-   HELPERS
+HELPERS
 ========================================================= */
 
 function normalizeTurkish(value) {
 
-    return String(
-        value ?? ""
-    )
+  return String(
+    value ?? ""
+  )
     .trim()
     .toLocaleLowerCase(
-        "tr-TR"
+      "tr-TR"
     );
 }
 
 
 function formatPrice(value) {
 
-    return Number(
-        value || 0
-    )
+  return Number(
+    value || 0
+  )
     .toLocaleString(
-        "tr-TR",
-        {
-            minimumFractionDigits:2,
-            maximumFractionDigits:2
-        }
+      "tr-TR",
+      {
+        minimumFractionDigits:2,
+        maximumFractionDigits:2
+      }
     ) + " TL";
 }
 
 
 function escapeHTML(value) {
 
-    return String(
-        value ?? ""
+  return String(
+    value ?? ""
+  )
+    .replaceAll(
+      "&",
+      "&amp;"
     )
     .replaceAll(
-        "&",
-        "&amp;"
+      "<",
+      "&lt;"
     )
     .replaceAll(
-        "<",
-        "&lt;"
+      ">",
+      "&gt;"
     )
     .replaceAll(
-        ">",
-        "&gt;"
+      '"',
+      "&quot;"
     )
     .replaceAll(
-        '"',
-        "&quot;"
-    )
-    .replaceAll(
-        "'",
-        "&#039;"
+      "'",
+      "&#039;"
     );
 }
 
 
 function escapeJS(value) {
 
-    return String(
-        value ?? ""
+  return String(
+    value ?? ""
+  )
+    .replaceAll(
+      "\\",
+      "\\\\"
     )
     .replaceAll(
-        "\\",
-        "\\\\"
+      "'",
+      "\\'"
     )
     .replaceAll(
-        "'",
-        "\\'"
+      "\n",
+      "\\n"
     )
     .replaceAll(
-        "\n",
-        "\\n"
-    )
-    .replaceAll(
-        "\r",
-        "\\r"
+      "\r",
+      "\\r"
     );
 }
 
@@ -5099,3 +4902,4 @@ function escapeJS(value) {
 
 </body>
 </html>
+```
