@@ -12,13 +12,20 @@
     padding:0;
 }
 
+html{
+    scroll-behavior:smooth;
+}
+
 body{
     font-family:Arial,Helvetica,sans-serif;
     background:#f5f5f5;
     color:#111;
 }
 
-button,input,select,textarea{
+button,
+input,
+select,
+textarea{
     font:inherit;
 }
 
@@ -28,106 +35,305 @@ button{
 
 header{
     background:#111;
-    color:white;
+    color:#fff;
     position:sticky;
     top:0;
     z-index:1000;
+    box-shadow:0 3px 15px rgba(0,0,0,.18);
 }
 
 .header{
     max-width:1400px;
     margin:auto;
-    padding:18px 20px;
+    padding:16px 20px;
     display:flex;
     align-items:center;
-    gap:25px;
+    gap:20px;
 }
 
 .logo{
     font-size:24px;
     font-weight:900;
     white-space:nowrap;
+    letter-spacing:.5px;
 }
 
 .search-box{
     flex:1;
     display:flex;
+    min-width:180px;
 }
 
 .search-box input{
     width:100%;
     padding:13px 16px;
-    border:none;
+    border:0;
     border-radius:8px 0 0 8px;
     outline:none;
 }
 
 .search-box button{
-    border:none;
+    border:0;
     background:#e91e63;
-    color:white;
+    color:#fff;
     padding:0 20px;
     border-radius:0 8px 8px 0;
 }
 
 .cart-button{
-    background:white;
+    background:#fff;
     color:#111;
     border:0;
     padding:12px 16px;
     border-radius:8px;
     white-space:nowrap;
+    font-weight:bold;
+}
+
+.cart-button:hover{
+    background:#eee;
 }
 
 .category-bar{
-    background:white;
+    background:#fff;
     border-bottom:1px solid #ddd;
     position:sticky;
-    top:75px;
+    top:70px;
     z-index:900;
 }
 
 .categories{
     max-width:1400px;
     margin:auto;
-    padding:12px 20px;
+    padding:10px 20px;
     display:flex;
-    gap:10px;
+    gap:9px;
     overflow-x:auto;
+}
+
+.categories::-webkit-scrollbar{
+    height:4px;
 }
 
 .category-btn{
     border:1px solid #ddd;
-    background:white;
+    background:#fff;
     padding:9px 16px;
     border-radius:30px;
     white-space:nowrap;
+    transition:.2s;
 }
 
 .category-btn.active,
 .category-btn:hover{
     background:#111;
-    color:white;
+    color:#fff;
+    border-color:#111;
 }
 
 .container{
     max-width:1400px;
     margin:auto;
-    padding:25px 20px;
+    padding:20px;
 }
 
-.hero{
+/* =========================================================
+   MODERN VİTRİN
+========================================================= */
+
+.hero-slider{
+    position:relative;
+    height:400px;
+    border-radius:22px;
+    overflow:hidden;
+    margin-bottom:28px;
     background:#111;
-    color:white;
-    border-radius:16px;
-    padding:50px 35px;
-    margin-bottom:25px;
+    box-shadow:0 12px 35px rgba(0,0,0,.15);
 }
 
-.hero h1{
-    font-size:42px;
-    margin-bottom:10px;
+.hero-slide{
+    position:absolute;
+    inset:0;
+    opacity:0;
+    visibility:hidden;
+    transition:opacity .7s ease;
+    background:#111;
 }
+
+.hero-slide.active{
+    opacity:1;
+    visibility:visible;
+}
+
+.hero-slide-image{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.hero-overlay{
+    position:absolute;
+    inset:0;
+    background:
+        linear-gradient(
+            90deg,
+            rgba(0,0,0,.82),
+            rgba(0,0,0,.35),
+            rgba(0,0,0,.05)
+        );
+}
+
+.hero-content{
+    position:absolute;
+    left:45px;
+    top:50%;
+    transform:translateY(-50%);
+    color:#fff;
+    width:min(550px,75%);
+    z-index:2;
+}
+
+.hero-content .small-title{
+    font-size:13px;
+    font-weight:bold;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    margin-bottom:12px;
+    opacity:.85;
+}
+
+.hero-content h1{
+    font-size:44px;
+    line-height:1.05;
+    margin-bottom:14px;
+}
+
+.hero-content p{
+    font-size:17px;
+    line-height:1.6;
+    margin-bottom:20px;
+    color:#eee;
+}
+
+.hero-button{
+    display:inline-block;
+    border:0;
+    background:#fff;
+    color:#111;
+    padding:12px 22px;
+    border-radius:9px;
+    font-weight:bold;
+    text-decoration:none;
+}
+
+.hero-button:hover{
+    background:#e91e63;
+    color:#fff;
+}
+
+.hero-dots{
+    position:absolute;
+    bottom:18px;
+    left:50%;
+    transform:translateX(-50%);
+    display:flex;
+    gap:8px;
+    z-index:10;
+}
+
+.hero-dot{
+    width:9px;
+    height:9px;
+    border-radius:50%;
+    border:0;
+    background:rgba(255,255,255,.5);
+    padding:0;
+}
+
+.hero-dot.active{
+    width:25px;
+    border-radius:10px;
+    background:#fff;
+}
+
+.hero-prev,
+.hero-next{
+    position:absolute;
+    top:50%;
+    transform:translateY(-50%);
+    z-index:10;
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    border:1px solid rgba(255,255,255,.3);
+    background:rgba(0,0,0,.35);
+    color:#fff;
+    font-size:20px;
+    backdrop-filter:blur(5px);
+}
+
+.hero-prev{
+    left:18px;
+}
+
+.hero-next{
+    right:18px;
+}
+
+.hero-prev:hover,
+.hero-next:hover{
+    background:#fff;
+    color:#111;
+}
+
+.hero-default{
+    background:
+        radial-gradient(circle at 80% 20%,#e91e63 0,transparent 30%),
+        radial-gradient(circle at 20% 90%,#444 0,transparent 35%),
+        #111;
+}
+
+.hero-default .hero-overlay{
+    background:
+        linear-gradient(
+            90deg,
+            rgba(0,0,0,.8),
+            rgba(0,0,0,.2)
+        );
+}
+
+.hero-empty-message{
+    position:absolute;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    color:#fff;
+    padding:30px;
+}
+
+.section-heading{
+    display:flex;
+    align-items:end;
+    justify-content:space-between;
+    margin:10px 0 18px;
+}
+
+.section-heading h2{
+    font-size:25px;
+}
+
+.section-heading span{
+    color:#777;
+    font-size:14px;
+}
+
+/* =========================================================
+   ÜRÜNLER
+========================================================= */
 
 .products{
     display:grid;
@@ -136,27 +342,35 @@ header{
 }
 
 .product{
-    background:white;
+    background:#fff;
     border-radius:14px;
     overflow:hidden;
     box-shadow:0 4px 15px rgba(0,0,0,.07);
-    transition:.2s;
+    transition:.25s;
+    cursor:pointer;
 }
 
 .product:hover{
-    transform:translateY(-3px);
+    transform:translateY(-5px);
+    box-shadow:0 12px 28px rgba(0,0,0,.12);
 }
 
 .product-image{
     height:280px;
     background:#eee;
     position:relative;
+    overflow:hidden;
 }
 
 .product-image img{
     width:100%;
     height:100%;
     object-fit:cover;
+    transition:.35s;
+}
+
+.product:hover .product-image img{
+    transform:scale(1.04);
 }
 
 .product-info{
@@ -184,6 +398,13 @@ header{
     color:#999;
     text-decoration:line-through;
     margin-left:8px;
+    font-size:14px;
+}
+
+.product-rating{
+    margin-top:8px;
+    font-size:13px;
+    color:#e91e63;
 }
 
 .product-actions{
@@ -205,7 +426,15 @@ header{
 
 .buy-btn{
     background:#111;
-    color:white;
+    color:#fff;
+}
+
+.detail-btn:hover{
+    background:#ddd;
+}
+
+.buy-btn:hover{
+    background:#e91e63;
 }
 
 .empty{
@@ -213,17 +442,24 @@ header{
     padding:70px 20px;
     color:#777;
     grid-column:1/-1;
+    background:#fff;
+    border-radius:14px;
 }
+
+/* =========================================================
+   MODALLAR
+========================================================= */
 
 .modal{
     position:fixed;
     inset:0;
-    background:rgba(0,0,0,.7);
+    background:rgba(0,0,0,.72);
     display:none;
     align-items:center;
     justify-content:center;
     z-index:5000;
     padding:20px;
+    backdrop-filter:blur(4px);
 }
 
 .modal.active{
@@ -231,13 +467,14 @@ header{
 }
 
 .modal-box{
-    width:min(1000px,100%);
+    width:min(1050px,100%);
     max-height:90vh;
     overflow:auto;
-    background:white;
-    border-radius:16px;
+    background:#fff;
+    border-radius:18px;
     padding:25px;
     position:relative;
+    box-shadow:0 20px 60px rgba(0,0,0,.25);
 }
 
 .close{
@@ -250,7 +487,17 @@ header{
     border:0;
     background:#eee;
     font-size:20px;
+    z-index:5;
 }
+
+.close:hover{
+    background:#111;
+    color:#fff;
+}
+
+/* =========================================================
+   ÜRÜN DETAY
+========================================================= */
 
 .detail{
     display:grid;
@@ -287,6 +534,10 @@ header{
     cursor:pointer;
 }
 
+.thumbs img:hover{
+    border-color:#e91e63;
+}
+
 .detail h2{
     font-size:32px;
     margin-bottom:10px;
@@ -307,14 +558,14 @@ header{
 
 .size-btn{
     border:1px solid #ccc;
-    background:white;
+    background:#fff;
     padding:10px 15px;
     border-radius:7px;
 }
 
 .size-btn.selected{
     background:#111;
-    color:white;
+    color:#fff;
 }
 
 .size-btn.disabled{
@@ -326,12 +577,131 @@ header{
     width:100%;
     border:0;
     background:#e91e63;
-    color:white;
+    color:#fff;
     padding:15px;
     border-radius:9px;
     font-weight:bold;
     font-size:17px;
 }
+
+.big-buy:hover{
+    background:#c2185b;
+}
+
+/* =========================================================
+   YORUMLAR
+========================================================= */
+
+.review-section{
+    margin-top:35px;
+    padding-top:25px;
+    border-top:1px solid #ddd;
+}
+
+.review-section h3{
+    margin-bottom:15px;
+}
+
+.rating-summary{
+    background:#f7f7f7;
+    padding:16px;
+    border-radius:10px;
+    margin-bottom:20px;
+}
+
+.rating-big{
+    font-size:30px;
+    font-weight:900;
+}
+
+.stars{
+    color:#f5a400;
+    letter-spacing:2px;
+}
+
+.review-form{
+    background:#fafafa;
+    border:1px solid #eee;
+    padding:18px;
+    border-radius:12px;
+    margin-bottom:20px;
+}
+
+.review-form input,
+.review-form textarea{
+    width:100%;
+    border:1px solid #ccc;
+    border-radius:8px;
+    padding:11px;
+    margin-bottom:10px;
+    outline:none;
+}
+
+.review-form textarea{
+    min-height:90px;
+    resize:vertical;
+}
+
+.review-stars{
+    display:flex;
+    gap:4px;
+    margin-bottom:12px;
+}
+
+.review-star{
+    border:0;
+    background:transparent;
+    font-size:27px;
+    color:#bbb;
+    padding:0;
+}
+
+.review-star.selected{
+    color:#f5a400;
+}
+
+.review-submit{
+    border:0;
+    background:#111;
+    color:#fff;
+    padding:11px 18px;
+    border-radius:8px;
+}
+
+.review-item{
+    border-bottom:1px solid #eee;
+    padding:15px 0;
+}
+
+.review-item:last-child{
+    border-bottom:0;
+}
+
+.review-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+}
+
+.review-name{
+    font-weight:bold;
+}
+
+.review-date{
+    color:#888;
+    font-size:12px;
+}
+
+.review-text{
+    margin-top:8px;
+    line-height:1.6;
+    color:#444;
+}
+
+/* =========================================================
+   SEPET
+========================================================= */
 
 .cart-item{
     display:flex;
@@ -357,6 +727,7 @@ header{
     color:#c00;
     padding:8px;
     border-radius:6px;
+    height:max-content;
 }
 
 .total{
@@ -379,21 +750,38 @@ header{
     border:1px solid #ccc;
     border-radius:8px;
     padding:12px;
+    outline:none;
 }
 
 .checkout textarea{
     min-height:100px;
     grid-column:1/-1;
+    resize:vertical;
 }
 
 .checkout button{
     grid-column:1/-1;
     background:#111;
-    color:white;
+    color:#fff;
     border:0;
     padding:15px;
     border-radius:8px;
+    font-weight:bold;
 }
+
+.checkout button:hover{
+    background:#e91e63;
+}
+
+.note-info{
+    grid-column:1/-1;
+    font-size:13px;
+    color:#777;
+}
+
+/* =========================================================
+   ÖDEME
+========================================================= */
 
 .payment-box{
     background:#fff8dc;
@@ -411,17 +799,25 @@ header{
 .copy{
     border:0;
     background:#111;
-    color:white;
+    color:#fff;
     padding:9px 12px;
     border-radius:6px;
     margin-top:8px;
 }
 
 .notice{
-    margin-top:12px;
+    margin-top:15px;
+    padding:13px;
+    border-radius:8px;
+    background:#ffe7e7;
     color:#9a0000;
     font-weight:bold;
+    line-height:1.5;
 }
+
+/* =========================================================
+   TAKİP
+========================================================= */
 
 .tracking-form{
     display:flex;
@@ -438,18 +834,29 @@ header{
 .tracking-form button{
     border:0;
     background:#111;
-    color:white;
+    color:#fff;
     border-radius:8px;
     padding:12px 18px;
 }
 
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
 @media(max-width:1000px){
+
     .products{
         grid-template-columns:repeat(3,1fr);
     }
+
+    .hero-slider{
+        height:360px;
+    }
+
 }
 
 @media(max-width:700px){
+
     .header{
         flex-wrap:wrap;
     }
@@ -464,7 +871,7 @@ header{
     }
 
     .category-bar{
-        top:130px;
+        top:128px;
     }
 
     .products{
@@ -487,9 +894,41 @@ header{
     .checkout{
         grid-template-columns:1fr;
     }
+
+    .checkout textarea,
+    .checkout button,
+    .note-info{
+        grid-column:1;
+    }
+
+    .hero-slider{
+        height:340px;
+        border-radius:15px;
+    }
+
+    .hero-content{
+        left:25px;
+        width:75%;
+    }
+
+    .hero-content h1{
+        font-size:32px;
+    }
+
+    .hero-content p{
+        font-size:14px;
+    }
+
+    .hero-prev,
+    .hero-next{
+        width:35px;
+        height:35px;
+    }
+
 }
 
 @media(max-width:450px){
+
     .products{
         grid-template-columns:1fr 1fr;
     }
@@ -501,6 +940,19 @@ header{
     .price{
         font-size:17px;
     }
+
+    .product-actions{
+        flex-direction:column;
+    }
+
+    .hero-content h1{
+        font-size:27px;
+    }
+
+    .hero-slider{
+        height:310px;
+    }
+
 }
 </style>
 </head>
@@ -515,6 +967,7 @@ header{
         </div>
 
         <div class="search-box">
+
             <input
                 id="searchInput"
                 type="search"
@@ -525,9 +978,13 @@ header{
             <button onclick="searchProducts()">
                 🔎 Ara
             </button>
+
         </div>
 
-        <button class="cart-button" onclick="openCart()">
+        <button
+            class="cart-button"
+            onclick="openCart()"
+        >
             🛒 Sepet
             <span id="cartCount">0</span>
         </button>
@@ -536,76 +993,174 @@ header{
 </header>
 
 <div class="category-bar">
-    <div class="categories" id="categoryList"></div>
+    <div
+        class="categories"
+        id="categoryList"
+    ></div>
 </div>
 
 <main class="container">
 
-    <section class="hero">
-        <h1>REZAN GİYİM</h1>
-        <p>Tarzını keşfet.</p>
+    <!-- ANA SAYFA VİTRİNİ -->
+
+    <section
+        class="hero-slider"
+        id="heroSlider"
+    >
+
+        <div class="hero-empty-message">
+            <div>
+                <h1 style="font-size:38px;margin-bottom:10px">
+                    REZAN GİYİM
+                </h1>
+
+                <p>
+                    Tarzını keşfet.
+                </p>
+            </div>
+        </div>
+
     </section>
 
+
     <section>
-        <div class="products" id="products"></div>
+
+        <div class="section-heading">
+
+            <h2>
+                Öne Çıkan Ürünler
+            </h2>
+
+            <span id="productCountText"></span>
+
+        </div>
+
+        <div
+            class="products"
+            id="products"
+        ></div>
+
     </section>
 
 </main>
 
-<div class="modal" id="productModal">
+
+<!-- =======================================================
+     ÜRÜN MODALI
+======================================================= -->
+
+<div
+    class="modal"
+    id="productModal"
+>
+
     <div class="modal-box">
 
-        <button class="close" onclick="closeModal('productModal')">
+        <button
+            class="close"
+            onclick="closeModal('productModal')"
+        >
             ×
         </button>
 
-        <div class="detail" id="productDetail"></div>
+        <div
+            class="detail"
+            id="productDetail"
+        ></div>
 
     </div>
+
 </div>
 
-<div class="modal" id="cartModal">
+
+<!-- =======================================================
+     SEPET MODALI
+======================================================= -->
+
+<div
+    class="modal"
+    id="cartModal"
+>
+
     <div class="modal-box">
 
-        <button class="close" onclick="closeModal('cartModal')">
+        <button
+            class="close"
+            onclick="closeModal('cartModal')"
+        >
             ×
         </button>
 
-        <h2>🛒 Sepetim</h2>
+        <h2>
+            🛒 Sepetim
+        </h2>
 
         <div id="cartItems"></div>
 
-        <div class="total" id="cartTotal">
+        <div
+            class="total"
+            id="cartTotal"
+        >
             0 TL
         </div>
 
         <div id="checkoutArea"></div>
 
     </div>
+
 </div>
 
-<div class="modal" id="paymentModal">
+
+<!-- =======================================================
+     ÖDEME MODALI
+======================================================= -->
+
+<div
+    class="modal"
+    id="paymentModal"
+>
+
     <div class="modal-box">
 
-        <button class="close" onclick="closeModal('paymentModal')">
+        <button
+            class="close"
+            onclick="closeModal('paymentModal')"
+        >
             ×
         </button>
 
-        <h2>💳 Havale / EFT</h2>
+        <h2>
+            💳 Havale / EFT
+        </h2>
 
         <div id="paymentInfo"></div>
 
     </div>
+
 </div>
 
-<div class="modal" id="trackingModal">
+
+<!-- =======================================================
+     SİPARİŞ TAKİP MODALI
+======================================================= -->
+
+<div
+    class="modal"
+    id="trackingModal"
+>
+
     <div class="modal-box">
 
-        <button class="close" onclick="closeModal('trackingModal')">
+        <button
+            class="close"
+            onclick="closeModal('trackingModal')"
+        >
             ×
         </button>
 
-        <h2>📦 Sipariş Takibi</h2>
+        <h2>
+            📦 Sipariş Takibi
+        </h2>
 
         <br>
 
@@ -628,9 +1183,15 @@ header{
         ></div>
 
     </div>
+
 </div>
 
+
 <script>
+
+/* =========================================================
+   GLOBAL DEĞİŞKENLER
+========================================================= */
 
 let products = [];
 let categories = [];
@@ -641,6 +1202,17 @@ let searchText = "";
 
 let selectedProduct = null;
 let selectedSize = "";
+
+let selectedReviewRating = 5;
+
+let heroSlides = [];
+let currentHeroSlide = 0;
+let heroTimer = null;
+
+
+/* =========================================================
+   SEPETİ YÜKLE
+========================================================= */
 
 try {
 
@@ -669,11 +1241,16 @@ document.addEventListener(
 
         updateCartCount();
 
+        await loadHomepage();
+
         await loadCategories();
+
         await loadProducts();
 
         const searchInput =
-            document.getElementById("searchInput");
+            document.getElementById(
+                "searchInput"
+            );
 
         if (searchInput) {
 
@@ -689,10 +1266,420 @@ document.addEventListener(
 
 
 /* =========================================================
+   ANA SAYFA / VİTRİN YÜKLE
+========================================================= */
+
+async function loadHomepage() {
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/homepage",
+                {
+                    cache:"no-store",
+                    headers:{
+                        "Accept":"application/json"
+                    }
+                }
+            );
+
+        if (!response.ok) {
+            throw new Error(
+                "Ana sayfa verisi alınamadı."
+            );
+        }
+
+        const data =
+            await response.json();
+
+        let slides =
+            data.slides ||
+            data.homepage?.slides ||
+            data.data?.slides ||
+            data.data?.homepage?.slides ||
+            [];
+
+        if (!Array.isArray(slides)) {
+            slides = [];
+        }
+
+        heroSlides =
+            slides.filter(
+                slide =>
+                    slide &&
+                    typeof slide === "object"
+            );
+
+        renderHero();
+
+    } catch(error) {
+
+        console.error(
+            "Vitrin yükleme hatası:",
+            error
+        );
+
+        heroSlides = [];
+
+        renderHero();
+
+    }
+
+}
+
+
+/* =========================================================
+   VİTRİNİ GÖSTER
+========================================================= */
+
+function renderHero() {
+
+    const container =
+        document.getElementById(
+            "heroSlider"
+        );
+
+    if (!container) return;
+
+    if (heroTimer) {
+
+        clearInterval(heroTimer);
+
+        heroTimer = null;
+
+    }
+
+    if (heroSlides.length === 0) {
+
+        container.innerHTML = `
+
+            <div class="hero-slide hero-default active">
+
+                <div class="hero-overlay"></div>
+
+                <div class="hero-content">
+
+                    <div class="small-title">
+                        REZAN GİYİM
+                    </div>
+
+                    <h1>
+                        Tarzını keşfet.
+                    </h1>
+
+                    <p>
+                        Yeni sezon ürünlerini
+                        keşfet ve tarzını tamamla.
+                    </p>
+
+                </div>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    container.innerHTML = "";
+
+
+    heroSlides.forEach(
+        (slide,index) => {
+
+            const element =
+                document.createElement(
+                    "div"
+                );
+
+            element.className =
+                "hero-slide " +
+                (
+                    index === 0
+                        ? "active"
+                        : ""
+                );
+
+
+            const image =
+                slide.image ||
+                slide.imageUrl ||
+                slide.url ||
+                "";
+
+
+            const title =
+                slide.title ||
+                slide.name ||
+                "REZAN GİYİM";
+
+
+            const text =
+                slide.text ||
+                slide.description ||
+                slide.subtitle ||
+                "";
+
+
+            const buttonText =
+                slide.buttonText ||
+                slide.button ||
+                "";
+
+
+            const buttonLink =
+                slide.buttonLink ||
+                slide.link ||
+                "";
+
+
+            element.innerHTML = `
+
+                ${
+                    image
+                        ? `
+                            <img
+                                class="hero-slide-image"
+                                src="${escapeHTML(image)}"
+                                alt="${escapeHTML(title)}"
+                                onerror="this.style.display='none'"
+                            >
+                        `
+                        : ""
+                }
+
+                <div class="hero-overlay"></div>
+
+                <div class="hero-content">
+
+                    <div class="small-title">
+                        REZAN GİYİM
+                    </div>
+
+                    <h1>
+                        ${escapeHTML(title)}
+                    </h1>
+
+                    ${
+                        text
+                            ? `
+                                <p>
+                                    ${escapeHTML(text)}
+                                </p>
+                            `
+                            : ""
+                    }
+
+                    ${
+                        buttonText
+                            ? `
+                                <a
+                                    class="hero-button"
+                                    href="${escapeHTML(buttonLink || "#")}"
+                                    ${
+                                        buttonLink
+                                            ? ""
+                                            : "onclick=\"return false\""
+                                    }
+                                >
+                                    ${escapeHTML(buttonText)}
+                                </a>
+                            `
+                            : ""
+                    }
+
+                </div>
+
+            `;
+
+
+            container.appendChild(
+                element
+            );
+
+        }
+    );
+
+
+    if (heroSlides.length > 1) {
+
+        const prev =
+            document.createElement(
+                "button"
+            );
+
+        prev.className =
+            "hero-prev";
+
+        prev.innerHTML =
+            "‹";
+
+        prev.onclick =
+            previousHeroSlide;
+
+
+        const next =
+            document.createElement(
+                "button"
+            );
+
+        next.className =
+            "hero-next";
+
+        next.innerHTML =
+            "›";
+
+        next.onclick =
+            nextHeroSlide;
+
+
+        container.appendChild(
+            prev
+        );
+
+        container.appendChild(
+            next
+        );
+
+
+        const dots =
+            document.createElement(
+                "div"
+            );
+
+        dots.className =
+            "hero-dots";
+
+
+        heroSlides.forEach(
+            (
+                slide,
+                index
+            ) => {
+
+                const dot =
+                    document.createElement(
+                        "button"
+                    );
+
+                dot.className =
+                    "hero-dot " +
+                    (
+                        index === 0
+                            ? "active"
+                            : ""
+                    );
+
+                dot.onclick =
+                    () => goHeroSlide(index);
+
+                dots.appendChild(
+                    dot
+                );
+
+            }
+        );
+
+
+        container.appendChild(
+            dots
+        );
+
+
+        heroTimer =
+            setInterval(
+                nextHeroSlide,
+                5000
+            );
+
+    }
+
+}
+
+
+/* =========================================================
+   VİTRİN GEÇİŞİ
+========================================================= */
+
+function goHeroSlide(index) {
+
+    const slides =
+        document.querySelectorAll(
+            ".hero-slide"
+        );
+
+    const dots =
+        document.querySelectorAll(
+            ".hero-dot"
+        );
+
+    if (!slides.length) return;
+
+
+    currentHeroSlide =
+        (index + heroSlides.length) %
+        heroSlides.length;
+
+
+    slides.forEach(
+        (slide,i) => {
+
+            slide.classList.toggle(
+                "active",
+                i === currentHeroSlide
+            );
+
+        }
+    );
+
+
+    dots.forEach(
+        (dot,i) => {
+
+            dot.classList.toggle(
+                "active",
+                i === currentHeroSlide
+            );
+
+        }
+    );
+
+}
+
+
+function nextHeroSlide() {
+
+    if (!heroSlides.length) return;
+
+    goHeroSlide(
+        currentHeroSlide + 1
+    );
+
+}
+
+
+function previousHeroSlide() {
+
+    if (!heroSlides.length) return;
+
+    goHeroSlide(
+        currentHeroSlide - 1
+    );
+
+}
+
+
+/* =========================================================
    VERİYİ DİZİYE ÇEVİR
 ========================================================= */
 
-function normalizeArray(data, possibleKeys = []) {
+function normalizeArray(
+    data,
+    possibleKeys = []
+) {
 
     if (Array.isArray(data)) {
         return data;
@@ -702,6 +1689,7 @@ function normalizeArray(data, possibleKeys = []) {
         return [];
     }
 
+
     for (const key of possibleKeys) {
 
         if (Array.isArray(data[key])) {
@@ -710,16 +1698,6 @@ function normalizeArray(data, possibleKeys = []) {
 
     }
 
-    /*
-     * API örneğin:
-     *
-     * {
-     *   success:true,
-     *   data:{
-     *      products:[]
-     *   }
-     * }
-     */
 
     if (
         data.data &&
@@ -746,21 +1724,10 @@ function normalizeArray(data, possibleKeys = []) {
 
     }
 
-    /*
-     * Bazı API'ler:
-     *
-     * {
-     *   "123": {...},
-     *   "124": {...}
-     * }
-     *
-     * şeklinde dönebilir.
-     *
-     * Bu durumda Object.values kullanıyoruz.
-     */
 
     const values =
         Object.values(data);
+
 
     if (
         values.length > 0 &&
@@ -775,6 +1742,7 @@ function normalizeArray(data, possibleKeys = []) {
 
     }
 
+
     return [];
 
 }
@@ -787,7 +1755,9 @@ function normalizeArray(data, possibleKeys = []) {
 async function loadProducts() {
 
     const container =
-        document.getElementById("products");
+        document.getElementById(
+            "products"
+        );
 
     try {
 
@@ -801,6 +1771,7 @@ async function loadProducts() {
 
         }
 
+
         const response =
             await fetch(
                 "/api/products",
@@ -813,6 +1784,7 @@ async function loadProducts() {
                 }
             );
 
+
         if (!response.ok) {
 
             throw new Error(
@@ -822,13 +1794,10 @@ async function loadProducts() {
 
         }
 
+
         const data =
             await response.json();
 
-        console.log(
-            "REZAN GİYİM - API ürün cevabı:",
-            data
-        );
 
         products =
             normalizeArray(
@@ -841,18 +1810,11 @@ async function loadProducts() {
                 ]
             );
 
-        /*
-         * EN ÖNEMLİ KISIM:
-         * products her durumda Array olacak.
-         */
 
         if (!Array.isArray(products)) {
             products = [];
         }
 
-        /*
-         * Hatalı/null ürünleri temizle.
-         */
 
         products =
             products.filter(
@@ -861,12 +1823,9 @@ async function loadProducts() {
                     typeof product === "object"
             );
 
-        console.log(
-            "REZAN GİYİM - Normalleştirilmiş ürünler:",
-            products
-        );
 
         renderProducts();
+
 
     } catch(error) {
 
@@ -875,20 +1834,28 @@ async function loadProducts() {
             error
         );
 
+
         products = [];
+
 
         if (container) {
 
             container.innerHTML = `
+
                 <div class="empty">
-                    Ürünler yüklenirken hata oluştu.<br><br>
+
+                    Ürünler yüklenirken hata oluştu.
+
+                    <br><br>
 
                     <small>
                         ${escapeHTML(
                             error.message
                         )}
                     </small>
+
                 </div>
+
             `;
 
         }
@@ -918,22 +1885,19 @@ async function loadCategories() {
                 }
             );
 
+
         if (!response.ok) {
 
             throw new Error(
-                "Kategoriler alınamadı. HTTP " +
-                response.status
+                "Kategoriler alınamadı."
             );
 
         }
 
+
         const data =
             await response.json();
 
-        console.log(
-            "REZAN GİYİM - API kategori cevabı:",
-            data
-        );
 
         categories =
             normalizeArray(
@@ -946,11 +1910,14 @@ async function loadCategories() {
                 ]
             );
 
+
         if (!Array.isArray(categories)) {
             categories = [];
         }
 
+
         renderCategories();
+
 
     } catch(error) {
 
@@ -981,10 +1948,15 @@ function renderCategories() {
 
     if (!container) return;
 
+
     container.innerHTML = "";
 
+
     const allButton =
-        document.createElement("button");
+        document.createElement(
+            "button"
+        );
+
 
     allButton.className =
         "category-btn " +
@@ -994,16 +1966,21 @@ function renderCategories() {
                 : ""
         );
 
-    allButton.textContent = "Tümü";
+
+    allButton.textContent =
+        "Tümü";
+
 
     allButton.onclick = () => {
 
-        activeCategory = "Tümü";
+        activeCategory =
+            "Tümü";
 
         renderCategories();
         renderProducts();
 
     };
+
 
     container.appendChild(
         allButton
@@ -1013,50 +1990,34 @@ function renderCategories() {
     categories.forEach(
         category => {
 
-            let categoryName = "";
+            const categoryName =
+                getCategoryName(
+                    category
+                );
 
-            if (
-                typeof category === "object" &&
-                category !== null
-            ) {
-
-                categoryName =
-                    category.name ||
-                    category.title ||
-                    category.category ||
-                    category.value ||
-                    "";
-
-            } else {
-
-                categoryName =
-                    String(
-                        category || ""
-                    );
-
-            }
-
-            categoryName =
-                categoryName
-                    .trim();
 
             if (!categoryName) return;
+
 
             const button =
                 document.createElement(
                     "button"
                 );
 
+
             button.className =
                 "category-btn " +
                 (
-                    activeCategory === categoryName
+                    activeCategory ===
+                    categoryName
                         ? "active"
                         : ""
                 );
 
+
             button.textContent =
                 categoryName;
+
 
             button.onclick = () => {
 
@@ -1067,6 +2028,7 @@ function renderCategories() {
                 renderProducts();
 
             };
+
 
             container.appendChild(
                 button
@@ -1079,56 +2041,119 @@ function renderCategories() {
 
 
 /* =========================================================
-   ARAMA
+   KATEGORİ ADI
 ========================================================= */
 
-function searchProducts() {
+function getCategoryName(category) {
 
-    const input =
-        document.getElementById(
-            "searchInput"
-        );
+    if (
+        typeof category === "object" &&
+        category !== null
+    ) {
 
-    if (!input) return;
+        return String(
+            category.name ||
+            category.title ||
+            category.category ||
+            category.value ||
+            ""
+        ).trim();
 
-    searchText =
-        input.value
-            .trim()
-            .toLocaleLowerCase(
-                "tr-TR"
-            );
+    }
 
-    renderProducts();
+    return String(
+        category || ""
+    ).trim();
 
 }
 
 
 /* =========================================================
-   ÜRÜN KATEGORİSİ
+   ÜRÜN KATEGORİLERİ
+========================================================= */
+
+function getProductCategories(product) {
+
+    if (!product) return [];
+
+
+    let result = [];
+
+
+    if (Array.isArray(product.categories)) {
+
+        result =
+            product.categories
+                .map(
+                    category =>
+                        getCategoryName(
+                            category
+                        )
+                )
+                .filter(Boolean);
+
+    }
+
+
+    /*
+     * Eski ürünler için:
+     * category alanı
+     */
+
+    if (
+        result.length === 0 &&
+        product.category
+    ) {
+
+        if (Array.isArray(product.category)) {
+
+            result =
+                product.category
+                    .map(
+                        category =>
+                            getCategoryName(
+                                category
+                            )
+                    )
+                    .filter(Boolean);
+
+        } else {
+
+            const category =
+                getCategoryName(
+                    product.category
+                );
+
+            if (category) {
+                result.push(category);
+            }
+
+        }
+
+    }
+
+
+    return [
+        ...new Set(result)
+    ];
+
+}
+
+
+/* =========================================================
+   ANA KATEGORİ
 ========================================================= */
 
 function getProductCategory(product) {
 
-    if (!product) return "";
-
-    if (
-        typeof product.category === "object" &&
-        product.category !== null
-    ) {
-
-        return String(
-            product.category.name ||
-            product.category.title ||
-            product.category.category ||
-            product.category.value ||
-            ""
+    const list =
+        getProductCategories(
+            product
         );
 
-    }
-
-    return String(
-        product.category || ""
-    );
+    return list.length
+        ? list[0]
+        : "";
 
 }
 
@@ -1139,13 +2164,10 @@ function getProductCategory(product) {
 
 function getFilteredProducts() {
 
-    /*
-     * products kesinlikle dizi olmalı.
-     */
-
     if (!Array.isArray(products)) {
         products = [];
     }
+
 
     return products.filter(
         product => {
@@ -1154,24 +2176,32 @@ function getFilteredProducts() {
                 !product ||
                 typeof product !== "object"
             ) {
+
                 return false;
+
             }
 
-            const productCategory =
-                getProductCategory(
+
+            const productCategories =
+                getProductCategories(
                     product
                 );
 
+
             const categoryOK =
                 activeCategory === "Tümü" ||
-                productCategory
-                    .toLocaleLowerCase(
-                        "tr-TR"
-                    ) ===
-                activeCategory
-                    .toLocaleLowerCase(
-                        "tr-TR"
-                    );
+                productCategories.some(
+                    category =>
+                        category
+                            .toLocaleLowerCase(
+                                "tr-TR"
+                            ) ===
+                        activeCategory
+                            .toLocaleLowerCase(
+                                "tr-TR"
+                            )
+                );
+
 
             const text =
                 (
@@ -1179,7 +2209,7 @@ function getFilteredProducts() {
                         product.name || ""
                     ) +
                     " " +
-                    productCategory +
+                    productCategories.join(" ") +
                     " " +
                     String(
                         product.description || ""
@@ -1189,11 +2219,13 @@ function getFilteredProducts() {
                     "tr-TR"
                 );
 
+
             const searchOK =
                 !searchText ||
                 text.includes(
                     searchText
                 );
+
 
             return (
                 categoryOK &&
@@ -1202,6 +2234,93 @@ function getFilteredProducts() {
 
         }
     );
+
+}
+
+
+/* =========================================================
+   ÜRÜN PUANI
+========================================================= */
+
+function getProductRating(product) {
+
+    const reviews =
+        getReviews(product);
+
+    if (!reviews.length) {
+
+        return {
+            average:0,
+            count:0
+        };
+
+    }
+
+
+    const total =
+        reviews.reduce(
+            (
+                sum,
+                review
+            ) =>
+                sum +
+                Number(
+                    review.rating || 0
+                ),
+            0
+        );
+
+
+    return {
+
+        average:
+            total /
+            reviews.length,
+
+        count:
+            reviews.length
+
+    };
+
+}
+
+
+/* =========================================================
+   YILDIZ
+========================================================= */
+
+function renderStars(
+    rating,
+    small = false
+) {
+
+    const rounded =
+        Math.round(
+            Number(rating || 0)
+        );
+
+
+    return `
+        <span
+            class="stars"
+            style="${
+                small
+                    ? "font-size:13px"
+                    : ""
+            }"
+        >
+            ${
+                [1,2,3,4,5]
+                    .map(
+                        star =>
+                            star <= rounded
+                                ? "★"
+                                : "☆"
+                    )
+                    .join("")
+            }
+        </span>
+    `;
 
 }
 
@@ -1219,25 +2338,45 @@ function renderProducts() {
 
     if (!container) return;
 
-    /*
-     * Ek güvenlik.
-     */
 
     if (!Array.isArray(products)) {
         products = [];
     }
 
+
     const filtered =
         getFilteredProducts();
 
+
     container.innerHTML = "";
+
+
+    const countText =
+        document.getElementById(
+            "productCountText"
+        );
+
+
+    if (countText) {
+
+        countText.textContent =
+            filtered.length +
+            " ürün";
+
+    }
+
 
     if (filtered.length === 0) {
 
         container.innerHTML = `
+
             <div class="empty">
-                Aradığınız ürüne uygun ürün bulunamadı.
+
+                Aradığınız ürüne uygun
+                ürün bulunamadı.
+
             </div>
+
         `;
 
         return;
@@ -1253,8 +2392,26 @@ function renderProducts() {
                     "div"
                 );
 
+
             card.className =
                 "product";
+
+
+            /*
+             * ÜRÜNÜN HER YERİNE TIKLAYINCA
+             * DETAY AÇILIR.
+             */
+
+            card.addEventListener(
+                "click",
+                () => {
+
+                    openProduct(
+                        product.id
+                    );
+
+                }
+            );
 
 
             const images =
@@ -1296,8 +2453,20 @@ function renderProducts() {
                     `;
 
 
-            const category =
-                getProductCategory(
+            const productCategories =
+                getProductCategories(
+                    product
+                );
+
+
+            const categoryText =
+                productCategories.length
+                    ? productCategories.join(" • ")
+                    : "Genel";
+
+
+            const rating =
+                getProductRating(
                     product
                 );
 
@@ -1305,31 +2474,43 @@ function renderProducts() {
             card.innerHTML = `
 
                 <div class="product-image">
+
                     ${imageHTML}
+
                 </div>
+
 
                 <div class="product-info">
 
                     <div class="product-category">
+
                         ${escapeHTML(
-                            category || "Genel"
+                            categoryText
                         )}
+
                     </div>
 
+
                     <div class="product-name">
+
                         ${escapeHTML(
                             product.name ||
                             "İsimsiz Ürün"
                         )}
+
                     </div>
+
 
                     <div>
 
                         <span class="price">
+
                             ${formatPrice(
                                 product.price
                             )}
+
                         </span>
+
 
                         ${
                             Number(
@@ -1339,29 +2520,56 @@ function renderProducts() {
                                 product.price
                             )
                                 ? `
+
                                     <span class="old-price">
+
                                         ${formatPrice(
                                             product.oldPrice
                                         )}
+
                                     </span>
+
                                 `
                                 : ""
                         }
 
                     </div>
 
+
+                    ${
+                        rating.count
+                            ? `
+
+                                <div class="product-rating">
+
+                                    ${renderStars(
+                                        rating.average,
+                                        true
+                                    )}
+
+                                    ${rating.average.toFixed(1)}
+                                    ·
+                                    ${rating.count}
+                                    yorum
+
+                                </div>
+
+                            `
+                            : ""
+                    }
+
+
                     <div class="product-actions">
 
                         <button
                             class="detail-btn"
-                            onclick="openProduct('${escapeJS(product.id)}')"
                         >
                             İncele
                         </button>
 
+
                         <button
                             class="buy-btn"
-                            onclick="openProduct('${escapeJS(product.id)}')"
                         >
                             Satın Al
                         </button>
@@ -1369,7 +2577,56 @@ function renderProducts() {
                     </div>
 
                 </div>
+
             `;
+
+
+            /*
+             * Buton tıklamalarında kartın
+             * tekrar tetiklenmesini engelle.
+             */
+
+            const buttons =
+                card.querySelectorAll(
+                    "button"
+                );
+
+
+            if (buttons[0]) {
+
+                buttons[0].addEventListener(
+                    "click",
+                    event => {
+
+                        event.stopPropagation();
+
+                        openProduct(
+                            product.id
+                        );
+
+                    }
+                );
+
+            }
+
+
+            if (buttons[1]) {
+
+                buttons[1].addEventListener(
+                    "click",
+                    event => {
+
+                        event.stopPropagation();
+
+                        openProduct(
+                            product.id
+                        );
+
+                    }
+                );
+
+            }
+
 
             container.appendChild(
                 card
@@ -1382,7 +2639,7 @@ function renderProducts() {
 
 
 /* =========================================================
-   ÜRÜN DETAYI
+   ÜRÜN DETAYINI AÇ
 ========================================================= */
 
 function openProduct(id) {
@@ -1393,6 +2650,7 @@ function openProduct(id) {
                 String(product.id) ===
                 String(id)
         );
+
 
     if (!selectedProduct) {
 
@@ -1405,9 +2663,13 @@ function openProduct(id) {
 
     }
 
+
     selectedSize = "";
 
+    selectedReviewRating = 5;
+
     renderProductDetail();
+
 
     document
         .getElementById(
@@ -1416,6 +2678,33 @@ function openProduct(id) {
         .classList.add(
             "active"
         );
+
+}
+
+
+/* =========================================================
+   YORUMLARI AL
+========================================================= */
+
+function getReviews(product) {
+
+    if (
+        !product ||
+        !Array.isArray(
+            product.reviews
+        )
+    ) {
+
+        return [];
+
+    }
+
+
+    return product.reviews.filter(
+        review =>
+            review &&
+            typeof review === "object"
+    );
 
 }
 
@@ -1431,10 +2720,12 @@ function renderProductDetail() {
 
     if (!p) return;
 
+
     const images =
         Array.isArray(p.images)
             ? p.images
             : [];
+
 
     const mainImage =
         images[0] || "";
@@ -1467,18 +2758,18 @@ function renderProductDetail() {
                                 ) {
 
                                     size = {
-                                        name:String(
-                                            size
-                                        ),
+                                        name:String(size),
                                         stock:1
                                     };
 
                                 }
 
+
                                 const stock =
                                     Number(
                                         size.stock || 0
                                     );
+
 
                                 return `
 
@@ -1522,6 +2813,7 @@ function renderProductDetail() {
                 }
 
             </div>
+
         `;
 
     } else {
@@ -1529,17 +2821,25 @@ function renderProductDetail() {
         sizesHTML = `
 
             <p>
+
                 Stok:
                 <strong>
                     ${Number(
                         p.stock || 0
                     )}
                 </strong>
+
             </p>
 
         `;
 
     }
+
+
+    const rating =
+        getProductRating(
+            p
+        );
 
 
     document.getElementById(
@@ -1553,6 +2853,7 @@ function renderProductDetail() {
                 ${
                     mainImage
                         ? `
+
                             <img
                                 id="mainProductImage"
                                 src="${escapeHTML(mainImage)}"
@@ -1563,20 +2864,26 @@ function renderProductDetail() {
                                     '<div style=&quot;height:100%;display:flex;align-items:center;justify-content:center;color:#777&quot;>Görsel yüklenemedi</div>'
                                 "
                             >
+
                         `
                         : `
+
                             <div style="
                                 height:100%;
                                 display:flex;
                                 align-items:center;
                                 justify-content:center;
                                 color:#777">
+
                                 Görsel yok
+
                             </div>
+
                         `
                 }
 
             </div>
+
 
             ${
                 images.length > 1
@@ -1614,7 +2921,7 @@ function renderProductDetail() {
             <div class="product-category">
 
                 ${escapeHTML(
-                    getProductCategory(p) ||
+                    getProductCategories(p).join(" • ") ||
                     "Genel"
                 )}
 
@@ -1631,6 +2938,39 @@ function renderProductDetail() {
             </h2>
 
 
+            ${
+                rating.count
+                    ? `
+
+                        <div style="margin-top:8px">
+
+                            ${renderStars(
+                                rating.average
+                            )}
+
+                            <strong>
+                                ${rating.average.toFixed(1)}
+                            </strong>
+
+                            <span style="color:#777">
+                                (${rating.count} yorum)
+                            </span>
+
+                        </div>
+
+                    `
+                    : `
+
+                        <div style="margin-top:8px;color:#777">
+
+                            Henüz yorum yapılmamış.
+
+                        </div>
+
+                    `
+            }
+
+
             <div class="detail-price">
 
                 ${formatPrice(
@@ -1645,11 +2985,15 @@ function renderProductDetail() {
                         p.price
                     )
                         ? `
+
                             <span class="old-price">
+
                                 ${formatPrice(
                                     p.oldPrice
                                 )}
+
                             </span>
+
                         `
                         : ""
                 }
@@ -1681,7 +3025,509 @@ function renderProductDetail() {
 
         </div>
 
+
+        <div class="review-section">
+
+            <h3>
+                ⭐ Ürün Yorumları
+            </h3>
+
+
+            ${
+                rating.count
+                    ? `
+
+                        <div class="rating-summary">
+
+                            <div class="rating-big">
+
+                                ${rating.average.toFixed(1)}
+                                / 5
+
+                            </div>
+
+                            ${renderStars(
+                                rating.average
+                            )}
+
+                            <div style="color:#777;margin-top:5px">
+
+                                ${rating.count}
+                                müşteri değerlendirmesi
+
+                            </div>
+
+                        </div>
+
+                    `
+                    : ""
+            }
+
+
+            <div class="review-form">
+
+                <h4 style="margin-bottom:12px">
+
+                    Bu ürün hakkında yorum yap
+
+                </h4>
+
+
+                <input
+                    id="reviewName"
+                    placeholder="Adınız"
+                    maxlength="60"
+                >
+
+
+                <div style="
+                    margin-bottom:7px;
+                    font-size:14px;
+                    font-weight:bold">
+
+                    Puanınız
+
+                </div>
+
+
+                <div class="review-stars">
+
+                    ${[1,2,3,4,5]
+                        .map(
+                            star => `
+
+                                <button
+                                    type="button"
+                                    class="review-star ${
+                                        star <= selectedReviewRating
+                                            ? "selected"
+                                            : ""
+                                    }"
+                                    onclick="selectReviewRating(${star})"
+                                >
+                                    ★
+                                </button>
+
+                            `
+                        )
+                        .join("")
+                    }
+
+                </div>
+
+
+                <textarea
+                    id="reviewText"
+                    placeholder="Ürün hakkında düşüncelerinizi yazın..."
+                    maxlength="1000"
+                ></textarea>
+
+
+                <button
+                    class="review-submit"
+                    onclick="submitReview()"
+                >
+                    Yorumu Gönder
+                </button>
+
+            </div>
+
+
+            <div id="reviewList">
+
+                ${renderReviewList(
+                    p
+                )}
+
+            </div>
+
+        </div>
+
     `;
+
+}
+
+
+/* =========================================================
+   YORUM LİSTESİ
+========================================================= */
+
+function renderReviewList(product) {
+
+    const reviews =
+        getReviews(product);
+
+
+    if (reviews.length === 0) {
+
+        return `
+
+            <div style="
+                padding:20px;
+                background:#fafafa;
+                border-radius:10px;
+                color:#777;
+                text-align:center">
+
+                Bu ürün için henüz yorum yok.
+
+                <br>
+
+                İlk yorumu sen yap!
+
+            </div>
+
+        `;
+
+    }
+
+
+    return reviews
+        .slice()
+        .reverse()
+        .map(
+            review => {
+
+                const name =
+                    review.name ||
+                    review.userName ||
+                    "Müşteri";
+
+
+                const rating =
+                    Number(
+                        review.rating || 5
+                    );
+
+
+                const text =
+                    review.comment ||
+                    review.text ||
+                    review.review ||
+                    "";
+
+
+                const date =
+                    review.createdAt ||
+                    review.date ||
+                    "";
+
+
+                let formattedDate = "";
+
+
+                if (date) {
+
+                    try {
+
+                        formattedDate =
+                            new Date(
+                                date
+                            ).toLocaleDateString(
+                                "tr-TR"
+                            );
+
+                    } catch {
+
+                        formattedDate =
+                            String(date);
+
+                    }
+
+                }
+
+
+                return `
+
+                    <div class="review-item">
+
+                        <div class="review-head">
+
+                            <div>
+
+                                <span class="review-name">
+
+                                    ${escapeHTML(
+                                        name
+                                    )}
+
+                                </span>
+
+                                <div>
+
+                                    ${renderStars(
+                                        rating,
+                                        true
+                                    )}
+
+                                </div>
+
+                            </div>
+
+
+                            ${
+                                formattedDate
+                                    ? `
+
+                                        <span class="review-date">
+
+                                            ${escapeHTML(
+                                                formattedDate
+                                            )}
+
+                                        </span>
+
+                                    `
+                                    : ""
+                            }
+
+                        </div>
+
+
+                        <div class="review-text">
+
+                            ${escapeHTML(
+                                text
+                            )}
+
+                        </div>
+
+                    </div>
+
+                `;
+
+            }
+        )
+        .join("");
+
+}
+
+
+/* =========================================================
+   YORUM PUANI SEÇ
+========================================================= */
+
+function selectReviewRating(rating) {
+
+    selectedReviewRating =
+        Math.max(
+            1,
+            Math.min(
+                5,
+                Number(rating)
+            )
+        );
+
+
+    document
+        .querySelectorAll(
+            ".review-star"
+        )
+        .forEach(
+            (
+                button,
+                index
+            ) => {
+
+                button.classList.toggle(
+                    "selected",
+                    index + 1 <=
+                    selectedReviewRating
+                );
+
+            }
+        );
+
+}
+
+
+/* =========================================================
+   YORUM GÖNDER
+========================================================= */
+
+async function submitReview() {
+
+    if (!selectedProduct) return;
+
+
+    const nameInput =
+        document.getElementById(
+            "reviewName"
+        );
+
+
+    const textInput =
+        document.getElementById(
+            "reviewText"
+        );
+
+
+    const name =
+        nameInput
+            ? nameInput.value.trim()
+            : "";
+
+
+    const comment =
+        textInput
+            ? textInput.value.trim()
+            : "";
+
+
+    if (!comment) {
+
+        alert(
+            "Lütfen yorumunuzu yazın."
+        );
+
+        return;
+
+    }
+
+
+    if (comment.length < 2) {
+
+        alert(
+            "Yorumunuz biraz daha uzun olmalıdır."
+        );
+
+        return;
+
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/products/" +
+                encodeURIComponent(
+                    selectedProduct.id
+                ) +
+                "/reviews",
+                {
+
+                    method:"POST",
+
+                    headers:{
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify({
+
+                            name:
+                                name ||
+                                "Müşteri",
+
+                            rating:
+                                selectedReviewRating,
+
+                            comment
+
+                        })
+
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                data.message ||
+                "Yorum gönderilemedi."
+            );
+
+        }
+
+
+        /*
+         * Sunucu güncel ürünü döndürürse
+         * onu kullan.
+         */
+
+        const updatedProduct =
+            data.product ||
+            data.data?.product;
+
+
+        if (
+            updatedProduct &&
+            typeof updatedProduct === "object"
+        ) {
+
+            selectedProduct =
+                updatedProduct;
+
+
+            const index =
+                products.findIndex(
+                    product =>
+                        String(product.id) ===
+                        String(
+                            selectedProduct.id
+                        )
+                );
+
+
+            if (index !== -1) {
+
+                products[index] =
+                    updatedProduct;
+
+            }
+
+        } else {
+
+            /*
+             * Sunucu ürünü döndürmüyorsa
+             * ürünleri yeniden çek.
+             */
+
+            await loadProducts();
+
+
+            selectedProduct =
+                products.find(
+                    product =>
+                        String(product.id) ===
+                        String(
+                            selectedProduct.id
+                        )
+                );
+
+        }
+
+
+        alert(
+            "Yorumunuz başarıyla gönderildi."
+        );
+
+
+        selectedReviewRating = 5;
+
+        renderProductDetail();
+
+
+    } catch(error) {
+
+        console.error(
+            "Yorum gönderme hatası:",
+            error
+        );
+
+
+        alert(
+            error.message ||
+            "Yorum gönderilemedi."
+        );
+
+    }
 
 }
 
@@ -1711,6 +3557,7 @@ function changeMainImage(src) {
             "mainProductImage"
         );
 
+
     if (image) {
         image.src = src;
     }
@@ -1726,6 +3573,7 @@ function addSelectedProductToCart() {
 
     const p =
         selectedProduct;
+
 
     if (!p) return;
 
@@ -1799,11 +3647,13 @@ function addSelectedProductToCart() {
 
 
     saveCart();
+
     updateCartCount();
 
     closeModal(
         "productModal"
     );
+
 
     alert(
         "Ürün sepete eklendi."
@@ -1853,8 +3703,10 @@ function updateCartCount() {
 
 
     if (element) {
+
         element.textContent =
             count;
+
     }
 
 }
@@ -1867,6 +3719,7 @@ function updateCartCount() {
 function openCart() {
 
     renderCart();
+
 
     document
         .getElementById(
@@ -1890,16 +3743,20 @@ function renderCart() {
             "cartItems"
         );
 
+
     const checkout =
         document.getElementById(
             "checkoutArea"
         );
 
+
     if (!container || !checkout) {
         return;
     }
 
+
     container.innerHTML = "";
+
     checkout.innerHTML = "";
 
 
@@ -1908,15 +3765,19 @@ function renderCart() {
         container.innerHTML = `
 
             <div class="empty">
+
                 Sepetiniz boş.
+
             </div>
 
         `;
+
 
         document.getElementById(
             "cartTotal"
         ).textContent =
             "0 TL";
+
 
         return;
 
@@ -1940,6 +3801,7 @@ function renderCart() {
                     item.quantity || 0
                 );
 
+
             total += itemTotal;
 
 
@@ -1947,6 +3809,7 @@ function renderCart() {
                 document.createElement(
                     "div"
                 );
+
 
             div.className =
                 "cart-item";
@@ -1957,10 +3820,12 @@ function renderCart() {
                 ${
                     item.image
                         ? `
+
                             <img
                                 src="${escapeHTML(item.image)}"
                                 alt="${escapeHTML(item.name || "")}"
                             >
+
                         `
                         : ""
                 }
@@ -2036,58 +3901,79 @@ function renderCart() {
 
             <input
                 id="cName"
-                placeholder="Ad Soyad"
+                placeholder="Ad Soyad *"
             >
+
 
             <input
                 id="cPhone"
-                placeholder="Telefon"
+                placeholder="Telefon *"
             >
+
 
             <input
                 id="cEmail"
                 placeholder="E-posta"
             >
 
+
             <input
                 id="cCity"
-                placeholder="İl"
+                placeholder="İl *"
             >
+
 
             <input
                 id="cDistrict"
-                placeholder="İlçe"
+                placeholder="İlçe *"
             >
+
 
             <input
                 id="cNeighborhood"
                 placeholder="Mahalle"
             >
 
+
             <input
                 id="cBuilding"
                 placeholder="Bina No"
             >
+
 
             <input
                 id="cApartment"
                 placeholder="Daire No"
             >
 
+
             <input
                 id="cPostal"
                 placeholder="Posta Kodu"
             >
 
+
             <textarea
                 id="cAddress"
-                placeholder="Açık Adres"
+                placeholder="Açık Adres *"
             ></textarea>
+
 
             <textarea
                 id="cNote"
-                placeholder="Sipariş Notu"
+                placeholder="Sipariş Notu (İsteğe bağlı)"
+                maxlength="1000"
             ></textarea>
+
+
+            <div class="note-info">
+
+                💡 Sipariş notu yazmak zorunda değilsiniz.
+                İsterseniz teslimatla ilgili özel bir bilgi
+                bırakabilirsiniz.
+
+            </div>
+
 
             <button
                 onclick="createOrder()"
@@ -2113,8 +3999,11 @@ function removeCartItem(index) {
         1
     );
 
+
     saveCart();
+
     updateCartCount();
+
     renderCart();
 
 }
@@ -2137,73 +4026,55 @@ async function createOrder() {
     }
 
 
+    const getValue =
+        id => {
+
+            const element =
+                document.getElementById(
+                    id
+                );
+
+            return element
+                ? element.value.trim()
+                : "";
+
+        };
+
+
     const customer = {
 
         name:
-            document
-                .getElementById("cName")
-                .value
-                .trim(),
+            getValue("cName"),
 
         phone:
-            document
-                .getElementById("cPhone")
-                .value
-                .trim(),
+            getValue("cPhone"),
 
         email:
-            document
-                .getElementById("cEmail")
-                .value
-                .trim(),
+            getValue("cEmail"),
 
         city:
-            document
-                .getElementById("cCity")
-                .value
-                .trim(),
+            getValue("cCity"),
 
         district:
-            document
-                .getElementById("cDistrict")
-                .value
-                .trim(),
+            getValue("cDistrict"),
 
         neighborhood:
-            document
-                .getElementById("cNeighborhood")
-                .value
-                .trim(),
+            getValue("cNeighborhood"),
 
         buildingNo:
-            document
-                .getElementById("cBuilding")
-                .value
-                .trim(),
+            getValue("cBuilding"),
 
         apartmentNo:
-            document
-                .getElementById("cApartment")
-                .value
-                .trim(),
+            getValue("cApartment"),
 
         postalCode:
-            document
-                .getElementById("cPostal")
-                .value
-                .trim(),
+            getValue("cPostal"),
 
         address:
-            document
-                .getElementById("cAddress")
-                .value
-                .trim(),
+            getValue("cAddress"),
 
         note:
-            document
-                .getElementById("cNote")
-                .value
-                .trim()
+            getValue("cNote")
 
     };
 
@@ -2218,6 +4089,17 @@ async function createOrder() {
 
         alert(
             "Lütfen gerekli teslimat bilgilerini doldurun."
+        );
+
+        return;
+
+    }
+
+
+    if (customer.note.length > 1000) {
+
+        alert(
+            "Sipariş notu en fazla 1000 karakter olabilir."
         );
 
         return;
@@ -2265,12 +4147,16 @@ async function createOrder() {
 
         cart = [];
 
+
         saveCart();
+
         updateCartCount();
+
 
         closeModal(
             "cartModal"
         );
+
 
         showPayment(
             data.order
@@ -2282,6 +4168,7 @@ async function createOrder() {
         console.error(
             error
         );
+
 
         alert(
             error.message
@@ -2305,14 +4192,21 @@ async function showPayment(order) {
 
         const response =
             await fetch(
-                "/api/payment-info"
+                "/api/payment-info",
+                {
+                    cache:"no-store"
+                }
             );
+
 
         const data =
             await response.json();
 
+
         payment =
-            data.payment || {};
+            data.payment ||
+            data.data ||
+            {};
 
     } catch(error) {
 
@@ -2322,6 +4216,16 @@ async function showPayment(order) {
         );
 
     }
+
+
+    /*
+     * Server.js'deki varsayılan açıklama.
+     */
+
+    const paymentDescription =
+        payment.description ||
+        payment.importantNote ||
+        "lütfen açıklamayı boş bırakın yoksa sipariş gerçekleştirilmez";
 
 
     document.getElementById(
@@ -2392,23 +4296,31 @@ async function showPayment(order) {
             <br>
 
 
-            <button
-                class="copy"
-                onclick="copyText('${escapeJS(
-                    payment.iban || ""
-                )}')"
-            >
-                IBAN'ı Kopyala
-            </button>
+            ${
+                payment.iban
+                    ? `
+
+                        <button
+                            class="copy"
+                            onclick="copyText('${escapeJS(
+                                payment.iban
+                            )}')"
+                        >
+                            IBAN'ı Kopyala
+                        </button>
+
+                    `
+                    : ""
+            }
 
 
             <div class="notice">
 
                 ⚠️ ÖNEMLİ:
-                Havale/EFT açıklama kısmını
-                BOŞ BIRAKIN.
-                Açıklama yazılması halinde
-                siparişiniz onaylanmayabilir.
+
+                ${escapeHTML(
+                    paymentDescription
+                )}
 
             </div>
 
@@ -2460,13 +4372,16 @@ function openTracking() {
 
 async function trackOrder() {
 
+    const input =
+        document.getElementById(
+            "trackingOrderId"
+        );
+
+
     const id =
-        document
-            .getElementById(
-                "trackingOrderId"
-            )
-            .value
-            .trim();
+        input
+            ? input.value.trim()
+            : "";
 
 
     if (!id) {
@@ -2564,6 +4479,7 @@ async function trackOrder() {
                 ${
                     order.shipping?.company
                         ? `
+
                             <br><br>
 
                             Kargo firması:
@@ -2571,6 +4487,7 @@ async function trackOrder() {
                             ${escapeHTML(
                                 order.shipping.company
                             )}
+
                         `
                         : ""
                 }
@@ -2579,6 +4496,7 @@ async function trackOrder() {
                 ${
                     order.shipping?.trackingNumber
                         ? `
+
                             <br>
 
                             Takip numarası:
@@ -2588,6 +4506,32 @@ async function trackOrder() {
                                     order.shipping.trackingNumber
                                 )}
                             </strong>
+
+                        `
+                        : ""
+                }
+
+
+                ${
+                    order.customer?.note
+                        ? `
+
+                            <br><br>
+
+                            Sipariş notunuz:
+
+                            <div style="
+                                margin-top:7px;
+                                padding:10px;
+                                background:#fff;
+                                border-radius:7px">
+
+                                ${escapeHTML(
+                                    order.customer.note
+                                )}
+
+                            </div>
+
                         `
                         : ""
                 }
@@ -2630,6 +4574,7 @@ function formatPrice(value) {
     const number =
         Number(value || 0);
 
+
     return number.toLocaleString(
         "tr-TR",
         {
@@ -2648,7 +4593,10 @@ function formatPrice(value) {
 function closeModal(id) {
 
     const modal =
-        document.getElementById(id);
+        document.getElementById(
+            id
+        );
+
 
     if (modal) {
 
@@ -2676,56 +4624,76 @@ function copyText(text) {
             .writeText(text)
             .then(
                 () => {
+
                     alert(
                         "Kopyalandı."
                     );
+
                 }
             )
             .catch(
                 () => {
-                    alert(
-                        "Kopyalama başarısız oldu."
+
+                    fallbackCopy(
+                        text
                     );
+
                 }
             );
 
     } else {
 
-        const textarea =
-            document.createElement(
-                "textarea"
-            );
-
-        textarea.value =
-            text;
-
-        document.body.appendChild(
-            textarea
+        fallbackCopy(
+            text
         );
 
-        textarea.select();
+    }
 
-        try {
+}
 
-            document.execCommand(
-                "copy"
-            );
 
-            alert(
-                "Kopyalandı."
-            );
+function fallbackCopy(text) {
 
-        } catch {
+    const textarea =
+        document.createElement(
+            "textarea"
+        );
 
-            alert(
-                "Kopyalama başarısız oldu."
-            );
 
-        }
+    textarea.value =
+        text;
 
-        textarea.remove();
+
+    document.body.appendChild(
+        textarea
+    );
+
+
+    textarea.select();
+
+
+    try {
+
+        document.execCommand(
+            "copy"
+        );
+
+
+        alert(
+            "Kopyalandı."
+        );
+
+
+    } catch {
+
+        alert(
+            "Kopyalama başarısız oldu."
+        );
 
     }
+
+
+    textarea.remove();
 
 }
 
