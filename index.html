@@ -18,10 +18,7 @@ body{
     color:#111;
 }
 
-button,
-input,
-select,
-textarea{
+button,input,select,textarea{
     font:inherit;
 }
 
@@ -218,8 +215,6 @@ header{
     grid-column:1/-1;
 }
 
-/* MODAL */
-
 .modal{
     position:fixed;
     inset:0;
@@ -338,8 +333,6 @@ header{
     font-size:17px;
 }
 
-/* CART */
-
 .cart-item{
     display:flex;
     gap:15px;
@@ -450,8 +443,6 @@ header{
     padding:12px 18px;
 }
 
-/* MOBILE */
-
 @media(max-width:1000px){
     .products{
         grid-template-columns:repeat(3,1fr);
@@ -545,10 +536,7 @@ header{
 </header>
 
 <div class="category-bar">
-    <div
-        class="categories"
-        id="categoryList"
-    ></div>
+    <div class="categories" id="categoryList"></div>
 </div>
 
 <main class="container">
@@ -559,49 +547,27 @@ header{
     </section>
 
     <section>
-        <div
-            class="products"
-            id="products"
-        ></div>
+        <div class="products" id="products"></div>
     </section>
 
 </main>
 
-<!-- ÜRÜN DETAY -->
-
-<div
-    class="modal"
-    id="productModal"
->
+<div class="modal" id="productModal">
     <div class="modal-box">
 
-        <button
-            class="close"
-            onclick="closeModal('productModal')"
-        >
+        <button class="close" onclick="closeModal('productModal')">
             ×
         </button>
 
-        <div
-            class="detail"
-            id="productDetail"
-        ></div>
+        <div class="detail" id="productDetail"></div>
 
     </div>
 </div>
 
-<!-- SEPET -->
-
-<div
-    class="modal"
-    id="cartModal"
->
+<div class="modal" id="cartModal">
     <div class="modal-box">
 
-        <button
-            class="close"
-            onclick="closeModal('cartModal')"
-        >
+        <button class="close" onclick="closeModal('cartModal')">
             ×
         </button>
 
@@ -609,32 +575,19 @@ header{
 
         <div id="cartItems"></div>
 
-        <div
-            class="total"
-            id="cartTotal"
-        >
+        <div class="total" id="cartTotal">
             0 TL
         </div>
 
-        <div
-            id="checkoutArea"
-        ></div>
+        <div id="checkoutArea"></div>
 
     </div>
 </div>
 
-<!-- ÖDEME -->
-
-<div
-    class="modal"
-    id="paymentModal"
->
+<div class="modal" id="paymentModal">
     <div class="modal-box">
 
-        <button
-            class="close"
-            onclick="closeModal('paymentModal')"
-        >
+        <button class="close" onclick="closeModal('paymentModal')">
             ×
         </button>
 
@@ -645,18 +598,10 @@ header{
     </div>
 </div>
 
-<!-- SİPARİŞ TAKİP -->
-
-<div
-    class="modal"
-    id="trackingModal"
->
+<div class="modal" id="trackingModal">
     <div class="modal-box">
 
-        <button
-            class="close"
-            onclick="closeModal('trackingModal')"
-        >
+        <button class="close" onclick="closeModal('trackingModal')">
             ×
         </button>
 
@@ -665,6 +610,7 @@ header{
         <br>
 
         <div class="tracking-form">
+
             <input
                 id="trackingOrderId"
                 placeholder="Sipariş numaranız"
@@ -673,6 +619,7 @@ header{
             <button onclick="trackOrder()">
                 Sorgula
             </button>
+
         </div>
 
         <div
@@ -684,6 +631,7 @@ header{
 </div>
 
 <script>
+
 let products = [];
 let categories = [];
 let cart = [];
@@ -695,6 +643,7 @@ let selectedProduct = null;
 let selectedSize = "";
 
 try {
+
     cart = JSON.parse(
         localStorage.getItem("rezan_cart") || "[]"
     );
@@ -702,90 +651,224 @@ try {
     if (!Array.isArray(cart)) {
         cart = [];
     }
+
 } catch {
+
     cart = [];
+
 }
 
+
 /* =========================================================
-   INIT
+   BAŞLANGIÇ
 ========================================================= */
 
-document.addEventListener("DOMContentLoaded", async () => {
+document.addEventListener(
+    "DOMContentLoaded",
+    async () => {
 
-    updateCartCount();
+        updateCartCount();
 
-    await loadCategories();
-    await loadProducts();
+        await loadCategories();
+        await loadProducts();
 
-    const searchInput =
-        document.getElementById("searchInput");
+        const searchInput =
+            document.getElementById("searchInput");
 
-    if (searchInput) {
-        searchInput.addEventListener(
-            "input",
-            searchProducts
-        );
+        if (searchInput) {
+
+            searchInput.addEventListener(
+                "input",
+                searchProducts
+            );
+
+        }
+
     }
-});
+);
+
 
 /* =========================================================
-   PRODUCTS
+   VERİYİ DİZİYE ÇEVİR
+========================================================= */
+
+function normalizeArray(data, possibleKeys = []) {
+
+    if (Array.isArray(data)) {
+        return data;
+    }
+
+    if (!data || typeof data !== "object") {
+        return [];
+    }
+
+    for (const key of possibleKeys) {
+
+        if (Array.isArray(data[key])) {
+            return data[key];
+        }
+
+    }
+
+    /*
+     * API örneğin:
+     *
+     * {
+     *   success:true,
+     *   data:{
+     *      products:[]
+     *   }
+     * }
+     */
+
+    if (
+        data.data &&
+        typeof data.data === "object"
+    ) {
+
+        for (const key of possibleKeys) {
+
+            if (
+                Array.isArray(
+                    data.data[key]
+                )
+            ) {
+
+                return data.data[key];
+
+            }
+
+        }
+
+        if (Array.isArray(data.data)) {
+            return data.data;
+        }
+
+    }
+
+    /*
+     * Bazı API'ler:
+     *
+     * {
+     *   "123": {...},
+     *   "124": {...}
+     * }
+     *
+     * şeklinde dönebilir.
+     *
+     * Bu durumda Object.values kullanıyoruz.
+     */
+
+    const values =
+        Object.values(data);
+
+    if (
+        values.length > 0 &&
+        values.every(
+            item =>
+                item &&
+                typeof item === "object"
+        )
+    ) {
+
+        return values;
+
+    }
+
+    return [];
+
+}
+
+
+/* =========================================================
+   ÜRÜNLERİ YÜKLE
 ========================================================= */
 
 async function loadProducts() {
 
+    const container =
+        document.getElementById("products");
+
     try {
 
+        if (container) {
+
+            container.innerHTML = `
+                <div class="empty">
+                    Ürünler yükleniyor...
+                </div>
+            `;
+
+        }
+
         const response =
-            await fetch("/api/products", {
-                method: "GET",
-                cache: "no-store"
-            });
+            await fetch(
+                "/api/products",
+                {
+                    method:"GET",
+                    cache:"no-store",
+                    headers:{
+                        "Accept":"application/json"
+                    }
+                }
+            );
 
         if (!response.ok) {
+
             throw new Error(
                 "Ürünler alınamadı. HTTP " +
                 response.status
             );
+
         }
 
         const data =
             await response.json();
 
+        console.log(
+            "REZAN GİYİM - API ürün cevabı:",
+            data
+        );
+
+        products =
+            normalizeArray(
+                data,
+                [
+                    "products",
+                    "data",
+                    "results",
+                    "items"
+                ]
+            );
+
         /*
-         * API iki farklı şekilde cevap verebilir:
-         *
-         * 1) [...]
-         *
-         * 2) { products: [...] }
-         *
-         * İkisini de destekliyoruz.
+         * EN ÖNEMLİ KISIM:
+         * products her durumda Array olacak.
          */
 
-        if (Array.isArray(data)) {
-
-            products = data;
-
-        } else if (
-            data &&
-            Array.isArray(data.products)
-        ) {
-
-            products = data.products;
-
-        } else {
-
+        if (!Array.isArray(products)) {
             products = [];
         }
 
+        /*
+         * Hatalı/null ürünleri temizle.
+         */
+
+        products =
+            products.filter(
+                product =>
+                    product &&
+                    typeof product === "object"
+            );
+
         console.log(
-            "REZAN GİYİM - Yüklenen ürünler:",
+            "REZAN GİYİM - Normalleştirilmiş ürünler:",
             products
         );
 
         renderProducts();
 
-    } catch (error) {
+    } catch(error) {
 
         console.error(
             "Ürün yükleme hatası:",
@@ -794,21 +877,29 @@ async function loadProducts() {
 
         products = [];
 
-        document.getElementById(
-            "products"
-        ).innerHTML = `
-            <div class="empty">
-                Ürünler yüklenirken hata oluştu.<br><br>
-                <small>
-                    ${escapeHTML(error.message)}
-                </small>
-            </div>
-        `;
+        if (container) {
+
+            container.innerHTML = `
+                <div class="empty">
+                    Ürünler yüklenirken hata oluştu.<br><br>
+
+                    <small>
+                        ${escapeHTML(
+                            error.message
+                        )}
+                    </small>
+                </div>
+            `;
+
+        }
+
     }
+
 }
 
+
 /* =========================================================
-   CATEGORIES
+   KATEGORİLERİ YÜKLE
 ========================================================= */
 
 async function loadCategories() {
@@ -816,53 +907,52 @@ async function loadCategories() {
     try {
 
         const response =
-            await fetch("/api/categories", {
-                method: "GET",
-                cache: "no-store"
-            });
+            await fetch(
+                "/api/categories",
+                {
+                    method:"GET",
+                    cache:"no-store",
+                    headers:{
+                        "Accept":"application/json"
+                    }
+                }
+            );
 
         if (!response.ok) {
+
             throw new Error(
                 "Kategoriler alınamadı. HTTP " +
                 response.status
             );
+
         }
 
         const data =
             await response.json();
 
-        /*
-         * API iki farklı şekilde cevap verebilir:
-         *
-         * 1) ["Erkek", "Kadın"]
-         *
-         * 2) { categories: ["Erkek", "Kadın"] }
-         */
+        console.log(
+            "REZAN GİYİM - API kategori cevabı:",
+            data
+        );
 
-        if (Array.isArray(data)) {
+        categories =
+            normalizeArray(
+                data,
+                [
+                    "categories",
+                    "data",
+                    "results",
+                    "items"
+                ]
+            );
 
-            categories = data;
-
-        } else if (
-            data &&
-            Array.isArray(data.categories)
-        ) {
-
-            categories = data.categories;
-
-        } else {
-
+        if (!Array.isArray(categories)) {
             categories = [];
         }
 
-        console.log(
-            "REZAN GİYİM - Yüklenen kategoriler:",
-            categories
-        );
-
         renderCategories();
 
-    } catch (error) {
+    } catch(error) {
 
         console.error(
             "Kategori yükleme hatası:",
@@ -872,13 +962,22 @@ async function loadCategories() {
         categories = [];
 
         renderCategories();
+
     }
+
 }
+
+
+/* =========================================================
+   KATEGORİLERİ GÖSTER
+========================================================= */
 
 function renderCategories() {
 
     const container =
-        document.getElementById("categoryList");
+        document.getElementById(
+            "categoryList"
+        );
 
     if (!container) return;
 
@@ -903,87 +1002,109 @@ function renderCategories() {
 
         renderCategories();
         renderProducts();
+
     };
 
-    container.appendChild(allButton);
+    container.appendChild(
+        allButton
+    );
 
-    categories.forEach(category => {
 
-        /*
-         * Kategori bazen obje olarak gelebilir.
-         * Örneğin:
-         * { name: "Erkek" }
-         */
+    categories.forEach(
+        category => {
 
-        let categoryName = "";
+            let categoryName = "";
 
-        if (
-            typeof category === "object" &&
-            category !== null
-        ) {
+            if (
+                typeof category === "object" &&
+                category !== null
+            ) {
+
+                categoryName =
+                    category.name ||
+                    category.title ||
+                    category.category ||
+                    category.value ||
+                    "";
+
+            } else {
+
+                categoryName =
+                    String(
+                        category || ""
+                    );
+
+            }
+
             categoryName =
-                category.name ||
-                category.title ||
-                category.category ||
-                "";
-        } else {
-            categoryName =
-                String(category || "");
-        }
+                categoryName
+                    .trim();
 
-        categoryName =
-            categoryName.trim();
+            if (!categoryName) return;
 
-        if (!categoryName) return;
+            const button =
+                document.createElement(
+                    "button"
+                );
 
-        const button =
-            document.createElement("button");
+            button.className =
+                "category-btn " +
+                (
+                    activeCategory === categoryName
+                        ? "active"
+                        : ""
+                );
 
-        button.className =
-            "category-btn " +
-            (
-                activeCategory === categoryName
-                    ? "active"
-                    : ""
-            );
-
-        button.textContent =
-            categoryName;
-
-        button.onclick = () => {
-
-            activeCategory =
+            button.textContent =
                 categoryName;
 
-            renderCategories();
-            renderProducts();
-        };
+            button.onclick = () => {
 
-        container.appendChild(button);
-    });
+                activeCategory =
+                    categoryName;
+
+                renderCategories();
+                renderProducts();
+
+            };
+
+            container.appendChild(
+                button
+            );
+
+        }
+    );
+
 }
 
+
 /* =========================================================
-   SEARCH
+   ARAMA
 ========================================================= */
 
 function searchProducts() {
 
     const input =
-        document.getElementById("searchInput");
+        document.getElementById(
+            "searchInput"
+        );
 
     if (!input) return;
 
     searchText =
         input.value
             .trim()
-            .toLocaleLowerCase("tr-TR");
+            .toLocaleLowerCase(
+                "tr-TR"
+            );
 
     renderProducts();
+
 }
 
+
 /* =========================================================
-   FILTER
+   ÜRÜN KATEGORİSİ
 ========================================================= */
 
 function getProductCategory(product) {
@@ -999,57 +1120,112 @@ function getProductCategory(product) {
             product.category.name ||
             product.category.title ||
             product.category.category ||
+            product.category.value ||
             ""
         );
+
     }
 
     return String(
         product.category || ""
     );
+
 }
+
+
+/* =========================================================
+   FİLTRE
+========================================================= */
 
 function getFilteredProducts() {
 
-    return products.filter(product => {
+    /*
+     * products kesinlikle dizi olmalı.
+     */
 
-        const productCategory =
-            getProductCategory(product);
+    if (!Array.isArray(products)) {
+        products = [];
+    }
 
-        const categoryOK =
-            activeCategory === "Tümü" ||
-            productCategory
-                .toLocaleLowerCase("tr-TR") ===
-            activeCategory
-                .toLocaleLowerCase("tr-TR");
+    return products.filter(
+        product => {
 
-        const text =
-            (
-                String(product.name || "") +
-                " " +
-                productCategory +
-                " " +
-                String(product.description || "")
-            )
-            .toLocaleLowerCase("tr-TR");
+            if (
+                !product ||
+                typeof product !== "object"
+            ) {
+                return false;
+            }
 
-        const searchOK =
-            !searchText ||
-            text.includes(searchText);
+            const productCategory =
+                getProductCategory(
+                    product
+                );
 
-        return categoryOK && searchOK;
-    });
+            const categoryOK =
+                activeCategory === "Tümü" ||
+                productCategory
+                    .toLocaleLowerCase(
+                        "tr-TR"
+                    ) ===
+                activeCategory
+                    .toLocaleLowerCase(
+                        "tr-TR"
+                    );
+
+            const text =
+                (
+                    String(
+                        product.name || ""
+                    ) +
+                    " " +
+                    productCategory +
+                    " " +
+                    String(
+                        product.description || ""
+                    )
+                )
+                .toLocaleLowerCase(
+                    "tr-TR"
+                );
+
+            const searchOK =
+                !searchText ||
+                text.includes(
+                    searchText
+                );
+
+            return (
+                categoryOK &&
+                searchOK
+            );
+
+        }
+    );
+
 }
 
+
 /* =========================================================
-   RENDER PRODUCTS
+   ÜRÜNLERİ GÖSTER
 ========================================================= */
 
 function renderProducts() {
 
     const container =
-        document.getElementById("products");
+        document.getElementById(
+            "products"
+        );
 
     if (!container) return;
+
+    /*
+     * Ek güvenlik.
+     */
+
+    if (!Array.isArray(products)) {
+        products = [];
+    }
 
     const filtered =
         getFilteredProducts();
@@ -1065,114 +1241,157 @@ function renderProducts() {
         `;
 
         return;
+
     }
 
-    filtered.forEach(product => {
 
-        const card =
-            document.createElement("div");
+    filtered.forEach(
+        product => {
 
-        card.className = "product";
+            const card =
+                document.createElement(
+                    "div"
+                );
 
-        const images =
-            Array.isArray(product.images)
-                ? product.images
-                : [];
+            card.className =
+                "product";
 
-        const image =
-            images.length
-                ? images[0]
-                : "";
 
-        const imageHTML =
-            image
-                ? `
-                    <img
-                        src="${escapeHTML(image)}"
-                        alt="${escapeHTML(product.name)}"
-                        onerror="this.style.display='none';this.parentElement.innerHTML='<div style=&quot;height:100%;display:flex;align-items:center;justify-content:center;color:#777&quot;>Görsel yüklenemedi</div>'"
-                    >
-                  `
-                : `
-                    <div style="
-                        height:100%;
-                        display:flex;
-                        align-items:center;
-                        justify-content:center;
-                        color:#777">
-                        Görsel yok
+            const images =
+                Array.isArray(
+                    product.images
+                )
+                    ? product.images
+                    : [];
+
+
+            const image =
+                images.length > 0
+                    ? images[0]
+                    : "";
+
+
+            const imageHTML =
+                image
+                    ? `
+                        <img
+                            src="${escapeHTML(image)}"
+                            alt="${escapeHTML(product.name || "")}"
+                            onerror="
+                                this.style.display='none';
+                                this.parentElement.innerHTML=
+                                '<div style=&quot;height:100%;display:flex;align-items:center;justify-content:center;color:#777&quot;>Görsel yüklenemedi</div>'
+                            "
+                        >
+                    `
+                    : `
+                        <div style="
+                            height:100%;
+                            display:flex;
+                            align-items:center;
+                            justify-content:center;
+                            color:#777">
+                            Görsel yok
+                        </div>
+                    `;
+
+
+            const category =
+                getProductCategory(
+                    product
+                );
+
+
+            card.innerHTML = `
+
+                <div class="product-image">
+                    ${imageHTML}
+                </div>
+
+                <div class="product-info">
+
+                    <div class="product-category">
+                        ${escapeHTML(
+                            category || "Genel"
+                        )}
                     </div>
-                  `;
 
-        const category =
-            getProductCategory(product);
+                    <div class="product-name">
+                        ${escapeHTML(
+                            product.name ||
+                            "İsimsiz Ürün"
+                        )}
+                    </div>
 
-        card.innerHTML = `
-            <div class="product-image">
-                ${imageHTML}
-            </div>
+                    <div>
 
-            <div class="product-info">
+                        <span class="price">
+                            ${formatPrice(
+                                product.price
+                            )}
+                        </span>
 
-                <div class="product-category">
-                    ${escapeHTML(category || "Genel")}
+                        ${
+                            Number(
+                                product.oldPrice
+                            ) >
+                            Number(
+                                product.price
+                            )
+                                ? `
+                                    <span class="old-price">
+                                        ${formatPrice(
+                                            product.oldPrice
+                                        )}
+                                    </span>
+                                `
+                                : ""
+                        }
+
+                    </div>
+
+                    <div class="product-actions">
+
+                        <button
+                            class="detail-btn"
+                            onclick="openProduct('${escapeJS(product.id)}')"
+                        >
+                            İncele
+                        </button>
+
+                        <button
+                            class="buy-btn"
+                            onclick="openProduct('${escapeJS(product.id)}')"
+                        >
+                            Satın Al
+                        </button>
+
+                    </div>
+
                 </div>
+            `;
 
-                <div class="product-name">
-                    ${escapeHTML(product.name || "İsimsiz Ürün")}
-                </div>
+            container.appendChild(
+                card
+            );
 
-                <div>
-                    <span class="price">
-                        ${formatPrice(product.price)}
-                    </span>
+        }
+    );
 
-                    ${
-                        Number(product.oldPrice) >
-                        Number(product.price)
-                            ? `
-                                <span class="old-price">
-                                    ${formatPrice(product.oldPrice)}
-                                </span>
-                              `
-                            : ""
-                    }
-                </div>
-
-                <div class="product-actions">
-
-                    <button
-                        class="detail-btn"
-                        onclick="openProduct('${escapeJS(product.id)}')"
-                    >
-                        İncele
-                    </button>
-
-                    <button
-                        class="buy-btn"
-                        onclick="openProduct('${escapeJS(product.id)}')"
-                    >
-                        Satın Al
-                    </button>
-
-                </div>
-
-            </div>
-        `;
-
-        container.appendChild(card);
-    });
 }
 
+
 /* =========================================================
-   PRODUCT DETAIL
+   ÜRÜN DETAYI
 ========================================================= */
 
 function openProduct(id) {
 
     selectedProduct =
         products.find(
-            p => String(p.id) === String(id)
+            product =>
+                String(product.id) ===
+                String(id)
         );
 
     if (!selectedProduct) {
@@ -1183,6 +1402,7 @@ function openProduct(id) {
         );
 
         return;
+
     }
 
     selectedSize = "";
@@ -1190,13 +1410,24 @@ function openProduct(id) {
     renderProductDetail();
 
     document
-        .getElementById("productModal")
-        .classList.add("active");
+        .getElementById(
+            "productModal"
+        )
+        .classList.add(
+            "active"
+        );
+
 }
+
+
+/* =========================================================
+   ÜRÜN DETAYINI GÖSTER
+========================================================= */
 
 function renderProductDetail() {
 
-    const p = selectedProduct;
+    const p =
+        selectedProduct;
 
     if (!p) return;
 
@@ -1208,7 +1439,9 @@ function renderProductDetail() {
     const mainImage =
         images[0] || "";
 
+
     let sizesHTML = "";
+
 
     if (
         Array.isArray(p.sizes) &&
@@ -1216,53 +1449,77 @@ function renderProductDetail() {
     ) {
 
         sizesHTML = `
-            <h3>Beden / Numara</h3>
+
+            <h3>
+                Beden / Numara
+            </h3>
 
             <div class="size-list">
 
-                ${p.sizes.map(size => {
+                ${
+                    p.sizes
+                        .map(
+                            size => {
 
-                    if (
-                        typeof size !== "object" ||
-                        size === null
-                    ) {
-                        size = {
-                            name: String(size),
-                            stock: 1
-                        };
-                    }
+                                if (
+                                    typeof size !== "object" ||
+                                    size === null
+                                ) {
 
-                    const stock =
-                        Number(size.stock || 0);
+                                    size = {
+                                        name:String(
+                                            size
+                                        ),
+                                        stock:1
+                                    };
 
-                    return `
-                        <button
-                            class="size-btn ${
-                                selectedSize === String(size.name)
-                                    ? "selected"
-                                    : ""
-                            } ${
-                                stock <= 0
-                                    ? "disabled"
-                                    : ""
-                            }"
-                            ${
-                                stock <= 0
-                                    ? "disabled"
-                                    : `onclick="selectSize('${escapeJS(size.name)}')"`
+                                }
+
+                                const stock =
+                                    Number(
+                                        size.stock || 0
+                                    );
+
+                                return `
+
+                                    <button
+                                        class="size-btn ${
+                                            selectedSize ===
+                                            String(
+                                                size.name
+                                            )
+                                                ? "selected"
+                                                : ""
+                                        } ${
+                                            stock <= 0
+                                                ? "disabled"
+                                                : ""
+                                        }"
+                                        ${
+                                            stock <= 0
+                                                ? "disabled"
+                                                : `onclick="selectSize('${escapeJS(size.name)}')"`
+                                        }
+                                    >
+
+                                        ${escapeHTML(
+                                            size.name
+                                        )}
+
+                                        ${
+                                            stock <= 0
+                                                ? " - Tükendi"
+                                                : ""
+                                        }
+
+                                    </button>
+
+                                `;
+
                             }
-                        >
-                            ${escapeHTML(size.name)}
-
-                            ${
-                                stock <= 0
-                                    ? " - Tükendi"
-                                    : ""
-                            }
-                        </button>
-                    `;
-
-                }).join("")}
+                        )
+                        .join("")
+                }
 
             </div>
         `;
@@ -1270,14 +1527,20 @@ function renderProductDetail() {
     } else {
 
         sizesHTML = `
+
             <p>
                 Stok:
                 <strong>
-                    ${Number(p.stock || 0)}
+                    ${Number(
+                        p.stock || 0
+                    )}
                 </strong>
             </p>
+
         `;
+
     }
+
 
     document.getElementById(
         "productDetail"
@@ -1293,10 +1556,14 @@ function renderProductDetail() {
                             <img
                                 id="mainProductImage"
                                 src="${escapeHTML(mainImage)}"
-                                alt="${escapeHTML(p.name)}"
-                                onerror="this.style.display='none';this.parentElement.innerHTML='<div style=&quot;height:100%;display:flex;align-items:center;justify-content:center;color:#777&quot;>Görsel yüklenemedi</div>'"
+                                alt="${escapeHTML(p.name || "")}"
+                                onerror="
+                                    this.style.display='none';
+                                    this.parentElement.innerHTML=
+                                    '<div style=&quot;height:100%;display:flex;align-items:center;justify-content:center;color:#777&quot;>Görsel yüklenemedi</div>'
+                                "
                             >
-                          `
+                        `
                         : `
                             <div style="
                                 height:100%;
@@ -1306,7 +1573,7 @@ function renderProductDetail() {
                                 color:#777">
                                 Görsel yok
                             </div>
-                          `
+                        `
                 }
 
             </div>
@@ -1314,62 +1581,96 @@ function renderProductDetail() {
             ${
                 images.length > 1
                     ? `
+
                         <div class="thumbs">
 
-                            ${images.map(img => `
-                                <img
-                                    src="${escapeHTML(img)}"
-                                    onclick="changeMainImage('${escapeJS(img)}')"
-                                    alt=""
-                                >
-                            `).join("")}
+                            ${
+                                images
+                                    .map(
+                                        img => `
+
+                                            <img
+                                                src="${escapeHTML(img)}"
+                                                onclick="changeMainImage('${escapeJS(img)}')"
+                                                alt=""
+                                            >
+
+                                        `
+                                    )
+                                    .join("")
+                            }
 
                         </div>
-                      `
+
+                    `
                     : ""
             }
 
         </div>
 
+
         <div>
 
             <div class="product-category">
+
                 ${escapeHTML(
-                    getProductCategory(p) || "Genel"
+                    getProductCategory(p) ||
+                    "Genel"
                 )}
+
             </div>
+
 
             <h2>
+
                 ${escapeHTML(
-                    p.name || "İsimsiz Ürün"
+                    p.name ||
+                    "İsimsiz Ürün"
                 )}
+
             </h2>
 
+
             <div class="detail-price">
-                ${formatPrice(p.price)}
+
+                ${formatPrice(
+                    p.price
+                )}
 
                 ${
-                    Number(p.oldPrice) >
-                    Number(p.price)
+                    Number(
+                        p.oldPrice
+                    ) >
+                    Number(
+                        p.price
+                    )
                         ? `
                             <span class="old-price">
-                                ${formatPrice(p.oldPrice)}
+                                ${formatPrice(
+                                    p.oldPrice
+                                )}
                             </span>
-                          `
+                        `
                         : ""
                 }
+
             </div>
+
 
             <p style="
                 line-height:1.7;
                 margin-bottom:20px">
+
                 ${escapeHTML(
                     p.description ||
                     "Ürün açıklaması bulunmuyor."
                 )}
+
             </p>
 
+
             ${sizesHTML}
+
 
             <button
                 class="big-buy"
@@ -1379,15 +1680,29 @@ function renderProductDetail() {
             </button>
 
         </div>
+
     `;
+
 }
+
+
+/* =========================================================
+   BEDEN SEÇ
+========================================================= */
 
 function selectSize(size) {
 
-    selectedSize = String(size);
+    selectedSize =
+        String(size);
 
     renderProductDetail();
+
 }
+
+
+/* =========================================================
+   ANA GÖRSEL
+========================================================= */
 
 function changeMainImage(src) {
 
@@ -1399,37 +1714,52 @@ function changeMainImage(src) {
     if (image) {
         image.src = src;
     }
+
 }
 
+
 /* =========================================================
-   CART
+   SEPETE EKLE
 ========================================================= */
 
 function addSelectedProductToCart() {
 
-    const p = selectedProduct;
+    const p =
+        selectedProduct;
 
     if (!p) return;
+
 
     if (
         Array.isArray(p.sizes) &&
         p.sizes.length > 0 &&
         !selectedSize
     ) {
+
         alert(
             "Lütfen beden veya numara seçin."
         );
 
         return;
+
     }
 
+
     const existing =
-        cart.find(item =>
-            String(item.productId) ===
-            String(p.id) &&
-            String(item.size || "") ===
-            String(selectedSize || "")
+        cart.find(
+            item =>
+                String(
+                    item.productId
+                ) ===
+                String(p.id) &&
+                String(
+                    item.size || ""
+                ) ===
+                String(
+                    selectedSize || ""
+                )
         );
+
 
     if (existing) {
 
@@ -1438,28 +1768,53 @@ function addSelectedProductToCart() {
     } else {
 
         cart.push({
-            productId: p.id,
-            name: p.name,
-            price: Number(p.price || 0),
+
+            productId:
+                p.id,
+
+            name:
+                p.name,
+
+            price:
+                Number(
+                    p.price || 0
+                ),
+
             image:
-                Array.isArray(p.images) &&
+                Array.isArray(
+                    p.images
+                ) &&
                 p.images.length
                     ? p.images[0]
                     : "",
-            size: selectedSize || "",
-            quantity: 1
+
+            size:
+                selectedSize || "",
+
+            quantity:1
+
         });
+
     }
+
 
     saveCart();
     updateCartCount();
 
-    closeModal("productModal");
+    closeModal(
+        "productModal"
+    );
 
     alert(
         "Ürün sepete eklendi."
     );
+
 }
+
+
+/* =========================================================
+   SEPET KAYDET
+========================================================= */
 
 function saveCart() {
 
@@ -1467,30 +1822,46 @@ function saveCart() {
         "rezan_cart",
         JSON.stringify(cart)
     );
+
 }
+
+
+/* =========================================================
+   SEPET SAYISI
+========================================================= */
 
 function updateCartCount() {
 
     const count =
         cart.reduce(
-            (sum, item) =>
+            (
+                sum,
+                item
+            ) =>
                 sum +
-                Number(item.quantity || 0),
+                Number(
+                    item.quantity || 0
+                ),
             0
         );
+
 
     const element =
         document.getElementById(
             "cartCount"
         );
 
+
     if (element) {
-        element.textContent = count;
+        element.textContent =
+            count;
     }
+
 }
 
+
 /* =========================================================
-   CART MODAL
+   SEPETİ AÇ
 ========================================================= */
 
 function openCart() {
@@ -1498,9 +1869,19 @@ function openCart() {
     renderCart();
 
     document
-        .getElementById("cartModal")
-        .classList.add("active");
+        .getElementById(
+            "cartModal"
+        )
+        .classList.add(
+            "active"
+        );
+
 }
+
+
+/* =========================================================
+   SEPETİ GÖSTER
+========================================================= */
 
 function renderCart() {
 
@@ -1514,95 +1895,142 @@ function renderCart() {
             "checkoutArea"
         );
 
+    if (!container || !checkout) {
+        return;
+    }
+
     container.innerHTML = "";
     checkout.innerHTML = "";
+
 
     if (cart.length === 0) {
 
         container.innerHTML = `
+
             <div class="empty">
                 Sepetiniz boş.
             </div>
+
         `;
 
         document.getElementById(
             "cartTotal"
-        ).textContent = "0 TL";
+        ).textContent =
+            "0 TL";
 
         return;
+
     }
+
 
     let total = 0;
 
-    cart.forEach((item, index) => {
 
-        const itemTotal =
-            Number(item.price || 0) *
-            Number(item.quantity || 0);
+    cart.forEach(
+        (
+            item,
+            index
+        ) => {
 
-        total += itemTotal;
+            const itemTotal =
+                Number(
+                    item.price || 0
+                ) *
+                Number(
+                    item.quantity || 0
+                );
 
-        const div =
-            document.createElement("div");
+            total += itemTotal;
 
-        div.className = "cart-item";
 
-        div.innerHTML = `
+            const div =
+                document.createElement(
+                    "div"
+                );
 
-            ${
-                item.image
-                    ? `
-                        <img
-                            src="${escapeHTML(item.image)}"
-                            alt="${escapeHTML(item.name)}"
-                        >
-                      `
-                    : ""
-            }
+            div.className =
+                "cart-item";
 
-            <div class="cart-item-info">
 
-                <strong>
-                    ${escapeHTML(item.name)}
-                </strong>
+            div.innerHTML = `
 
-                <div>
-                    ${
-                        item.size
-                            ? "Beden/Numara: " +
-                              escapeHTML(item.size)
-                            : ""
-                    }
+                ${
+                    item.image
+                        ? `
+                            <img
+                                src="${escapeHTML(item.image)}"
+                                alt="${escapeHTML(item.name || "")}"
+                            >
+                        `
+                        : ""
+                }
+
+
+                <div class="cart-item-info">
+
+                    <strong>
+                        ${escapeHTML(
+                            item.name
+                        )}
+                    </strong>
+
+
+                    <div>
+
+                        ${
+                            item.size
+                                ? "Beden/Numara: " +
+                                  escapeHTML(
+                                      item.size
+                                  )
+                                : ""
+                        }
+
+                    </div>
+
+
+                    <div>
+
+                        ${item.quantity} ×
+                        ${formatPrice(
+                            item.price
+                        )}
+
+                    </div>
+
                 </div>
 
-                <div>
-                    ${item.quantity} ×
-                    ${formatPrice(item.price)}
-                </div>
 
-            </div>
+                <button
+                    class="remove-btn"
+                    onclick="removeCartItem(${index})"
+                >
+                    Sil
+                </button>
 
-            <button
-                class="remove-btn"
-                onclick="removeCartItem(${index})"
-            >
-                Sil
-            </button>
-        `;
+            `;
 
-        container.appendChild(div);
-    });
+
+            container.appendChild(
+                div
+            );
+
+        }
+    );
+
 
     document.getElementById(
         "cartTotal"
     ).textContent =
         formatPrice(total);
 
+
     checkout.innerHTML = `
 
         <h3 style="margin-top:25px">
             Teslimat Bilgileri
         </h3>
+
 
         <div class="checkout">
 
@@ -1661,35 +2089,53 @@ function renderCart() {
                 placeholder="Sipariş Notu"
             ></textarea>
 
-            <button onclick="createOrder()">
+            <button
+                onclick="createOrder()"
+            >
                 Siparişi Oluştur
             </button>
 
         </div>
+
     `;
+
 }
+
+
+/* =========================================================
+   SEPETTEN SİL
+========================================================= */
 
 function removeCartItem(index) {
 
-    cart.splice(index, 1);
+    cart.splice(
+        index,
+        1
+    );
 
     saveCart();
     updateCartCount();
     renderCart();
+
 }
 
+
 /* =========================================================
-   CREATE ORDER
+   SİPARİŞ OLUŞTUR
 ========================================================= */
 
 async function createOrder() {
 
     if (cart.length === 0) {
 
-        alert("Sepet boş.");
+        alert(
+            "Sepet boş."
+        );
 
         return;
+
     }
+
 
     const customer = {
 
@@ -1758,7 +2204,9 @@ async function createOrder() {
                 .getElementById("cNote")
                 .value
                 .trim()
+
     };
+
 
     if (
         !customer.name ||
@@ -1773,7 +2221,9 @@ async function createOrder() {
         );
 
         return;
+
     }
+
 
     try {
 
@@ -1794,11 +2244,14 @@ async function createOrder() {
                             customer,
                             items:cart
                         })
+
                 }
             );
 
+
         const data =
             await response.json();
+
 
         if (!response.ok) {
 
@@ -1806,36 +2259,47 @@ async function createOrder() {
                 data.message ||
                 "Sipariş oluşturulamadı."
             );
+
         }
+
 
         cart = [];
 
         saveCart();
         updateCartCount();
 
-        closeModal("cartModal");
+        closeModal(
+            "cartModal"
+        );
 
         showPayment(
             data.order
         );
 
+
     } catch(error) {
 
-        console.error(error);
+        console.error(
+            error
+        );
 
         alert(
             error.message
         );
+
     }
+
 }
 
+
 /* =========================================================
-   PAYMENT
+   ÖDEME
 ========================================================= */
 
 async function showPayment(order) {
 
     let payment = {};
+
 
     try {
 
@@ -1856,48 +2320,77 @@ async function showPayment(order) {
             "Ödeme bilgileri alınamadı:",
             error
         );
+
     }
+
 
     document.getElementById(
         "paymentInfo"
     ).innerHTML = `
 
         <p>
+
             Sipariş numaranız:
+
             <strong>
-                ${escapeHTML(order.id)}
+                ${escapeHTML(
+                    order.id
+                )}
             </strong>
+
         </p>
 
+
         <p style="margin-top:10px">
+
             Toplam:
+
             <strong>
-                ${formatPrice(order.total)}
+                ${formatPrice(
+                    order.total
+                )}
             </strong>
+
         </p>
+
 
         <div class="payment-box">
 
-            <strong>Banka</strong>
+            <strong>
+                Banka
+            </strong>
+
             ${escapeHTML(
                 payment.bankName || "-"
             )}
 
+
             <br><br>
 
-            <strong>Hesap Sahibi</strong>
+
+            <strong>
+                Hesap Sahibi
+            </strong>
+
             ${escapeHTML(
                 payment.accountName || "-"
             )}
 
+
             <br><br>
 
-            <strong>IBAN</strong>
+
+            <strong>
+                IBAN
+            </strong>
+
             ${escapeHTML(
                 payment.iban || "-"
             )}
 
+
             <br>
+
 
             <button
                 class="copy"
@@ -1908,28 +2401,44 @@ async function showPayment(order) {
                 IBAN'ı Kopyala
             </button>
 
+
             <div class="notice">
-                ⚠️ ÖNEMLİ: Havale/EFT açıklama kısmını BOŞ BIRAKIN.
-                Açıklama yazılması halinde siparişiniz onaylanmayabilir.
+
+                ⚠️ ÖNEMLİ:
+                Havale/EFT açıklama kısmını
+                BOŞ BIRAKIN.
+                Açıklama yazılması halinde
+                siparişiniz onaylanmayabilir.
+
             </div>
 
         </div>
 
+
         <p style="margin-top:20px">
-            Ödeme yaptıktan sonra yönetici bankadan
-            ödemenizi kontrol edip siparişinizi onaylayacaktır.
+
+            Ödeme yaptıktan sonra yönetici
+            bankadan ödemenizi kontrol edip
+            siparişinizi onaylayacaktır.
+
         </p>
+
     `;
+
 
     document
         .getElementById(
             "paymentModal"
         )
-        .classList.add("active");
+        .classList.add(
+            "active"
+        );
+
 }
 
+
 /* =========================================================
-   TRACKING
+   SİPARİŞ TAKİP MODALI
 ========================================================= */
 
 function openTracking() {
@@ -1938,8 +2447,16 @@ function openTracking() {
         .getElementById(
             "trackingModal"
         )
-        .classList.add("active");
+        .classList.add(
+            "active"
+        );
+
 }
+
+
+/* =========================================================
+   SİPARİŞ TAKİP
+========================================================= */
 
 async function trackOrder() {
 
@@ -1951,6 +2468,7 @@ async function trackOrder() {
             .value
             .trim();
 
+
     if (!id) {
 
         alert(
@@ -1958,12 +2476,15 @@ async function trackOrder() {
         );
 
         return;
+
     }
+
 
     const result =
         document.getElementById(
             "trackingResult"
         );
+
 
     try {
 
@@ -1973,8 +2494,10 @@ async function trackOrder() {
                 encodeURIComponent(id)
             );
 
+
         const data =
             await response.json();
+
 
         if (!response.ok) {
 
@@ -1982,88 +2505,124 @@ async function trackOrder() {
                 data.message ||
                 "Sipariş bulunamadı."
             );
+
         }
+
 
         const order =
             data.order;
+
 
         result.innerHTML = `
 
             <div class="payment-box">
 
                 <strong>
+
                     Sipariş:
-                    ${escapeHTML(order.id)}
+                    ${escapeHTML(
+                        order.id
+                    )}
+
                 </strong>
+
 
                 <br>
 
+
                 Durum:
+
                 <strong>
+
                     ${escapeHTML(
                         order.status
                     )}
+
                 </strong>
+
 
                 <br><br>
 
+
                 Ödeme:
+
                 ${escapeHTML(
                     order.paymentStatus
                 )}
 
+
                 <br><br>
 
+
                 Kargo:
+
                 ${escapeHTML(
                     order.shippingStatus
                 )}
+
 
                 ${
                     order.shipping?.company
                         ? `
                             <br><br>
+
                             Kargo firması:
+
                             ${escapeHTML(
                                 order.shipping.company
                             )}
-                          `
+                        `
                         : ""
                 }
+
 
                 ${
                     order.shipping?.trackingNumber
                         ? `
                             <br>
+
                             Takip numarası:
+
                             <strong>
                                 ${escapeHTML(
                                     order.shipping.trackingNumber
                                 )}
                             </strong>
-                          `
+                        `
                         : ""
                 }
 
             </div>
+
         `;
+
 
     } catch(error) {
 
-        console.error(error);
+        console.error(
+            error
+        );
+
 
         result.innerHTML = `
+
             <p style="color:#c00">
+
                 ${escapeHTML(
                     error.message
                 )}
+
             </p>
+
         `;
+
     }
+
 }
 
+
 /* =========================================================
-   HELPERS
+   FİYAT
 ========================================================= */
 
 function formatPrice(value) {
@@ -2078,7 +2637,13 @@ function formatPrice(value) {
             maximumFractionDigits:2
         }
     ) + " TL";
+
 }
+
+
+/* =========================================================
+   MODAL KAPAT
+========================================================= */
 
 function closeModal(id) {
 
@@ -2086,9 +2651,19 @@ function closeModal(id) {
         document.getElementById(id);
 
     if (modal) {
-        modal.classList.remove("active");
+
+        modal.classList.remove(
+            "active"
+        );
+
     }
+
 }
+
+
+/* =========================================================
+   KOPYALA
+========================================================= */
 
 function copyText(text) {
 
@@ -2099,21 +2674,30 @@ function copyText(text) {
 
         navigator.clipboard
             .writeText(text)
-            .then(() => {
-                alert("Kopyalandı.");
-            })
-            .catch(() => {
-                alert(
-                    "Kopyalama başarısız oldu."
-                );
-            });
+            .then(
+                () => {
+                    alert(
+                        "Kopyalandı."
+                    );
+                }
+            )
+            .catch(
+                () => {
+                    alert(
+                        "Kopyalama başarısız oldu."
+                    );
+                }
+            );
 
     } else {
 
         const textarea =
-            document.createElement("textarea");
+            document.createElement(
+                "textarea"
+            );
 
-        textarea.value = text;
+        textarea.value =
+            text;
 
         document.body.appendChild(
             textarea
@@ -2122,63 +2706,91 @@ function copyText(text) {
         textarea.select();
 
         try {
-            document.execCommand("copy");
-            alert("Kopyalandı.");
+
+            document.execCommand(
+                "copy"
+            );
+
+            alert(
+                "Kopyalandı."
+            );
+
         } catch {
+
             alert(
                 "Kopyalama başarısız oldu."
             );
+
         }
 
         textarea.remove();
+
     }
+
 }
+
+
+/* =========================================================
+   HTML GÜVENLİĞİ
+========================================================= */
 
 function escapeHTML(value) {
 
-    return String(value ?? "")
-        .replaceAll(
-            "&",
-            "&amp;"
-        )
-        .replaceAll(
-            "<",
-            "&lt;"
-        )
-        .replaceAll(
-            ">",
-            "&gt;"
-        )
-        .replaceAll(
-            '"',
-            "&quot;"
-        )
-        .replaceAll(
-            "'",
-            "&#039;"
-        );
+    return String(
+        value ?? ""
+    )
+    .replaceAll(
+        "&",
+        "&amp;"
+    )
+    .replaceAll(
+        "<",
+        "&lt;"
+    )
+    .replaceAll(
+        ">",
+        "&gt;"
+    )
+    .replaceAll(
+        '"',
+        "&quot;"
+    )
+    .replaceAll(
+        "'",
+        "&#039;"
+    );
+
 }
+
+
+/* =========================================================
+   JAVASCRIPT GÜVENLİĞİ
+========================================================= */
 
 function escapeJS(value) {
 
-    return String(value ?? "")
-        .replaceAll(
-            "\\",
-            "\\\\"
-        )
-        .replaceAll(
-            "'",
-            "\\'"
-        )
-        .replaceAll(
-            "\n",
-            "\\n"
-        )
-        .replaceAll(
-            "\r",
-            "\\r"
-        );
+    return String(
+        value ?? ""
+    )
+    .replaceAll(
+        "\\",
+        "\\\\"
+    )
+    .replaceAll(
+        "'",
+        "\\'"
+    )
+    .replaceAll(
+        "\n",
+        "\\n"
+    )
+    .replaceAll(
+        "\r",
+        "\\r"
+    );
+
 }
+
 
 /* =========================================================
    MODAL DIŞINA TIKLAYINCA KAPAT
@@ -2197,28 +2809,44 @@ document.addEventListener(
             event.target.classList.remove(
                 "active"
             );
+
         }
+
     }
 );
 
-/* ESC İLE MODAL KAPAT */
+
+/* =========================================================
+   ESC İLE KAPAT
+========================================================= */
 
 document.addEventListener(
     "keydown",
     function(event) {
 
-        if (event.key === "Escape") {
+        if (
+            event.key === "Escape"
+        ) {
 
             document
-                .querySelectorAll(".modal.active")
-                .forEach(modal => {
-                    modal.classList.remove(
-                        "active"
-                    );
-                });
+                .querySelectorAll(
+                    ".modal.active"
+                )
+                .forEach(
+                    modal => {
+
+                        modal.classList.remove(
+                            "active"
+                        );
+
+                    }
+                );
+
         }
+
     }
 );
+
 </script>
 
 </body>
