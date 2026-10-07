@@ -288,6 +288,16 @@ button{
     background:#fafafa;
 }
 
+.category-select-row{
+    display:flex;
+    gap:8px;
+    align-items:center;
+}
+
+.category-select-row select{
+    flex:1;
+}
+
 @media(max-width:800px){
 
     .sidebar{
@@ -306,6 +316,11 @@ button{
 
     .form-grid{
         grid-template-columns:1fr;
+    }
+
+    .category-select-row{
+        flex-direction:column;
+        align-items:stretch;
     }
 }
 </style>
@@ -815,7 +830,6 @@ async function logout() {
 
 /* =========================================================
    NAVIGATION
-   KATEGORİLERİ ÜRÜN SAYFASINA GİRMEDEN ÖNCE YENİLE
 ========================================================= */
 
 async function showPage(page, button) {
@@ -848,32 +862,25 @@ async function showPage(page, button) {
     try {
 
         if (page === "orders") {
-
             await loadOrders();
-
         }
 
         if (page === "products") {
 
             /*
-             * ÖNCE kategorileri yenile.
-             * SONRA ürünleri yükle.
+             * Ürünler sayfasına her girildiğinde
+             * kategorileri yeniden sunucudan alıyoruz.
              */
             await loadCategories();
             await loadProducts();
-
         }
 
         if (page === "categories") {
-
             await loadCategories();
-
         }
 
         if (page === "payment") {
-
             await loadPayment();
-
         }
 
     } catch(error) {
@@ -1078,7 +1085,6 @@ function getTotalStock(product) {
 
 /* =========================================================
    PRODUCT FORM
-   ÖNEMLİ: ÜRÜN FORMU AÇILMADAN ÖNCE KATEGORİLERİ YÜKLE
 ========================================================= */
 
 async function newProduct() {
@@ -1088,10 +1094,6 @@ async function newProduct() {
 
     try {
 
-        /*
-         * Yeni ürün formu açılmadan hemen önce
-         * kategorileri sunucudan tekrar alıyoruz.
-         */
         await loadCategories();
 
         showProductForm();
@@ -1116,10 +1118,6 @@ async function editProduct(id) {
 
     try {
 
-        /*
-         * Düzenleme formu açılmadan önce
-         * kategorileri güncelliyoruz.
-         */
         await loadCategories();
 
     } catch(error) {
@@ -1152,6 +1150,54 @@ function showProductForm(product = null) {
     const isEdit =
         Boolean(product);
 
+    /*
+     * Kategoriler artık obje:
+     * {
+     *   id: "...",
+     *   name: "Kadın"
+     * }
+     *
+     * Bu nedenle select içinde category.name
+     * kullanıyoruz.
+     */
+
+    const categoryOptions =
+        categories.length
+            ? categories.map(category => {
+
+                const categoryName =
+                    String(
+                        category?.name ?? category ?? ""
+                    ).trim();
+
+                if (!categoryName) {
+                    return "";
+                }
+
+                const selected =
+                    normalizeTurkish(
+                        product?.category || ""
+                    ) ===
+                    normalizeTurkish(
+                        categoryName
+                    );
+
+                return `
+                    <option
+                        value="${escapeHTML(categoryName)}"
+                        ${selected ? "selected" : ""}
+                    >
+                        ${escapeHTML(categoryName)}
+                    </option>
+                `;
+
+            }).join("")
+            : `
+                <option value="" disabled>
+                    Henüz kategori eklenmemiş
+                </option>
+            `;
+
     container.innerHTML = `
 
         <div class="form">
@@ -1178,38 +1224,30 @@ function showProductForm(product = null) {
                 </div>
 
                 <div class="form-group">
+
                     <label>Kategori</label>
 
-                    <select id="pCategory">
+                    <div class="category-select-row">
 
-                        <option value="">
-                            Kategori seç
-                        </option>
+                        <select id="pCategory">
 
-                        ${
-                            categories.length
-                                ? categories.map(category => `
+                            <option value="">
+                                Kategori seç
+                            </option>
 
-                                    <option
-                                        value="${escapeHTML(category)}"
-                                        ${
-                                            product?.category === category
-                                                ? "selected"
-                                                : ""
-                                        }
-                                    >
-                                        ${escapeHTML(category)}
-                                    </option>
+                            ${categoryOptions}
 
-                                `).join("")
-                                : `
-                                    <option value="" disabled>
-                                        Henüz kategori eklenmemiş
-                                    </option>
-                                `
-                        }
+                        </select>
 
-                    </select>
+                        <button
+                            type="button"
+                            class="btn gray"
+                            onclick="refreshProductCategories()"
+                        >
+                            🔄 Yenile
+                        </button>
+
+                    </div>
 
                 </div>
 
@@ -1339,6 +1377,7 @@ function showProductForm(product = null) {
                     <input
                         id="pStock"
                         type="number"
+                        min="0"
                         value="${product?.stock || 0}"
                     >
 
@@ -1387,6 +1426,97 @@ function showProductForm(product = null) {
             size.stock
         )
     );
+}
+
+/* =========================================================
+   PRODUCT KATEGORİLERİNİ MANUEL YENİLE
+========================================================= */
+
+async function refreshProductCategories() {
+
+    const select =
+        document.getElementById(
+            "pCategory"
+        );
+
+    if (!select) return;
+
+    const currentValue =
+        select.value || "";
+
+    try {
+
+        await loadCategories();
+
+        const updatedSelect =
+            document.getElementById(
+                "pCategory"
+            );
+
+        if (!updatedSelect) return;
+
+        updatedSelect.innerHTML = `
+            <option value="">
+                Kategori seç
+            </option>
+        `;
+
+        categories.forEach(category => {
+
+            const categoryName =
+                String(
+                    category?.name ?? category ?? ""
+                ).trim();
+
+            if (!categoryName) return;
+
+            const option =
+                document.createElement("option");
+
+            option.value =
+                categoryName;
+
+            option.textContent =
+                categoryName;
+
+            updatedSelect.appendChild(
+                option
+            );
+        });
+
+        if (
+            currentValue &&
+            categories.some(
+                category =>
+                    normalizeTurkish(
+                        String(
+                            category?.name ??
+                            category ??
+                            ""
+                        )
+                    ) ===
+                    normalizeTurkish(
+                        currentValue
+                    )
+            )
+        ) {
+
+            updatedSelect.value =
+                currentValue;
+        }
+
+        alert(
+            categories.length +
+            " kategori yüklendi."
+        );
+
+    } catch(error) {
+
+        alert(
+            "Kategoriler yenilenemedi: " +
+            error.message
+        );
+    }
 }
 
 /* =========================================================
@@ -1787,12 +1917,102 @@ async function loadCategories() {
         const data =
             result.data;
 
+        /*
+         * SERVER:
+         *
+         * {
+         *   success:true,
+         *   categories:[
+         *      {id:"...", name:"Kadın"}
+         *   ]
+         * }
+         *
+         * Burada kategorileri güvenli şekilde
+         * obje olarak saklıyoruz.
+         */
+
+        const rawCategories =
+            Array.isArray(data)
+                ? data
+                : (
+                    Array.isArray(data.categories)
+                        ? data.categories
+                        : []
+                );
+
         categories =
-            Array.isArray(data.categories)
-                ? data.categories
-                : [];
+            rawCategories
+                .map(category => {
+
+                    if (
+                        category &&
+                        typeof category === "object"
+                    ) {
+
+                        return {
+                            id:
+                                String(
+                                    category.id ??
+                                    ""
+                                ),
+
+                            name:
+                                String(
+                                    category.name ??
+                                    ""
+                                ).trim()
+                        };
+
+                    }
+
+                    /*
+                     * Eski formatta sadece yazı
+                     * gelirse de çalışmaya devam etsin.
+                     */
+
+                    return {
+                        id:"",
+                        name:
+                            String(
+                                category ?? ""
+                            ).trim()
+                    };
+
+                })
+                .filter(
+                    category =>
+                        category.name
+                );
+
+        /*
+         * Aynı isimli kategorileri tekilleştir.
+         */
+
+        const unique = [];
+
+        categories.forEach(category => {
+
+            const exists =
+                unique.some(
+                    item =>
+                        normalizeTurkish(
+                            item.name
+                        ) ===
+                        normalizeTurkish(
+                            category.name
+                        )
+                );
+
+            if (!exists) {
+                unique.push(category);
+            }
+        });
+
+        categories = unique;
 
         renderCategoriesAdmin();
+
+        return categories;
 
     } catch(error) {
 
@@ -1832,12 +2052,12 @@ function renderCategoriesAdmin() {
                 <div class="category-item">
 
                     <strong>
-                        ${escapeHTML(category)}
+                        ${escapeHTML(category.name)}
                     </strong>
 
                     <button
                         class="btn red"
-                        onclick="deleteCategory('${escapeJS(category)}')"
+                        onclick="deleteCategory('${escapeJS(category.id)}')"
                     >
                         Kategoriyi Sil
                     </button>
@@ -1895,8 +2115,9 @@ async function addCategory() {
 
         /*
          * Kategori eklendikten sonra
-         * sunucudan güncel listeyi çek.
+         * güncel kategorileri tekrar al.
          */
+
         await loadCategories();
 
         input.value = "";
@@ -1923,7 +2144,17 @@ async function addCategory() {
    DELETE CATEGORY
 ========================================================= */
 
-async function deleteCategory(name) {
+async function deleteCategory(id) {
+
+    const category =
+        categories.find(
+            item =>
+                String(item.id) ===
+                String(id)
+        );
+
+    const name =
+        category?.name || "Bu kategori";
 
     if (
         !confirm(
@@ -1933,12 +2164,29 @@ async function deleteCategory(name) {
         return;
     }
 
+    /*
+     * SERVER /api/categories/:id
+     * bekliyor.
+     *
+     * Eskiden burada kategori adı
+     * gönderiliyordu. Şimdi gerçek ID gönderiliyor.
+     */
+
+    if (!id) {
+
+        alert(
+            "Kategori ID'si bulunamadı."
+        );
+
+        return;
+    }
+
     try {
 
         const result =
             await apiFetch(
                 "/api/categories/" +
-                encodeURIComponent(name),
+                encodeURIComponent(id),
                 {
                     method:"DELETE"
                 }
@@ -1953,6 +2201,10 @@ async function deleteCategory(name) {
         }
 
         await loadCategories();
+
+        alert(
+            "Kategori silindi."
+        );
 
     } catch(error) {
 
@@ -1985,7 +2237,13 @@ async function loadOrders() {
             result.data;
 
         orders =
-            data.orders || [];
+            Array.isArray(data)
+                ? data
+                : (
+                    Array.isArray(data.orders)
+                        ? data.orders
+                        : []
+                );
 
         renderOrders();
         updateDashboard();
@@ -2095,12 +2353,12 @@ function renderOrders() {
 
                     <p>
                         <strong>Ödeme:</strong>
-                        ${escapeHTML(order.paymentStatus)}
+                        ${escapeHTML(order.paymentStatus || "-")}
                     </p>
 
                     <p>
                         <strong>Durum:</strong>
-                        ${escapeHTML(order.status)}
+                        ${escapeHTML(order.orderStatus || "-")}
                     </p>
 
                     ${
@@ -2289,14 +2547,21 @@ async function loadPayment() {
             );
 
         if (!result.response.ok) {
+
             throw new Error(
                 result.data.message ||
                 "Ödeme bilgileri alınamadı."
             );
         }
 
+        /*
+         * SERVER paymentInfo gönderiyor.
+         */
+
         const payment =
-            result.data.payment || {};
+            result.data.paymentInfo ||
+            result.data.payment ||
+            {};
 
         const bank =
             document.getElementById(
@@ -2469,6 +2734,8 @@ function updateDashboard() {
         orders.filter(
             o =>
                 o.paymentStatus ===
+                "pending" ||
+                o.orderStatus ===
                 "Ödeme bekleniyor"
         ).length;
 
@@ -2476,7 +2743,7 @@ function updateDashboard() {
         orders.filter(
             o =>
                 o.paymentStatus ===
-                "Ödeme onaylandı"
+                "paid"
         ).length;
 
     container.innerHTML = `
@@ -2514,6 +2781,13 @@ function updateDashboard() {
 /* =========================================================
    HELPERS
 ========================================================= */
+
+function normalizeTurkish(value) {
+
+    return String(value ?? "")
+        .trim()
+        .toLocaleLowerCase("tr-TR");
+}
 
 function formatPrice(value) {
 
