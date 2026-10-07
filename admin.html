@@ -815,9 +815,10 @@ async function logout() {
 
 /* =========================================================
    NAVIGATION
+   KATEGORİLERİ ÜRÜN SAYFASINA GİRMEDEN ÖNCE YENİLE
 ========================================================= */
 
-function showPage(page, button) {
+async function showPage(page, button) {
 
     document
         .querySelectorAll(".page")
@@ -831,30 +832,56 @@ function showPage(page, button) {
             b.classList.remove("active")
         );
 
-    document
-        .getElementById(
+    const pageElement =
+        document.getElementById(
             "page-" + page
-        )
-        .classList.add("active");
+        );
+
+    if (pageElement) {
+        pageElement.classList.add("active");
+    }
 
     if (button) {
         button.classList.add("active");
     }
 
-    if (page === "orders") {
-        loadOrders();
-    }
+    try {
 
-    if (page === "products") {
-        loadProducts();
-    }
+        if (page === "orders") {
 
-    if (page === "categories") {
-        loadCategories();
-    }
+            await loadOrders();
 
-    if (page === "payment") {
-        loadPayment();
+        }
+
+        if (page === "products") {
+
+            /*
+             * ÖNCE kategorileri yenile.
+             * SONRA ürünleri yükle.
+             */
+            await loadCategories();
+            await loadProducts();
+
+        }
+
+        if (page === "categories") {
+
+            await loadCategories();
+
+        }
+
+        if (page === "payment") {
+
+            await loadPayment();
+
+        }
+
+    } catch(error) {
+
+        console.error(
+            "Sayfa yükleme hatası:",
+            error
+        );
     }
 }
 
@@ -1051,17 +1078,34 @@ function getTotalStock(product) {
 
 /* =========================================================
    PRODUCT FORM
+   ÖNEMLİ: ÜRÜN FORMU AÇILMADAN ÖNCE KATEGORİLERİ YÜKLE
 ========================================================= */
 
-function newProduct() {
+async function newProduct() {
 
     editingProductId = null;
     uploadedImages = [];
 
-    showProductForm();
+    try {
+
+        /*
+         * Yeni ürün formu açılmadan hemen önce
+         * kategorileri sunucudan tekrar alıyoruz.
+         */
+        await loadCategories();
+
+        showProductForm();
+
+    } catch(error) {
+
+        alert(
+            "Kategoriler yüklenemedi: " +
+            error.message
+        );
+    }
 }
 
-function editProduct(id) {
+async function editProduct(id) {
 
     const product =
         products.find(
@@ -1069,6 +1113,24 @@ function editProduct(id) {
         );
 
     if (!product) return;
+
+    try {
+
+        /*
+         * Düzenleme formu açılmadan önce
+         * kategorileri güncelliyoruz.
+         */
+        await loadCategories();
+
+    } catch(error) {
+
+        alert(
+            "Kategoriler yüklenemedi: " +
+            error.message
+        );
+
+        return;
+    }
 
     editingProductId = product.id;
 
@@ -1124,22 +1186,31 @@ function showProductForm(product = null) {
                             Kategori seç
                         </option>
 
-                        ${categories.map(category => `
+                        ${
+                            categories.length
+                                ? categories.map(category => `
 
-                            <option
-                                value="${escapeHTML(category)}"
-                                ${
-                                    product?.category === category
-                                        ? "selected"
-                                        : ""
-                                }
-                            >
-                                ${escapeHTML(category)}
-                            </option>
+                                    <option
+                                        value="${escapeHTML(category)}"
+                                        ${
+                                            product?.category === category
+                                                ? "selected"
+                                                : ""
+                                        }
+                                    >
+                                        ${escapeHTML(category)}
+                                    </option>
 
-                        `).join("")}
+                                `).join("")
+                                : `
+                                    <option value="" disabled>
+                                        Henüz kategori eklenmemiş
+                                    </option>
+                                `
+                        }
 
                     </select>
+
                 </div>
 
                 <div class="form-group">
@@ -1777,7 +1848,7 @@ function renderCategoriesAdmin() {
 }
 
 /* =========================================================
-   KATEGORİ EKLEME - DÜZELTİLDİ
+   KATEGORİ EKLEME
 ========================================================= */
 
 async function addCategory() {
@@ -1823,9 +1894,8 @@ async function addCategory() {
         }
 
         /*
-         * ÖNEMLİ:
          * Kategori eklendikten sonra
-         * sunucudan güncel listeyi tekrar çekiyoruz.
+         * sunucudan güncel listeyi çek.
          */
         await loadCategories();
 
@@ -1882,10 +1952,6 @@ async function deleteCategory(name) {
             );
         }
 
-        /*
-         * Silme işleminden sonra da
-         * güncel listeyi sunucudan çekiyoruz.
-         */
         await loadCategories();
 
     } catch(error) {
