@@ -39,7 +39,7 @@ header{
     position:sticky;
     top:0;
     z-index:1000;
-    box-shadow:0 3px 15px rgba(0,0,0,.18);
+    box-shadow:0 3px 20px rgba(0,0,0,.22);
 }
 
 .header{
@@ -55,7 +55,17 @@ header{
     font-size:24px;
     font-weight:900;
     white-space:nowrap;
-    letter-spacing:.5px;
+    letter-spacing:.7px;
+}
+
+.logo::after{
+    content:"";
+    display:block;
+    height:3px;
+    width:45%;
+    background:#e91e63;
+    border-radius:10px;
+    margin-top:3px;
 }
 
 .search-box{
@@ -68,8 +78,13 @@ header{
     width:100%;
     padding:13px 16px;
     border:0;
-    border-radius:8px 0 0 8px;
+    border-radius:9px 0 0 9px;
     outline:none;
+    font-size:15px;
+}
+
+.search-box input:focus{
+    box-shadow:inset 0 0 0 2px #e91e63;
 }
 
 .search-box button{
@@ -77,7 +92,13 @@ header{
     background:#e91e63;
     color:#fff;
     padding:0 20px;
-    border-radius:0 8px 8px 0;
+    border-radius:0 9px 9px 0;
+    font-weight:bold;
+    transition:.2s;
+}
+
+.search-box button:hover{
+    background:#c2185b;
 }
 
 .cart-button{
@@ -85,13 +106,16 @@ header{
     color:#111;
     border:0;
     padding:12px 16px;
-    border-radius:8px;
+    border-radius:9px;
     white-space:nowrap;
     font-weight:bold;
+    transition:.2s;
 }
 
 .cart-button:hover{
-    background:#eee;
+    background:#e91e63;
+    color:#fff;
+    transform:translateY(-2px);
 }
 
 .category-bar{
@@ -138,7 +162,7 @@ header{
 }
 
 /* =========================================================
-   MODERN VİTRİN
+   VİTRİN
 ========================================================= */
 
 .hero-slider{
@@ -146,7 +170,7 @@ header{
     height:400px;
     border-radius:22px;
     overflow:hidden;
-    margin-bottom:28px;
+    margin-bottom:24px;
     background:#111;
     box-shadow:0 12px 35px rgba(0,0,0,.15);
 }
@@ -315,6 +339,120 @@ header{
     padding:30px;
 }
 
+/* =========================================================
+   GÜVEN ALANI
+========================================================= */
+
+.trust-strip{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:12px;
+    margin-bottom:28px;
+}
+
+.trust-card{
+    background:#fff;
+    border:1px solid #eee;
+    border-radius:14px;
+    padding:17px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    box-shadow:0 5px 18px rgba(0,0,0,.05);
+    transition:.25s;
+}
+
+.trust-card:hover{
+    transform:translateY(-3px);
+    box-shadow:0 10px 25px rgba(0,0,0,.09);
+}
+
+.trust-icon{
+    width:45px;
+    height:45px;
+    min-width:45px;
+    border-radius:12px;
+    background:#fff0f5;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:21px;
+}
+
+.trust-card strong{
+    display:block;
+    font-size:14px;
+    margin-bottom:4px;
+}
+
+.trust-card span{
+    color:#777;
+    font-size:12px;
+}
+
+/* =========================================================
+   KAMPANYALAR
+========================================================= */
+
+.promo-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+    margin-bottom:32px;
+}
+
+.promo-card{
+    position:relative;
+    overflow:hidden;
+    min-height:145px;
+    padding:24px;
+    border-radius:18px;
+    color:#fff;
+    background:
+        linear-gradient(135deg,#111,#333);
+    box-shadow:0 8px 25px rgba(0,0,0,.1);
+}
+
+.promo-card:nth-child(2){
+    background:
+        linear-gradient(135deg,#e91e63,#ad1457);
+}
+
+.promo-card:nth-child(3){
+    background:
+        linear-gradient(135deg,#222,#555);
+}
+
+.promo-card::after{
+    content:"";
+    position:absolute;
+    width:150px;
+    height:150px;
+    border-radius:50%;
+    right:-45px;
+    top:-50px;
+    background:rgba(255,255,255,.09);
+}
+
+.promo-card h3{
+    font-size:20px;
+    margin-bottom:8px;
+    position:relative;
+    z-index:1;
+}
+
+.promo-card p{
+    font-size:13px;
+    line-height:1.5;
+    color:rgba(255,255,255,.82);
+    position:relative;
+    z-index:1;
+}
+
+/* =========================================================
+   BAŞLIKLAR
+========================================================= */
+
 .section-heading{
     display:flex;
     align-items:end;
@@ -343,16 +481,19 @@ header{
 
 .product{
     background:#fff;
-    border-radius:14px;
+    border-radius:16px;
     overflow:hidden;
     box-shadow:0 4px 15px rgba(0,0,0,.07);
-    transition:.25s;
+    transition:
+        transform .25s,
+        box-shadow .25s;
     cursor:pointer;
+    position:relative;
 }
 
 .product:hover{
-    transform:translateY(-5px);
-    box-shadow:0 12px 28px rgba(0,0,0,.12);
+    transform:translateY(-7px);
+    box-shadow:0 16px 35px rgba(0,0,0,.14);
 }
 
 .product-image{
@@ -366,11 +507,68 @@ header{
     width:100%;
     height:100%;
     object-fit:cover;
-    transition:.35s;
+    transition:.45s;
 }
 
 .product:hover .product-image img{
-    transform:scale(1.04);
+    transform:scale(1.07);
+}
+
+.favorite-btn{
+    position:absolute;
+    top:12px;
+    right:12px;
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    border:0;
+    background:rgba(255,255,255,.94);
+    color:#777;
+    font-size:21px;
+    z-index:3;
+    box-shadow:0 4px 12px rgba(0,0,0,.12);
+    transition:.2s;
+}
+
+.favorite-btn:hover{
+    transform:scale(1.08);
+    color:#e91e63;
+}
+
+.favorite-btn.active{
+    color:#e91e63;
+}
+
+.badges{
+    position:absolute;
+    left:12px;
+    top:12px;
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    z-index:2;
+}
+
+.badge{
+    width:max-content;
+    padding:6px 9px;
+    border-radius:7px;
+    background:#111;
+    color:#fff;
+    font-size:11px;
+    font-weight:bold;
+}
+
+.badge.discount{
+    background:#e91e63;
+}
+
+.badge.new{
+    background:#2e7d32;
+}
+
+.badge.best{
+    background:#ff8f00;
 }
 
 .product-info{
@@ -387,6 +585,7 @@ header{
     font-size:18px;
     font-weight:700;
     margin-bottom:10px;
+    min-height:22px;
 }
 
 .price{
@@ -418,6 +617,8 @@ header{
     border:0;
     padding:11px;
     border-radius:8px;
+    transition:.2s;
+    font-weight:bold;
 }
 
 .detail-btn{
@@ -435,6 +636,7 @@ header{
 
 .buy-btn:hover{
     background:#e91e63;
+    transform:translateY(-1px);
 }
 
 .empty{
@@ -596,6 +798,7 @@ header{
     margin-top:35px;
     padding-top:25px;
     border-top:1px solid #ddd;
+    grid-column:1/-1;
 }
 
 .review-section h3{
@@ -807,12 +1010,13 @@ header{
 
 .notice{
     margin-top:15px;
-    padding:13px;
-    border-radius:8px;
+    padding:15px;
+    border-radius:9px;
     background:#ffe7e7;
     color:#9a0000;
     font-weight:bold;
     line-height:1.5;
+    border-left:5px solid #e91e63;
 }
 
 /* =========================================================
@@ -840,6 +1044,14 @@ header{
 }
 
 /* =========================================================
+   MOBİL ALT SEPET
+========================================================= */
+
+.mobile-cart-bar{
+    display:none;
+}
+
+/* =========================================================
    RESPONSIVE
 ========================================================= */
 
@@ -853,16 +1065,27 @@ header{
         height:360px;
     }
 
+    .trust-strip{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .promo-grid{
+        grid-template-columns:1fr 1fr;
+    }
+
 }
 
 @media(max-width:700px){
 
     .header{
         flex-wrap:wrap;
+        padding:12px 15px;
+        gap:10px;
     }
 
     .logo{
-        width:100%;
+        width:auto;
+        font-size:21px;
     }
 
     .search-box{
@@ -871,7 +1094,15 @@ header{
     }
 
     .category-bar{
-        top:128px;
+        top:105px;
+    }
+
+    .categories{
+        padding:9px 15px;
+    }
+
+    .container{
+        padding:12px;
     }
 
     .products{
@@ -925,6 +1156,27 @@ header{
         height:35px;
     }
 
+    .promo-grid{
+        grid-template-columns:1fr;
+    }
+
+    .trust-strip{
+        grid-template-columns:1fr 1fr;
+        gap:8px;
+    }
+
+    .trust-card{
+        padding:12px;
+    }
+
+    .trust-card span{
+        display:none;
+    }
+
+    .section-heading h2{
+        font-size:21px;
+    }
+
 }
 
 @media(max-width:450px){
@@ -945,12 +1197,40 @@ header{
         flex-direction:column;
     }
 
+    .product-image{
+        height:190px;
+    }
+
     .hero-content h1{
         font-size:27px;
     }
 
     .hero-slider{
         height:310px;
+    }
+
+    .trust-card{
+        min-height:70px;
+    }
+
+    .trust-icon{
+        width:38px;
+        height:38px;
+        min-width:38px;
+        font-size:18px;
+    }
+
+    .trust-card strong{
+        font-size:12px;
+    }
+
+    .modal{
+        padding:8px;
+    }
+
+    .modal-box{
+        padding:18px;
+        border-radius:14px;
     }
 
 }
@@ -1001,7 +1281,10 @@ header{
 
 <main class="container">
 
-    <!-- ANA SAYFA VİTRİNİ -->
+    <!-- =====================================================
+         MEVCUT VİTRİN
+         BU KISIM DEĞİŞTİRİLMEDİ
+    ====================================================== -->
 
     <section
         class="hero-slider"
@@ -1010,6 +1293,7 @@ header{
 
         <div class="hero-empty-message">
             <div>
+
                 <h1 style="font-size:38px;margin-bottom:10px">
                     REZAN GİYİM
                 </h1>
@@ -1017,18 +1301,207 @@ header{
                 <p>
                     Tarzını keşfet.
                 </p>
+
             </div>
         </div>
 
     </section>
 
 
-    <section>
+    <!-- =====================================================
+         GÜVEN ALANLARI
+    ====================================================== -->
+
+    <section class="trust-strip">
+
+        <div class="trust-card">
+
+            <div class="trust-icon">
+                🔒
+            </div>
+
+            <div>
+                <strong>Güvenli Ödeme</strong>
+                <span>Güvenli alışveriş deneyimi</span>
+            </div>
+
+        </div>
+
+
+        <div class="trust-card">
+
+            <div class="trust-icon">
+                🚚
+            </div>
+
+            <div>
+                <strong>Hızlı Kargo</strong>
+                <span>Siparişiniz özenle hazırlanır</span>
+            </div>
+
+        </div>
+
+
+        <div class="trust-card">
+
+            <div class="trust-icon">
+                ↩️
+            </div>
+
+            <div>
+                <strong>Kolay İade</strong>
+                <span>Müşteri memnuniyeti önceliğimiz</span>
+            </div>
+
+        </div>
+
+
+        <div class="trust-card">
+
+            <div class="trust-icon">
+                💬
+            </div>
+
+            <div>
+                <strong>Müşteri Desteği</strong>
+                <span>Sorularınız için buradayız</span>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         KAMPANYALAR
+    ====================================================== -->
+
+    <section class="promo-grid">
+
+        <div
+            class="promo-card"
+            onclick="scrollToProducts()"
+            style="cursor:pointer"
+        >
+
+            <h3>
+                🔥 Çok Satanlar
+            </h3>
+
+            <p>
+                Müşterilerin en çok tercih ettiği
+                ürünleri keşfet.
+            </p>
+
+        </div>
+
+
+        <div
+            class="promo-card"
+            onclick="scrollToProducts()"
+            style="cursor:pointer"
+        >
+
+            <h3>
+                🏷️ Fırsat Ürünleri
+            </h3>
+
+            <p>
+                İndirimli ürünleri kaçırmadan
+                hemen incele.
+            </p>
+
+        </div>
+
+
+        <div
+            class="promo-card"
+            onclick="scrollToProducts()"
+            style="cursor:pointer"
+        >
+
+            <h3>
+                🆕 Yeni Gelenler
+            </h3>
+
+            <p>
+                Mağazaya yeni eklenen ürünleri
+                ilk sen keşfet.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         ÇOK SATANLAR
+    ====================================================== -->
+
+    <section id="bestSellerSection">
 
         <div class="section-heading">
 
             <h2>
-                Öne Çıkan Ürünler
+                🔥 Çok Satanlar
+            </h2>
+
+            <span>
+                En çok ilgi gören ürünler
+            </span>
+
+        </div>
+
+        <div
+            class="products"
+            id="bestSellerProducts"
+        ></div>
+
+    </section>
+
+
+    <!-- =====================================================
+         YENİ GELENLER
+    ====================================================== -->
+
+    <section
+        id="newProductsSection"
+        style="margin-top:35px"
+    >
+
+        <div class="section-heading">
+
+            <h2>
+                🆕 Yeni Gelenler
+            </h2>
+
+            <span>
+                En yeni ürünler
+            </span>
+
+        </div>
+
+        <div
+            class="products"
+            id="newProducts"
+        ></div>
+
+    </section>
+
+
+    <!-- =====================================================
+         TÜM ÜRÜNLER
+    ====================================================== -->
+
+    <section
+        id="allProductsSection"
+        style="margin-top:35px"
+    >
+
+        <div class="section-heading">
+
+            <h2>
+                🛍️ Öne Çıkan Ürünler
             </h2>
 
             <span id="productCountText"></span>
@@ -1209,6 +1682,32 @@ let heroSlides = [];
 let currentHeroSlide = 0;
 let heroTimer = null;
 
+let favorites = [];
+
+
+/* =========================================================
+   FAVORİLERİ YÜKLE
+========================================================= */
+
+try {
+
+    favorites =
+        JSON.parse(
+            localStorage.getItem(
+                "rezan_favorites"
+            ) || "[]"
+        );
+
+    if (!Array.isArray(favorites)) {
+        favorites = [];
+    }
+
+} catch {
+
+    favorites = [];
+
+}
+
 
 /* =========================================================
    SEPETİ YÜKLE
@@ -1216,9 +1715,12 @@ let heroTimer = null;
 
 try {
 
-    cart = JSON.parse(
-        localStorage.getItem("rezan_cart") || "[]"
-    );
+    cart =
+        JSON.parse(
+            localStorage.getItem(
+                "rezan_cart"
+            ) || "[]"
+        );
 
     if (!Array.isArray(cart)) {
         cart = [];
@@ -1247,10 +1749,12 @@ document.addEventListener(
 
         await loadProducts();
 
+
         const searchInput =
             document.getElementById(
                 "searchInput"
             );
+
 
         if (searchInput) {
 
@@ -1266,7 +1770,34 @@ document.addEventListener(
 
 
 /* =========================================================
-   ANA SAYFA / VİTRİN YÜKLE
+   ARAMA
+========================================================= */
+
+function searchProducts() {
+
+    const input =
+        document.getElementById(
+            "searchInput"
+        );
+
+
+    searchText =
+        (
+            input?.value || ""
+        )
+        .trim()
+        .toLocaleLowerCase(
+            "tr-TR"
+        );
+
+
+    renderProducts();
+
+}
+
+
+/* =========================================================
+   ANA SAYFA / VİTRİN
 ========================================================= */
 
 async function loadHomepage() {
@@ -1284,14 +1815,19 @@ async function loadHomepage() {
                 }
             );
 
+
         if (!response.ok) {
+
             throw new Error(
                 "Ana sayfa verisi alınamadı."
             );
+
         }
+
 
         const data =
             await response.json();
+
 
         let slides =
             data.slides ||
@@ -1300,9 +1836,11 @@ async function loadHomepage() {
             data.data?.homepage?.slides ||
             [];
 
+
         if (!Array.isArray(slides)) {
             slides = [];
         }
+
 
         heroSlides =
             slides.filter(
@@ -1311,7 +1849,9 @@ async function loadHomepage() {
                     typeof slide === "object"
             );
 
+
         renderHero();
+
 
     } catch(error) {
 
@@ -1319,6 +1859,7 @@ async function loadHomepage() {
             "Vitrin yükleme hatası:",
             error
         );
+
 
         heroSlides = [];
 
@@ -1340,15 +1881,20 @@ function renderHero() {
             "heroSlider"
         );
 
+
     if (!container) return;
+
 
     if (heroTimer) {
 
-        clearInterval(heroTimer);
+        clearInterval(
+            heroTimer
+        );
 
         heroTimer = null;
 
     }
+
 
     if (heroSlides.length === 0) {
 
@@ -1394,6 +1940,7 @@ function renderHero() {
                 document.createElement(
                     "div"
                 );
+
 
             element.className =
                 "hero-slide " +
@@ -1511,11 +2058,14 @@ function renderHero() {
                 "button"
             );
 
+
         prev.className =
             "hero-prev";
 
+
         prev.innerHTML =
             "‹";
+
 
         prev.onclick =
             previousHeroSlide;
@@ -1526,11 +2076,14 @@ function renderHero() {
                 "button"
             );
 
+
         next.className =
             "hero-next";
 
+
         next.innerHTML =
             "›";
+
 
         next.onclick =
             nextHeroSlide;
@@ -1539,6 +2092,7 @@ function renderHero() {
         container.appendChild(
             prev
         );
+
 
         container.appendChild(
             next
@@ -1549,6 +2103,7 @@ function renderHero() {
             document.createElement(
                 "div"
             );
+
 
         dots.className =
             "hero-dots";
@@ -1565,6 +2120,7 @@ function renderHero() {
                         "button"
                     );
 
+
                 dot.className =
                     "hero-dot " +
                     (
@@ -1573,8 +2129,13 @@ function renderHero() {
                             : ""
                     );
 
+
                 dot.onclick =
-                    () => goHeroSlide(index);
+                    () =>
+                        goHeroSlide(
+                            index
+                        );
+
 
                 dots.appendChild(
                     dot
@@ -1611,16 +2172,21 @@ function goHeroSlide(index) {
             ".hero-slide"
         );
 
+
     const dots =
         document.querySelectorAll(
             ".hero-dot"
         );
 
+
     if (!slides.length) return;
 
 
     currentHeroSlide =
-        (index + heroSlides.length) %
+        (
+            index +
+            heroSlides.length
+        ) %
         heroSlides.length;
 
 
@@ -1673,7 +2239,7 @@ function previousHeroSlide() {
 
 
 /* =========================================================
-   VERİYİ DİZİYE ÇEVİR
+   DİZİYE ÇEVİR
 ========================================================= */
 
 function normalizeArray(
@@ -1684,6 +2250,7 @@ function normalizeArray(
     if (Array.isArray(data)) {
         return data;
     }
+
 
     if (!data || typeof data !== "object") {
         return [];
@@ -1718,27 +2285,10 @@ function normalizeArray(
 
         }
 
+
         if (Array.isArray(data.data)) {
             return data.data;
         }
-
-    }
-
-
-    const values =
-        Object.values(data);
-
-
-    if (
-        values.length > 0 &&
-        values.every(
-            item =>
-                item &&
-                typeof item === "object"
-        )
-    ) {
-
-        return values;
 
     }
 
@@ -1758,6 +2308,7 @@ async function loadProducts() {
         document.getElementById(
             "products"
         );
+
 
     try {
 
@@ -1866,7 +2417,7 @@ async function loadProducts() {
 
 
 /* =========================================================
-   KATEGORİLERİ YÜKLE
+   KATEGORİLER
 ========================================================= */
 
 async function loadCategories() {
@@ -1926,6 +2477,7 @@ async function loadCategories() {
             error
         );
 
+
         categories = [];
 
         renderCategories();
@@ -1945,6 +2497,7 @@ function renderCategories() {
         document.getElementById(
             "categoryList"
         );
+
 
     if (!container) return;
 
@@ -2061,6 +2614,7 @@ function getCategoryName(category) {
 
     }
 
+
     return String(
         category || ""
     ).trim();
@@ -2095,11 +2649,6 @@ function getProductCategories(product) {
     }
 
 
-    /*
-     * Eski ürünler için:
-     * category alanı
-     */
-
     if (
         result.length === 0 &&
         product.category
@@ -2124,6 +2673,7 @@ function getProductCategories(product) {
                     product.category
                 );
 
+
             if (category) {
                 result.push(category);
             }
@@ -2140,16 +2690,13 @@ function getProductCategories(product) {
 }
 
 
-/* =========================================================
-   ANA KATEGORİ
-========================================================= */
-
 function getProductCategory(product) {
 
     const list =
         getProductCategories(
             product
         );
+
 
     return list.length
         ? list[0]
@@ -2176,9 +2723,7 @@ function getFilteredProducts() {
                 !product ||
                 typeof product !== "object"
             ) {
-
                 return false;
-
             }
 
 
@@ -2239,6 +2784,31 @@ function getFilteredProducts() {
 
 
 /* =========================================================
+   YORUMLAR
+========================================================= */
+
+function getReviews(product) {
+
+    if (
+        !product ||
+        !Array.isArray(
+            product.reviews
+        )
+    ) {
+        return [];
+    }
+
+
+    return product.reviews.filter(
+        review =>
+            review &&
+            typeof review === "object"
+    );
+
+}
+
+
+/* =========================================================
    ÜRÜN PUANI
 ========================================================= */
 
@@ -2246,6 +2816,7 @@ function getProductRating(product) {
 
     const reviews =
         getReviews(product);
+
 
     if (!reviews.length) {
 
@@ -2296,7 +2867,9 @@ function renderStars(
 
     const rounded =
         Math.round(
-            Number(rating || 0)
+            Number(
+                rating || 0
+            )
         );
 
 
@@ -2326,6 +2899,624 @@ function renderStars(
 
 
 /* =========================================================
+   İNDİRİM YÜZDESİ
+========================================================= */
+
+function getDiscountPercent(product) {
+
+    const oldPrice =
+        Number(
+            product?.oldPrice || 0
+        );
+
+
+    const price =
+        Number(
+            product?.price || 0
+        );
+
+
+    if (
+        oldPrice <= 0 ||
+        price <= 0 ||
+        oldPrice <= price
+    ) {
+        return 0;
+    }
+
+
+    return Math.round(
+        (
+            (
+                oldPrice -
+                price
+            ) /
+            oldPrice
+        ) *
+        100
+    );
+
+}
+
+
+/* =========================================================
+   FAVORİ KONTROL
+========================================================= */
+
+function isFavorite(id) {
+
+    return favorites.some(
+        favorite =>
+            String(favorite) ===
+            String(id)
+    );
+
+}
+
+
+/* =========================================================
+   FAVORİ DEĞİŞTİR
+========================================================= */
+
+function toggleFavorite(
+    id,
+    event
+) {
+
+    if (event) {
+        event.stopPropagation();
+    }
+
+
+    const index =
+        favorites.findIndex(
+            favorite =>
+                String(favorite) ===
+                String(id)
+        );
+
+
+    if (index >= 0) {
+
+        favorites.splice(
+            index,
+            1
+        );
+
+    } else {
+
+        favorites.push(
+            id
+        );
+
+    }
+
+
+    localStorage.setItem(
+        "rezan_favorites",
+        JSON.stringify(
+            favorites
+        )
+    );
+
+
+    renderProducts();
+
+}
+
+
+/* =========================================================
+   SATIŞ SAYISI
+========================================================= */
+
+function getSalesCount(product) {
+
+    return Number(
+        product?.sales ??
+        product?.sold ??
+        product?.soldCount ??
+        product?.ordersCount ??
+        0
+    );
+
+}
+
+
+/* =========================================================
+   YENİ ÜRÜN KONTROL
+========================================================= */
+
+function isNewProduct(
+    product
+) {
+
+    const dateValue =
+        product?.createdAt ||
+        product?.date ||
+        product?.updatedAt;
+
+
+    if (!dateValue) {
+        return false;
+    }
+
+
+    const date =
+        new Date(
+            dateValue
+        );
+
+
+    if (
+        Number.isNaN(
+            date.getTime()
+        )
+    ) {
+        return false;
+    }
+
+
+    const days =
+        (
+            Date.now() -
+            date.getTime()
+        ) /
+        (
+            1000 *
+            60 *
+            60 *
+            24
+        );
+
+
+    return days <= 30;
+
+}
+
+
+/* =========================================================
+   ÜRÜN KARTI OLUŞTUR
+========================================================= */
+
+function createProductCard(
+    product
+) {
+
+    const card =
+        document.createElement(
+            "div"
+        );
+
+
+    card.className =
+        "product";
+
+
+    card.addEventListener(
+        "click",
+        () => {
+
+            openProduct(
+                product.id
+            );
+
+        }
+    );
+
+
+    const images =
+        Array.isArray(
+            product.images
+        )
+            ? product.images
+            : [];
+
+
+    const image =
+        images.length > 0
+            ? images[0]
+            : "";
+
+
+    const rating =
+        getProductRating(
+            product
+        );
+
+
+    const discount =
+        getDiscountPercent(
+            product
+        );
+
+
+    const sales =
+        getSalesCount(
+            product
+        );
+
+
+    const newProduct =
+        isNewProduct(
+            product
+        );
+
+
+    const productCategories =
+        getProductCategories(
+            product
+        );
+
+
+    const categoryText =
+        productCategories.length
+            ? productCategories.join(" • ")
+            : "Genel";
+
+
+    const favorite =
+        isFavorite(
+            product.id
+        );
+
+
+    const imageHTML =
+        image
+            ? `
+                <img
+                    src="${escapeHTML(image)}"
+                    alt="${escapeHTML(product.name || "")}"
+                    onerror="
+                        this.style.display='none';
+                        this.parentElement.innerHTML +=
+                        '<div style=&quot;height:100%;display:flex;align-items:center;justify-content:center;color:#777&quot;>Görsel yüklenemedi</div>'
+                    "
+                >
+            `
+            : `
+                <div style="
+                    height:100%;
+                    display:flex;
+                    align-items:center;
+                    justify-content:center;
+                    color:#777;
+                ">
+                    Görsel yok
+                </div>
+            `;
+
+
+    const badges = [];
+
+
+    if (discount > 0) {
+
+        badges.push(`
+            <span class="badge discount">
+                %${discount} İNDİRİM
+            </span>
+        `);
+
+    }
+
+
+    if (sales > 0) {
+
+        badges.push(`
+            <span class="badge best">
+                🔥 Çok Satan
+            </span>
+        `);
+
+    }
+
+
+    if (newProduct) {
+
+        badges.push(`
+            <span class="badge new">
+                🆕 Yeni
+            </span>
+        `);
+
+    }
+
+
+    card.innerHTML = `
+
+        <div class="product-image">
+
+            ${imageHTML}
+
+
+            ${
+                badges.length
+                    ? `
+                        <div class="badges">
+                            ${badges.join("")}
+                        </div>
+                    `
+                    : ""
+            }
+
+
+            <button
+                class="favorite-btn ${
+                    favorite
+                        ? "active"
+                        : ""
+                }"
+                title="Favorilere ekle"
+            >
+                ${
+                    favorite
+                        ? "♥"
+                        : "♡"
+                }
+            </button>
+
+        </div>
+
+
+        <div class="product-info">
+
+            <div class="product-category">
+
+                ${escapeHTML(
+                    categoryText
+                )}
+
+            </div>
+
+
+            <div class="product-name">
+
+                ${escapeHTML(
+                    product.name ||
+                    "İsimsiz Ürün"
+                )}
+
+            </div>
+
+
+            <div>
+
+                <span class="price">
+
+                    ${formatPrice(
+                        product.price
+                    )}
+
+                </span>
+
+
+                ${
+                    Number(
+                        product.oldPrice
+                    ) >
+                    Number(
+                        product.price
+                    )
+                        ? `
+                            <span class="old-price">
+
+                                ${formatPrice(
+                                    product.oldPrice
+                                )}
+
+                            </span>
+                        `
+                        : ""
+                }
+
+            </div>
+
+
+            ${
+                rating.count
+                    ? `
+                        <div class="product-rating">
+
+                            ${renderStars(
+                                rating.average,
+                                true
+                            )}
+
+                            ${rating.average.toFixed(1)}
+
+                            ·
+
+                            ${rating.count}
+                            yorum
+
+                        </div>
+                    `
+                    : `
+                        <div class="product-rating">
+                            ☆ Henüz puan yok
+                        </div>
+                    `
+            }
+
+
+            <div class="product-actions">
+
+                <button
+                    class="detail-btn"
+                >
+                    İncele
+                </button>
+
+
+                <button
+                    class="buy-btn"
+                >
+                    🛒 Sepete Ekle
+                </button>
+
+            </div>
+
+        </div>
+
+    `;
+
+
+    const favoriteButton =
+        card.querySelector(
+            ".favorite-btn"
+        );
+
+
+    if (favoriteButton) {
+
+        favoriteButton.addEventListener(
+            "click",
+            event => {
+
+                toggleFavorite(
+                    product.id,
+                    event
+                );
+
+            }
+        );
+
+    }
+
+
+    const buttons =
+        card.querySelectorAll(
+            ".product-actions button"
+        );
+
+
+    if (buttons[0]) {
+
+        buttons[0].addEventListener(
+            "click",
+            event => {
+
+                event.stopPropagation();
+
+                openProduct(
+                    product.id
+                );
+
+            }
+        );
+
+    }
+
+
+    if (buttons[1]) {
+
+        buttons[1].addEventListener(
+            "click",
+            event => {
+
+                event.stopPropagation();
+
+                addProductDirectlyToCart(
+                    product
+                );
+
+            }
+        );
+
+    }
+
+
+    return card;
+
+}
+
+
+/* =========================================================
+   ÜRÜNÜ DOĞRUDAN SEPETE EKLE
+========================================================= */
+
+function addProductDirectlyToCart(
+    product
+) {
+
+    if (
+        Array.isArray(
+            product.sizes
+        ) &&
+        product.sizes.length > 0
+    ) {
+
+        openProduct(
+            product.id
+        );
+
+        return;
+
+    }
+
+
+    const existing =
+        cart.find(
+            item =>
+                String(
+                    item.productId
+                ) ===
+                String(
+                    product.id
+                ) &&
+                !item.size
+        );
+
+
+    if (existing) {
+
+        existing.quantity += 1;
+
+    } else {
+
+        cart.push({
+
+            productId:
+                product.id,
+
+            name:
+                product.name,
+
+            price:
+                Number(
+                    product.price || 0
+                ),
+
+            image:
+                Array.isArray(
+                    product.images
+                ) &&
+                product.images.length
+                    ? product.images[0]
+                    : "",
+
+            size:"",
+
+            quantity:1
+
+        });
+
+    }
+
+
+    saveCart();
+
+    updateCartCount();
+
+
+    alert(
+        "Ürün sepete eklendi."
+    );
+
+}
+
+
+/* =========================================================
    ÜRÜNLERİ GÖSTER
 ========================================================= */
 
@@ -2336,12 +3527,8 @@ function renderProducts() {
             "products"
         );
 
+
     if (!container) return;
-
-
-    if (!Array.isArray(products)) {
-        products = [];
-    }
 
 
     const filtered =
@@ -2379,267 +3566,242 @@ function renderProducts() {
 
         `;
 
-        return;
+    } else {
+
+        filtered.forEach(
+            product => {
+
+                container.appendChild(
+                    createProductCard(
+                        product
+                    )
+                );
+
+            }
+        );
 
     }
 
 
-    filtered.forEach(
-        product => {
-
-            const card =
-                document.createElement(
-                    "div"
-                );
-
-
-            card.className =
-                "product";
-
-
-            /*
-             * ÜRÜNÜN HER YERİNE TIKLAYINCA
-             * DETAY AÇILIR.
-             */
-
-            card.addEventListener(
-                "click",
-                () => {
-
-                    openProduct(
-                        product.id
-                    );
-
-                }
-            );
-
-
-            const images =
-                Array.isArray(
-                    product.images
-                )
-                    ? product.images
-                    : [];
-
-
-            const image =
-                images.length > 0
-                    ? images[0]
-                    : "";
-
-
-            const imageHTML =
-                image
-                    ? `
-                        <img
-                            src="${escapeHTML(image)}"
-                            alt="${escapeHTML(product.name || "")}"
-                            onerror="
-                                this.style.display='none';
-                                this.parentElement.innerHTML=
-                                '<div style=&quot;height:100%;display:flex;align-items:center;justify-content:center;color:#777&quot;>Görsel yüklenemedi</div>'
-                            "
-                        >
-                    `
-                    : `
-                        <div style="
-                            height:100%;
-                            display:flex;
-                            align-items:center;
-                            justify-content:center;
-                            color:#777">
-                            Görsel yok
-                        </div>
-                    `;
-
-
-            const productCategories =
-                getProductCategories(
-                    product
-                );
-
-
-            const categoryText =
-                productCategories.length
-                    ? productCategories.join(" • ")
-                    : "Genel";
-
-
-            const rating =
-                getProductRating(
-                    product
-                );
-
-
-            card.innerHTML = `
-
-                <div class="product-image">
-
-                    ${imageHTML}
-
-                </div>
-
-
-                <div class="product-info">
-
-                    <div class="product-category">
-
-                        ${escapeHTML(
-                            categoryText
-                        )}
-
-                    </div>
-
-
-                    <div class="product-name">
-
-                        ${escapeHTML(
-                            product.name ||
-                            "İsimsiz Ürün"
-                        )}
-
-                    </div>
-
-
-                    <div>
-
-                        <span class="price">
-
-                            ${formatPrice(
-                                product.price
-                            )}
-
-                        </span>
-
-
-                        ${
-                            Number(
-                                product.oldPrice
-                            ) >
-                            Number(
-                                product.price
-                            )
-                                ? `
-
-                                    <span class="old-price">
-
-                                        ${formatPrice(
-                                            product.oldPrice
-                                        )}
-
-                                    </span>
-
-                                `
-                                : ""
-                        }
-
-                    </div>
-
-
-                    ${
-                        rating.count
-                            ? `
-
-                                <div class="product-rating">
-
-                                    ${renderStars(
-                                        rating.average,
-                                        true
-                                    )}
-
-                                    ${rating.average.toFixed(1)}
-                                    ·
-                                    ${rating.count}
-                                    yorum
-
-                                </div>
-
-                            `
-                            : ""
-                    }
-
-
-                    <div class="product-actions">
-
-                        <button
-                            class="detail-btn"
-                        >
-                            İncele
-                        </button>
-
-
-                        <button
-                            class="buy-btn"
-                        >
-                            Satın Al
-                        </button>
-
-                    </div>
-
-                </div>
-
-            `;
-
-
-            /*
-             * Buton tıklamalarında kartın
-             * tekrar tetiklenmesini engelle.
-             */
-
-            const buttons =
-                card.querySelectorAll(
-                    "button"
-                );
-
-
-            if (buttons[0]) {
-
-                buttons[0].addEventListener(
-                    "click",
-                    event => {
-
-                        event.stopPropagation();
-
-                        openProduct(
-                            product.id
-                        );
-
-                    }
-                );
-
-            }
-
-
-            if (buttons[1]) {
-
-                buttons[1].addEventListener(
-                    "click",
-                    event => {
-
-                        event.stopPropagation();
-
-                        openProduct(
-                            product.id
-                        );
-
-                    }
-                );
-
-            }
-
-
-            container.appendChild(
-                card
-            );
-
-        }
-    );
+    renderSpecialSections();
 
 }
 
 
 /* =========================================================
-   ÜRÜN DETAYINI AÇ
+   ÖZEL ÜRÜN SEKSİYONLARI
+========================================================= */
+
+function renderSpecialSections() {
+
+    const bestContainer =
+        document.getElementById(
+            "bestSellerProducts"
+        );
+
+
+    const newContainer =
+        document.getElementById(
+            "newProducts"
+        );
+
+
+    if (!bestContainer || !newContainer) {
+        return;
+    }
+
+
+    let sorted =
+        products
+            .slice()
+            .filter(
+                product =>
+                    product &&
+                    typeof product === "object"
+            );
+
+
+    sorted.sort(
+        (a,b) => {
+
+            const salesA =
+                getSalesCount(a);
+
+
+            const salesB =
+                getSalesCount(b);
+
+
+            if (salesA !== salesB) {
+                return salesB - salesA;
+            }
+
+
+            const ratingA =
+                getProductRating(a).average;
+
+
+            const ratingB =
+                getProductRating(b).average;
+
+
+            return ratingB - ratingA;
+
+        }
+    );
+
+
+    const best =
+        sorted
+            .filter(
+                product =>
+                    getSalesCount(
+                        product
+                    ) > 0
+            )
+            .slice(
+                0,
+                4
+            );
+
+
+    bestContainer.innerHTML = "";
+
+
+    if (best.length === 0) {
+
+        bestContainer.innerHTML = `
+
+            <div class="empty">
+
+                Çok satan ürünler
+                yakında burada görünecek.
+
+            </div>
+
+        `;
+
+    } else {
+
+        best.forEach(
+            product => {
+
+                bestContainer.appendChild(
+                    createProductCard(
+                        product
+                    )
+                );
+
+            }
+        );
+
+    }
+
+
+    const newProducts =
+        products
+            .slice()
+            .sort(
+                (a,b) => {
+
+                    const dateA =
+                        new Date(
+                            a.createdAt ||
+                            a.date ||
+                            a.updatedAt ||
+                            0
+                        ).getTime();
+
+
+                    const dateB =
+                        new Date(
+                            b.createdAt ||
+                            b.date ||
+                            b.updatedAt ||
+                            0
+                        ).getTime();
+
+
+                    if (
+                        Number.isNaN(dateA) ||
+                        Number.isNaN(dateB)
+                    ) {
+
+                        return 0;
+
+                    }
+
+
+                    return dateB - dateA;
+
+                }
+            )
+            .slice(
+                0,
+                4
+            );
+
+
+    newContainer.innerHTML = "";
+
+
+    if (newProducts.length === 0) {
+
+        newContainer.innerHTML = `
+
+            <div class="empty">
+
+                Yeni ürün bulunmuyor.
+
+            </div>
+
+        `;
+
+    } else {
+
+        newProducts.forEach(
+            product => {
+
+                newContainer.appendChild(
+                    createProductCard(
+                        product
+                    )
+                );
+
+            }
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   ÜRÜNLERE KAYDIR
+========================================================= */
+
+function scrollToProducts() {
+
+    const element =
+        document.getElementById(
+            "allProductsSection"
+        );
+
+
+    if (element) {
+
+        element.scrollIntoView({
+            behavior:"smooth",
+            block:"start"
+        });
+
+    }
+
+}
+
+
+/* =========================================================
+   ÜRÜN DETAYI
 ========================================================= */
 
 function openProduct(id) {
@@ -2668,6 +3830,7 @@ function openProduct(id) {
 
     selectedReviewRating = 5;
 
+
     renderProductDetail();
 
 
@@ -2683,33 +3846,6 @@ function openProduct(id) {
 
 
 /* =========================================================
-   YORUMLARI AL
-========================================================= */
-
-function getReviews(product) {
-
-    if (
-        !product ||
-        !Array.isArray(
-            product.reviews
-        )
-    ) {
-
-        return [];
-
-    }
-
-
-    return product.reviews.filter(
-        review =>
-            review &&
-            typeof review === "object"
-    );
-
-}
-
-
-/* =========================================================
    ÜRÜN DETAYINI GÖSTER
 ========================================================= */
 
@@ -2717,6 +3853,7 @@ function renderProductDetail() {
 
     const p =
         selectedProduct;
+
 
     if (!p) return;
 
@@ -2823,6 +3960,7 @@ function renderProductDetail() {
             <p>
 
                 Stok:
+
                 <strong>
                     ${Number(
                         p.stock || 0
@@ -2842,6 +3980,12 @@ function renderProductDetail() {
         );
 
 
+    const discount =
+        getDiscountPercent(
+            p
+        );
+
+
     document.getElementById(
         "productDetail"
     ).innerHTML = `
@@ -2853,21 +3997,13 @@ function renderProductDetail() {
                 ${
                     mainImage
                         ? `
-
                             <img
                                 id="mainProductImage"
                                 src="${escapeHTML(mainImage)}"
                                 alt="${escapeHTML(p.name || "")}"
-                                onerror="
-                                    this.style.display='none';
-                                    this.parentElement.innerHTML=
-                                    '<div style=&quot;height:100%;display:flex;align-items:center;justify-content:center;color:#777&quot;>Görsel yüklenemedi</div>'
-                                "
                             >
-
                         `
                         : `
-
                             <div style="
                                 height:100%;
                                 display:flex;
@@ -2878,7 +4014,6 @@ function renderProductDetail() {
                                 Görsel yok
 
                             </div>
-
                         `
                 }
 
@@ -2960,13 +4095,13 @@ function renderProductDetail() {
 
                     `
                     : `
-
-                        <div style="margin-top:8px;color:#777">
+                        <div style="
+                            margin-top:8px;
+                            color:#777">
 
                             Henüz yorum yapılmamış.
 
                         </div>
-
                     `
             }
 
@@ -3001,6 +4136,22 @@ function renderProductDetail() {
             </div>
 
 
+            ${
+                discount > 0
+                    ? `
+                        <div style="
+                            color:#e91e63;
+                            font-weight:bold;
+                            margin-bottom:10px">
+
+                            🏷️ %${discount} indirim
+
+                        </div>
+                    `
+                    : ""
+            }
+
+
             <p style="
                 line-height:1.7;
                 margin-bottom:20px">
@@ -3020,7 +4171,9 @@ function renderProductDetail() {
                 class="big-buy"
                 onclick="addSelectedProductToCart()"
             >
+
                 🛒 Sepete Ekle
+
             </button>
 
         </div>
@@ -3050,7 +4203,9 @@ function renderProductDetail() {
                                 rating.average
                             )}
 
-                            <div style="color:#777;margin-top:5px">
+                            <div style="
+                                color:#777;
+                                margin-top:5px">
 
                                 ${rating.count}
                                 müşteri değerlendirmesi
@@ -3304,7 +4459,7 @@ function renderReviewList(product) {
 
 
 /* =========================================================
-   YORUM PUANI SEÇ
+   YORUM PUANI
 ========================================================= */
 
 function selectReviewRating(rating) {
@@ -3348,6 +4503,10 @@ function selectReviewRating(rating) {
 async function submitReview() {
 
     if (!selectedProduct) return;
+
+
+    const selectedId =
+        selectedProduct.id;
 
 
     const nameInput =
@@ -3402,7 +4561,7 @@ async function submitReview() {
             await fetch(
                 "/api/products/" +
                 encodeURIComponent(
-                    selectedProduct.id
+                    selectedId
                 ) +
                 "/reviews",
                 {
@@ -3446,11 +4605,6 @@ async function submitReview() {
         }
 
 
-        /*
-         * Sunucu güncel ürünü döndürürse
-         * onu kullan.
-         */
-
         const updatedProduct =
             data.product ||
             data.data?.product;
@@ -3468,9 +4622,11 @@ async function submitReview() {
             const index =
                 products.findIndex(
                     product =>
-                        String(product.id) ===
                         String(
-                            selectedProduct.id
+                            product.id
+                        ) ===
+                        String(
+                            selectedId
                         )
                 );
 
@@ -3484,20 +4640,17 @@ async function submitReview() {
 
         } else {
 
-            /*
-             * Sunucu ürünü döndürmüyorsa
-             * ürünleri yeniden çek.
-             */
-
             await loadProducts();
 
 
             selectedProduct =
                 products.find(
                     product =>
-                        String(product.id) ===
                         String(
-                            selectedProduct.id
+                            product.id
+                        ) ===
+                        String(
+                            selectedId
                         )
                 );
 
@@ -3511,7 +4664,11 @@ async function submitReview() {
 
         selectedReviewRating = 5;
 
+
         renderProductDetail();
+
+
+        renderProducts();
 
 
     } catch(error) {
@@ -3541,6 +4698,7 @@ function selectSize(size) {
     selectedSize =
         String(size);
 
+
     renderProductDetail();
 
 }
@@ -3559,7 +4717,10 @@ function changeMainImage(src) {
 
 
     if (image) {
-        image.src = src;
+
+        image.src =
+            src;
+
     }
 
 }
@@ -3599,7 +4760,9 @@ function addSelectedProductToCart() {
                 String(
                     item.productId
                 ) ===
-                String(p.id) &&
+                String(
+                    p.id
+                ) &&
                 String(
                     item.size || ""
                 ) ===
@@ -3649,6 +4812,7 @@ function addSelectedProductToCart() {
     saveCart();
 
     updateCartCount();
+
 
     closeModal(
         "productModal"
@@ -3802,7 +4966,8 @@ function renderCart() {
                 );
 
 
-            total += itemTotal;
+            total +=
+                itemTotal;
 
 
             const div =
@@ -3820,12 +4985,10 @@ function renderCart() {
                 ${
                     item.image
                         ? `
-
                             <img
                                 src="${escapeHTML(item.image)}"
                                 alt="${escapeHTML(item.name || "")}"
                             >
-
                         `
                         : ""
                 }
@@ -3887,7 +5050,9 @@ function renderCart() {
     document.getElementById(
         "cartTotal"
     ).textContent =
-        formatPrice(total);
+        formatPrice(
+            total
+        );
 
 
     checkout.innerHTML = `
@@ -4034,6 +5199,7 @@ async function createOrder() {
                     id
                 );
 
+
             return element
                 ? element.value.trim()
                 : "";
@@ -4096,7 +5262,10 @@ async function createOrder() {
     }
 
 
-    if (customer.note.length > 1000) {
+    if (
+        customer.note.length >
+        1000
+    ) {
 
         alert(
             "Sipariş notu en fazla 1000 karakter olabilir."
@@ -4218,10 +5387,6 @@ async function showPayment(order) {
     }
 
 
-    /*
-     * Server.js'deki varsayılan açıklama.
-     */
-
     const paymentDescription =
         payment.description ||
         payment.importantNote ||
@@ -4316,7 +5481,9 @@ async function showPayment(order) {
 
             <div class="notice">
 
-                ⚠️ ÖNEMLİ:
+                📢 SATICI NOTU
+
+                <br><br>
 
                 ${escapeHTML(
                     paymentDescription
@@ -4350,7 +5517,7 @@ async function showPayment(order) {
 
 
 /* =========================================================
-   SİPARİŞ TAKİP MODALI
+   TAKİP
 ========================================================= */
 
 function openTracking() {
@@ -4365,10 +5532,6 @@ function openTracking() {
 
 }
 
-
-/* =========================================================
-   SİPARİŞ TAKİP
-========================================================= */
 
 async function trackOrder() {
 
@@ -4406,7 +5569,9 @@ async function trackOrder() {
         const response =
             await fetch(
                 "/api/orders/" +
-                encodeURIComponent(id)
+                encodeURIComponent(
+                    id
+                )
             );
 
 
@@ -4572,7 +5737,9 @@ async function trackOrder() {
 function formatPrice(value) {
 
     const number =
-        Number(value || 0);
+        Number(
+            value || 0
+        );
 
 
     return number.toLocaleString(
@@ -4761,7 +5928,7 @@ function escapeJS(value) {
 
 
 /* =========================================================
-   MODAL DIŞINA TIKLAYINCA KAPAT
+   MODAL DIŞINA TIKLAMA
 ========================================================= */
 
 document.addEventListener(
@@ -4785,7 +5952,7 @@ document.addEventListener(
 
 
 /* =========================================================
-   ESC İLE KAPAT
+   ESC
 ========================================================= */
 
 document.addEventListener(
