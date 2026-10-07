@@ -1776,6 +1776,10 @@ function renderCategoriesAdmin() {
         ).join("");
 }
 
+/* =========================================================
+   KATEGORİ EKLEME - DÜZELTİLDİ
+========================================================= */
+
 async function addCategory() {
 
     const input =
@@ -1818,22 +1822,36 @@ async function addCategory() {
             );
         }
 
-        categories =
-            result.data.categories || [];
+        /*
+         * ÖNEMLİ:
+         * Kategori eklendikten sonra
+         * sunucudan güncel listeyi tekrar çekiyoruz.
+         */
+        await loadCategories();
 
         input.value = "";
 
-        renderCategoriesAdmin();
-
         alert(
-            "Kategori eklendi."
+            "Kategori başarıyla eklendi."
         );
 
     } catch(error) {
 
-        alert(error.message);
+        console.error(
+            "Kategori ekleme hatası:",
+            error
+        );
+
+        alert(
+            error.message ||
+            "Kategori eklenemedi."
+        );
     }
 }
+
+/* =========================================================
+   DELETE CATEGORY
+========================================================= */
 
 async function deleteCategory(name) {
 
@@ -1864,10 +1882,11 @@ async function deleteCategory(name) {
             );
         }
 
-        categories =
-            result.data.categories || [];
-
-        renderCategoriesAdmin();
+        /*
+         * Silme işleminden sonra da
+         * güncel listeyi sunucudan çekiyoruz.
+         */
+        await loadCategories();
 
     } catch(error) {
 
