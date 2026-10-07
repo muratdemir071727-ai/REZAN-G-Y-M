@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -699,6 +698,10 @@ try {
     cart = JSON.parse(
         localStorage.getItem("rezan_cart") || "[]"
     );
+
+    if (!Array.isArray(cart)) {
+        cart = [];
+    }
 } catch {
     cart = [];
 }
@@ -709,18 +712,20 @@ try {
 
 document.addEventListener("DOMContentLoaded", async () => {
 
+    updateCartCount();
+
     await loadCategories();
     await loadProducts();
-
-    updateCartCount();
 
     const searchInput =
         document.getElementById("searchInput");
 
-    searchInput.addEventListener(
-        "input",
-        searchProducts
-    );
+    if (searchInput) {
+        searchInput.addEventListener(
+            "input",
+            searchProducts
+        );
+    }
 });
 
 /* =========================================================
@@ -732,23 +737,71 @@ async function loadProducts() {
     try {
 
         const response =
-            await fetch("/api/products");
+            await fetch("/api/products", {
+                method: "GET",
+                cache: "no-store"
+            });
 
         if (!response.ok) {
-            throw new Error("Ürünler alınamadı.");
+            throw new Error(
+                "Ürünler alınamadı. HTTP " +
+                response.status
+            );
         }
 
-        products = await response.json();
+        const data =
+            await response.json();
+
+        /*
+         * API iki farklı şekilde cevap verebilir:
+         *
+         * 1) [...]
+         *
+         * 2) { products: [...] }
+         *
+         * İkisini de destekliyoruz.
+         */
+
+        if (Array.isArray(data)) {
+
+            products = data;
+
+        } else if (
+            data &&
+            Array.isArray(data.products)
+        ) {
+
+            products = data.products;
+
+        } else {
+
+            products = [];
+        }
+
+        console.log(
+            "REZAN GİYİM - Yüklenen ürünler:",
+            products
+        );
 
         renderProducts();
 
     } catch (error) {
 
-        console.error(error);
+        console.error(
+            "Ürün yükleme hatası:",
+            error
+        );
 
-        document.getElementById("products").innerHTML = `
+        products = [];
+
+        document.getElementById(
+            "products"
+        ).innerHTML = `
             <div class="empty">
-                Ürünler yüklenirken hata oluştu.
+                Ürünler yüklenirken hata oluştu.<br><br>
+                <small>
+                    ${escapeHTML(error.message)}
+                </small>
             </div>
         `;
     }
@@ -763,21 +816,58 @@ async function loadCategories() {
     try {
 
         const response =
-            await fetch("/api/categories");
+            await fetch("/api/categories", {
+                method: "GET",
+                cache: "no-store"
+            });
+
+        if (!response.ok) {
+            throw new Error(
+                "Kategoriler alınamadı. HTTP " +
+                response.status
+            );
+        }
 
         const data =
             await response.json();
 
-        categories =
+        /*
+         * API iki farklı şekilde cevap verebilir:
+         *
+         * 1) ["Erkek", "Kadın"]
+         *
+         * 2) { categories: ["Erkek", "Kadın"] }
+         */
+
+        if (Array.isArray(data)) {
+
+            categories = data;
+
+        } else if (
+            data &&
             Array.isArray(data.categories)
-                ? data.categories
-                : [];
+        ) {
+
+            categories = data.categories;
+
+        } else {
+
+            categories = [];
+        }
+
+        console.log(
+            "REZAN GİYİM - Yüklenen kategoriler:",
+            categories
+        );
 
         renderCategories();
 
     } catch (error) {
 
-        console.error(error);
+        console.error(
+            "Kategori yükleme hatası:",
+            error
+        );
 
         categories = [];
 
@@ -790,6 +880,8 @@ function renderCategories() {
     const container =
         document.getElementById("categoryList");
 
+    if (!container) return;
+
     container.innerHTML = "";
 
     const allButton =
@@ -797,7 +889,11 @@ function renderCategories() {
 
     allButton.className =
         "category-btn " +
-        (activeCategory === "Tümü" ? "active" : "");
+        (
+            activeCategory === "Tümü"
+                ? "active"
+                : ""
+        );
 
     allButton.textContent = "Tümü";
 
@@ -813,20 +909,51 @@ function renderCategories() {
 
     categories.forEach(category => {
 
+        /*
+         * Kategori bazen obje olarak gelebilir.
+         * Örneğin:
+         * { name: "Erkek" }
+         */
+
+        let categoryName = "";
+
+        if (
+            typeof category === "object" &&
+            category !== null
+        ) {
+            categoryName =
+                category.name ||
+                category.title ||
+                category.category ||
+                "";
+        } else {
+            categoryName =
+                String(category || "");
+        }
+
+        categoryName =
+            categoryName.trim();
+
+        if (!categoryName) return;
+
         const button =
             document.createElement("button");
 
         button.className =
             "category-btn " +
-            (activeCategory === category
-                ? "active"
-                : "");
+            (
+                activeCategory === categoryName
+                    ? "active"
+                    : ""
+            );
 
-        button.textContent = category;
+        button.textContent =
+            categoryName;
 
         button.onclick = () => {
 
-            activeCategory = category;
+            activeCategory =
+                categoryName;
 
             renderCategories();
             renderProducts();
@@ -842,10 +969,13 @@ function renderCategories() {
 
 function searchProducts() {
 
+    const input =
+        document.getElementById("searchInput");
+
+    if (!input) return;
+
     searchText =
-        document
-            .getElementById("searchInput")
-            .value
+        input.value
             .trim()
             .toLocaleLowerCase("tr-TR");
 
@@ -856,21 +986,47 @@ function searchProducts() {
    FILTER
 ========================================================= */
 
+function getProductCategory(product) {
+
+    if (!product) return "";
+
+    if (
+        typeof product.category === "object" &&
+        product.category !== null
+    ) {
+
+        return String(
+            product.category.name ||
+            product.category.title ||
+            product.category.category ||
+            ""
+        );
+    }
+
+    return String(
+        product.category || ""
+    );
+}
+
 function getFilteredProducts() {
 
     return products.filter(product => {
 
+        const productCategory =
+            getProductCategory(product);
+
         const categoryOK =
             activeCategory === "Tümü" ||
-            String(product.category || "")
+            productCategory
                 .toLocaleLowerCase("tr-TR") ===
-            activeCategory.toLocaleLowerCase("tr-TR");
+            activeCategory
+                .toLocaleLowerCase("tr-TR");
 
         const text =
             (
                 String(product.name || "") +
                 " " +
-                String(product.category || "") +
+                productCategory +
                 " " +
                 String(product.description || "")
             )
@@ -892,6 +1048,8 @@ function renderProducts() {
 
     const container =
         document.getElementById("products");
+
+    if (!container) return;
 
     const filtered =
         getFilteredProducts();
@@ -916,18 +1074,38 @@ function renderProducts() {
 
         card.className = "product";
 
+        const images =
+            Array.isArray(product.images)
+                ? product.images
+                : [];
+
         const image =
-            product.images &&
-            product.images.length
-                ? product.images[0]
+            images.length
+                ? images[0]
                 : "";
 
         const imageHTML =
             image
-                ? `<img src="${escapeHTML(image)}" alt="${escapeHTML(product.name)}">`
-                : `<div style="height:100%;display:flex;align-items:center;justify-content:center;color:#777">
-                    Görsel yok
-                   </div>`;
+                ? `
+                    <img
+                        src="${escapeHTML(image)}"
+                        alt="${escapeHTML(product.name)}"
+                        onerror="this.style.display='none';this.parentElement.innerHTML='<div style=&quot;height:100%;display:flex;align-items:center;justify-content:center;color:#777&quot;>Görsel yüklenemedi</div>'"
+                    >
+                  `
+                : `
+                    <div style="
+                        height:100%;
+                        display:flex;
+                        align-items:center;
+                        justify-content:center;
+                        color:#777">
+                        Görsel yok
+                    </div>
+                  `;
+
+        const category =
+            getProductCategory(product);
 
         card.innerHTML = `
             <div class="product-image">
@@ -937,11 +1115,11 @@ function renderProducts() {
             <div class="product-info">
 
                 <div class="product-category">
-                    ${escapeHTML(product.category || "Genel")}
+                    ${escapeHTML(category || "Genel")}
                 </div>
 
                 <div class="product-name">
-                    ${escapeHTML(product.name)}
+                    ${escapeHTML(product.name || "İsimsiz Ürün")}
                 </div>
 
                 <div>
@@ -950,7 +1128,8 @@ function renderProducts() {
                     </span>
 
                     ${
-                        Number(product.oldPrice) > Number(product.price)
+                        Number(product.oldPrice) >
+                        Number(product.price)
                             ? `
                                 <span class="old-price">
                                     ${formatPrice(product.oldPrice)}
@@ -996,7 +1175,15 @@ function openProduct(id) {
             p => String(p.id) === String(id)
         );
 
-    if (!selectedProduct) return;
+    if (!selectedProduct) {
+
+        console.error(
+            "Ürün bulunamadı:",
+            id
+        );
+
+        return;
+    }
 
     selectedSize = "";
 
@@ -1010,6 +1197,8 @@ function openProduct(id) {
 function renderProductDetail() {
 
     const p = selectedProduct;
+
+    if (!p) return;
 
     const images =
         Array.isArray(p.images)
@@ -1033,13 +1222,23 @@ function renderProductDetail() {
 
                 ${p.sizes.map(size => {
 
+                    if (
+                        typeof size !== "object" ||
+                        size === null
+                    ) {
+                        size = {
+                            name: String(size),
+                            stock: 1
+                        };
+                    }
+
                     const stock =
                         Number(size.stock || 0);
 
                     return `
                         <button
                             class="size-btn ${
-                                selectedSize === size.name
+                                selectedSize === String(size.name)
                                     ? "selected"
                                     : ""
                             } ${
@@ -1054,6 +1253,7 @@ function renderProductDetail() {
                             }
                         >
                             ${escapeHTML(size.name)}
+
                             ${
                                 stock <= 0
                                     ? " - Tükendi"
@@ -1079,7 +1279,9 @@ function renderProductDetail() {
         `;
     }
 
-    document.getElementById("productDetail").innerHTML = `
+    document.getElementById(
+        "productDetail"
+    ).innerHTML = `
 
         <div>
 
@@ -1087,19 +1289,24 @@ function renderProductDetail() {
 
                 ${
                     mainImage
-                        ? `<img
-                            id="mainProductImage"
-                            src="${escapeHTML(mainImage)}"
-                            alt="${escapeHTML(p.name)}"
-                           >`
-                        : `<div style="
-                            height:100%;
-                            display:flex;
-                            align-items:center;
-                            justify-content:center;
-                            color:#777">
-                            Görsel yok
-                           </div>`
+                        ? `
+                            <img
+                                id="mainProductImage"
+                                src="${escapeHTML(mainImage)}"
+                                alt="${escapeHTML(p.name)}"
+                                onerror="this.style.display='none';this.parentElement.innerHTML='<div style=&quot;height:100%;display:flex;align-items:center;justify-content:center;color:#777&quot;>Görsel yüklenemedi</div>'"
+                            >
+                          `
+                        : `
+                            <div style="
+                                height:100%;
+                                display:flex;
+                                align-items:center;
+                                justify-content:center;
+                                color:#777">
+                                Görsel yok
+                            </div>
+                          `
                 }
 
             </div>
@@ -1107,18 +1314,18 @@ function renderProductDetail() {
             ${
                 images.length > 1
                     ? `
-                    <div class="thumbs">
+                        <div class="thumbs">
 
-                        ${images.map((img, index) => `
-                            <img
-                                src="${escapeHTML(img)}"
-                                onclick="changeMainImage('${escapeJS(img)}')"
-                                alt=""
-                            >
-                        `).join("")}
+                            ${images.map(img => `
+                                <img
+                                    src="${escapeHTML(img)}"
+                                    onclick="changeMainImage('${escapeJS(img)}')"
+                                    alt=""
+                                >
+                            `).join("")}
 
-                    </div>
-                    `
+                        </div>
+                      `
                     : ""
             }
 
@@ -1127,18 +1334,23 @@ function renderProductDetail() {
         <div>
 
             <div class="product-category">
-                ${escapeHTML(p.category || "Genel")}
+                ${escapeHTML(
+                    getProductCategory(p) || "Genel"
+                )}
             </div>
 
             <h2>
-                ${escapeHTML(p.name)}
+                ${escapeHTML(
+                    p.name || "İsimsiz Ürün"
+                )}
             </h2>
 
             <div class="detail-price">
                 ${formatPrice(p.price)}
 
                 ${
-                    Number(p.oldPrice) > Number(p.price)
+                    Number(p.oldPrice) >
+                    Number(p.price)
                         ? `
                             <span class="old-price">
                                 ${formatPrice(p.oldPrice)}
@@ -1148,8 +1360,13 @@ function renderProductDetail() {
                 }
             </div>
 
-            <p style="line-height:1.7;margin-bottom:20px">
-                ${escapeHTML(p.description || "Ürün açıklaması bulunmuyor.")}
+            <p style="
+                line-height:1.7;
+                margin-bottom:20px">
+                ${escapeHTML(
+                    p.description ||
+                    "Ürün açıklaması bulunmuyor."
+                )}
             </p>
 
             ${sizesHTML}
@@ -1167,7 +1384,7 @@ function renderProductDetail() {
 
 function selectSize(size) {
 
-    selectedSize = size;
+    selectedSize = String(size);
 
     renderProductDetail();
 }
@@ -1199,13 +1416,17 @@ function addSelectedProductToCart() {
         p.sizes.length > 0 &&
         !selectedSize
     ) {
-        alert("Lütfen beden veya numara seçin.");
+        alert(
+            "Lütfen beden veya numara seçin."
+        );
+
         return;
     }
 
     const existing =
         cart.find(item =>
-            String(item.productId) === String(p.id) &&
+            String(item.productId) ===
+            String(p.id) &&
             String(item.size || "") ===
             String(selectedSize || "")
         );
@@ -1220,7 +1441,11 @@ function addSelectedProductToCart() {
             productId: p.id,
             name: p.name,
             price: Number(p.price || 0),
-            image: p.images?.[0] || "",
+            image:
+                Array.isArray(p.images) &&
+                p.images.length
+                    ? p.images[0]
+                    : "",
             size: selectedSize || "",
             quantity: 1
         });
@@ -1231,7 +1456,9 @@ function addSelectedProductToCart() {
 
     closeModal("productModal");
 
-    alert("Ürün sepete eklendi.");
+    alert(
+        "Ürün sepete eklendi."
+    );
 }
 
 function saveCart() {
@@ -1247,13 +1474,19 @@ function updateCartCount() {
     const count =
         cart.reduce(
             (sum, item) =>
-                sum + Number(item.quantity || 0),
+                sum +
+                Number(item.quantity || 0),
             0
         );
 
-    document.getElementById(
-        "cartCount"
-    ).textContent = count;
+    const element =
+        document.getElementById(
+            "cartCount"
+        );
+
+    if (element) {
+        element.textContent = count;
+    }
 }
 
 /* =========================================================
@@ -1272,10 +1505,14 @@ function openCart() {
 function renderCart() {
 
     const container =
-        document.getElementById("cartItems");
+        document.getElementById(
+            "cartItems"
+        );
 
     const checkout =
-        document.getElementById("checkoutArea");
+        document.getElementById(
+            "checkoutArea"
+        );
 
     container.innerHTML = "";
     checkout.innerHTML = "";
@@ -1314,7 +1551,12 @@ function renderCart() {
 
             ${
                 item.image
-                    ? `<img src="${escapeHTML(item.image)}">`
+                    ? `
+                        <img
+                            src="${escapeHTML(item.image)}"
+                            alt="${escapeHTML(item.name)}"
+                        >
+                      `
                     : ""
             }
 
@@ -1353,7 +1595,8 @@ function renderCart() {
 
     document.getElementById(
         "cartTotal"
-    ).textContent = formatPrice(total);
+    ).textContent =
+        formatPrice(total);
 
     checkout.innerHTML = `
 
@@ -1363,19 +1606,50 @@ function renderCart() {
 
         <div class="checkout">
 
-            <input id="cName" placeholder="Ad Soyad">
-            <input id="cPhone" placeholder="Telefon">
+            <input
+                id="cName"
+                placeholder="Ad Soyad"
+            >
 
-            <input id="cEmail" placeholder="E-posta">
-            <input id="cCity" placeholder="İl">
+            <input
+                id="cPhone"
+                placeholder="Telefon"
+            >
 
-            <input id="cDistrict" placeholder="İlçe">
-            <input id="cNeighborhood" placeholder="Mahalle">
+            <input
+                id="cEmail"
+                placeholder="E-posta"
+            >
 
-            <input id="cBuilding" placeholder="Bina No">
-            <input id="cApartment" placeholder="Daire No">
+            <input
+                id="cCity"
+                placeholder="İl"
+            >
 
-            <input id="cPostal" placeholder="Posta Kodu">
+            <input
+                id="cDistrict"
+                placeholder="İlçe"
+            >
+
+            <input
+                id="cNeighborhood"
+                placeholder="Mahalle"
+            >
+
+            <input
+                id="cBuilding"
+                placeholder="Bina No"
+            >
+
+            <input
+                id="cApartment"
+                placeholder="Daire No"
+            >
+
+            <input
+                id="cPostal"
+                placeholder="Posta Kodu"
+            >
 
             <textarea
                 id="cAddress"
@@ -1411,56 +1685,79 @@ function removeCartItem(index) {
 async function createOrder() {
 
     if (cart.length === 0) {
+
         alert("Sepet boş.");
+
         return;
     }
 
     const customer = {
 
         name:
-            document.getElementById("cName").value.trim(),
+            document
+                .getElementById("cName")
+                .value
+                .trim(),
 
         phone:
-            document.getElementById("cPhone").value.trim(),
+            document
+                .getElementById("cPhone")
+                .value
+                .trim(),
 
         email:
-            document.getElementById("cEmail").value.trim(),
+            document
+                .getElementById("cEmail")
+                .value
+                .trim(),
 
         city:
-            document.getElementById("cCity").value.trim(),
+            document
+                .getElementById("cCity")
+                .value
+                .trim(),
 
         district:
-            document.getElementById("cDistrict").value.trim(),
+            document
+                .getElementById("cDistrict")
+                .value
+                .trim(),
 
         neighborhood:
             document
                 .getElementById("cNeighborhood")
-                .value.trim(),
+                .value
+                .trim(),
 
         buildingNo:
             document
                 .getElementById("cBuilding")
-                .value.trim(),
+                .value
+                .trim(),
 
         apartmentNo:
             document
                 .getElementById("cApartment")
-                .value.trim(),
+                .value
+                .trim(),
 
         postalCode:
             document
                 .getElementById("cPostal")
-                .value.trim(),
+                .value
+                .trim(),
 
         address:
             document
                 .getElementById("cAddress")
-                .value.trim(),
+                .value
+                .trim(),
 
         note:
             document
                 .getElementById("cNote")
-                .value.trim()
+                .value
+                .trim()
     };
 
     if (
@@ -1470,31 +1767,41 @@ async function createOrder() {
         !customer.district ||
         !customer.address
     ) {
-        alert("Lütfen gerekli teslimat bilgilerini doldurun.");
+
+        alert(
+            "Lütfen gerekli teslimat bilgilerini doldurun."
+        );
+
         return;
     }
 
     try {
 
         const response =
-            await fetch("/api/orders", {
+            await fetch(
+                "/api/orders",
+                {
 
-                method:"POST",
+                    method:"POST",
 
-                headers:{
-                    "Content-Type":"application/json"
-                },
+                    headers:{
+                        "Content-Type":
+                            "application/json"
+                    },
 
-                body:JSON.stringify({
-                    customer,
-                    items:cart
-                })
-            });
+                    body:
+                        JSON.stringify({
+                            customer,
+                            items:cart
+                        })
+                }
+            );
 
         const data =
             await response.json();
 
         if (!response.ok) {
+
             throw new Error(
                 data.message ||
                 "Sipariş oluşturulamadı."
@@ -1508,11 +1815,17 @@ async function createOrder() {
 
         closeModal("cartModal");
 
-        showPayment(data.order);
+        showPayment(
+            data.order
+        );
 
     } catch(error) {
 
-        alert(error.message);
+        console.error(error);
+
+        alert(
+            error.message
+        );
     }
 }
 
@@ -1527,7 +1840,9 @@ async function showPayment(order) {
     try {
 
         const response =
-            await fetch("/api/payment-info");
+            await fetch(
+                "/api/payment-info"
+            );
 
         const data =
             await response.json();
@@ -1535,7 +1850,13 @@ async function showPayment(order) {
         payment =
             data.payment || {};
 
-    } catch {}
+    } catch(error) {
+
+        console.error(
+            "Ödeme bilgileri alınamadı:",
+            error
+        );
+    }
 
     document.getElementById(
         "paymentInfo"
@@ -1543,7 +1864,9 @@ async function showPayment(order) {
 
         <p>
             Sipariş numaranız:
-            <strong>${escapeHTML(order.id)}</strong>
+            <strong>
+                ${escapeHTML(order.id)}
+            </strong>
         </p>
 
         <p style="margin-top:10px">
@@ -1556,23 +1879,31 @@ async function showPayment(order) {
         <div class="payment-box">
 
             <strong>Banka</strong>
-            ${escapeHTML(payment.bankName || "-")}
+            ${escapeHTML(
+                payment.bankName || "-"
+            )}
 
             <br><br>
 
             <strong>Hesap Sahibi</strong>
-            ${escapeHTML(payment.accountName || "-")}
+            ${escapeHTML(
+                payment.accountName || "-"
+            )}
 
             <br><br>
 
             <strong>IBAN</strong>
-            ${escapeHTML(payment.iban || "-")}
+            ${escapeHTML(
+                payment.iban || "-"
+            )}
 
             <br>
 
             <button
                 class="copy"
-                onclick="copyText('${escapeJS(payment.iban || "")}')"
+                onclick="copyText('${escapeJS(
+                    payment.iban || ""
+                )}')"
             >
                 IBAN'ı Kopyala
             </button>
@@ -1591,7 +1922,9 @@ async function showPayment(order) {
     `;
 
     document
-        .getElementById("paymentModal")
+        .getElementById(
+            "paymentModal"
+        )
         .classList.add("active");
 }
 
@@ -1602,7 +1935,9 @@ async function showPayment(order) {
 function openTracking() {
 
     document
-        .getElementById("trackingModal")
+        .getElementById(
+            "trackingModal"
+        )
         .classList.add("active");
 }
 
@@ -1610,11 +1945,20 @@ async function trackOrder() {
 
     const id =
         document
-            .getElementById("trackingOrderId")
+            .getElementById(
+                "trackingOrderId"
+            )
             .value
             .trim();
 
-    if (!id) return;
+    if (!id) {
+
+        alert(
+            "Lütfen sipariş numaranızı girin."
+        );
+
+        return;
+    }
 
     const result =
         document.getElementById(
@@ -1633,13 +1977,15 @@ async function trackOrder() {
             await response.json();
 
         if (!response.ok) {
+
             throw new Error(
                 data.message ||
                 "Sipariş bulunamadı."
             );
         }
 
-        const order = data.order;
+        const order =
+            data.order;
 
         result.innerHTML = `
 
@@ -1654,25 +2000,33 @@ async function trackOrder() {
 
                 Durum:
                 <strong>
-                    ${escapeHTML(order.status)}
+                    ${escapeHTML(
+                        order.status
+                    )}
                 </strong>
 
                 <br><br>
 
                 Ödeme:
-                ${escapeHTML(order.paymentStatus)}
+                ${escapeHTML(
+                    order.paymentStatus
+                )}
 
                 <br><br>
 
                 Kargo:
-                ${escapeHTML(order.shippingStatus)}
+                ${escapeHTML(
+                    order.shippingStatus
+                )}
 
                 ${
                     order.shipping?.company
                         ? `
                             <br><br>
                             Kargo firması:
-                            ${escapeHTML(order.shipping.company)}
+                            ${escapeHTML(
+                                order.shipping.company
+                            )}
                           `
                         : ""
                 }
@@ -1683,7 +2037,9 @@ async function trackOrder() {
                             <br>
                             Takip numarası:
                             <strong>
-                                ${escapeHTML(order.shipping.trackingNumber)}
+                                ${escapeHTML(
+                                    order.shipping.trackingNumber
+                                )}
                             </strong>
                           `
                         : ""
@@ -1694,9 +2050,13 @@ async function trackOrder() {
 
     } catch(error) {
 
+        console.error(error);
+
         result.innerHTML = `
             <p style="color:#c00">
-                ${escapeHTML(error.message)}
+                ${escapeHTML(
+                    error.message
+                )}
             </p>
         `;
     }
@@ -1708,7 +2068,10 @@ async function trackOrder() {
 
 function formatPrice(value) {
 
-    return Number(value || 0).toLocaleString(
+    const number =
+        Number(value || 0);
+
+    return number.toLocaleString(
         "tr-TR",
         {
             minimumFractionDigits:2,
@@ -1719,38 +2082,144 @@ function formatPrice(value) {
 
 function closeModal(id) {
 
-    document
-        .getElementById(id)
-        .classList.remove("active");
+    const modal =
+        document.getElementById(id);
+
+    if (modal) {
+        modal.classList.remove("active");
+    }
 }
 
 function copyText(text) {
 
-    navigator.clipboard
-        .writeText(text)
-        .then(() => alert("Kopyalandı."));
+    if (
+        navigator.clipboard &&
+        navigator.clipboard.writeText
+    ) {
+
+        navigator.clipboard
+            .writeText(text)
+            .then(() => {
+                alert("Kopyalandı.");
+            })
+            .catch(() => {
+                alert(
+                    "Kopyalama başarısız oldu."
+                );
+            });
+
+    } else {
+
+        const textarea =
+            document.createElement("textarea");
+
+        textarea.value = text;
+
+        document.body.appendChild(
+            textarea
+        );
+
+        textarea.select();
+
+        try {
+            document.execCommand("copy");
+            alert("Kopyalandı.");
+        } catch {
+            alert(
+                "Kopyalama başarısız oldu."
+            );
+        }
+
+        textarea.remove();
+    }
 }
 
 function escapeHTML(value) {
 
     return String(value ?? "")
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;")
-        .replaceAll("'","&#039;");
+        .replaceAll(
+            "&",
+            "&amp;"
+        )
+        .replaceAll(
+            "<",
+            "&lt;"
+        )
+        .replaceAll(
+            ">",
+            "&gt;"
+        )
+        .replaceAll(
+            '"',
+            "&quot;"
+        )
+        .replaceAll(
+            "'",
+            "&#039;"
+        );
 }
 
 function escapeJS(value) {
 
     return String(value ?? "")
-        .replaceAll("\\","\\\\")
-        .replaceAll("'","\\'")
-        .replaceAll("\n","\\n")
-        .replaceAll("\r","\\r");
+        .replaceAll(
+            "\\",
+            "\\\\"
+        )
+        .replaceAll(
+            "'",
+            "\\'"
+        )
+        .replaceAll(
+            "\n",
+            "\\n"
+        )
+        .replaceAll(
+            "\r",
+            "\\r"
+        );
 }
+
+/* =========================================================
+   MODAL DIŞINA TIKLAYINCA KAPAT
+========================================================= */
+
+document.addEventListener(
+    "click",
+    function(event) {
+
+        if (
+            event.target.classList.contains(
+                "modal"
+            )
+        ) {
+
+            event.target.classList.remove(
+                "active"
+            );
+        }
+    }
+);
+
+/* ESC İLE MODAL KAPAT */
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (event.key === "Escape") {
+
+            document
+                .querySelectorAll(".modal.active")
+                .forEach(modal => {
+                    modal.classList.remove(
+                        "active"
+                    );
+                });
+        }
+    }
+);
 </script>
 
 </body>
 </html>
-```
