@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -331,6 +330,7 @@ button{
             id="loginPassword"
             type="password"
             placeholder="Admin şifresi"
+            onkeydown="if(event.key==='Enter') login()"
         >
 
         <button
@@ -488,6 +488,7 @@ button{
                             border:1px solid #ccc;
                             border-radius:7px;
                         "
+                        onkeydown="if(event.key==='Enter') addCategory()"
                     >
 
                     <button
@@ -606,12 +607,62 @@ button{
 </div>
 
 <script>
+
 let products = [];
 let categories = [];
 let orders = [];
 
 let editingProductId = null;
 let uploadedImages = [];
+
+/* =========================================================
+   GENEL API YARDIMCISI
+========================================================= */
+
+async function apiFetch(url, options = {}) {
+
+    options.credentials = "same-origin";
+
+    const response =
+        await fetch(url, options);
+
+    let data = {};
+
+    try {
+        data = await response.json();
+    } catch {}
+
+    if (
+        response.status === 401 ||
+        (
+            data &&
+            data.success === false &&
+            data.message === "Yetkisiz erişim."
+        )
+    ) {
+
+        alert(
+            "Admin oturumunuz sona ermiş. Lütfen tekrar giriş yapın."
+        );
+
+        document.getElementById(
+            "loginScreen"
+        ).style.display = "flex";
+
+        document.getElementById(
+            "adminScreen"
+        ).style.display = "none";
+
+        throw new Error(
+            "Admin oturumu sona erdi."
+        );
+    }
+
+    return {
+        response,
+        data
+    };
+}
 
 /* =========================================================
    LOGIN
@@ -627,15 +678,42 @@ async function checkSession() {
     try {
 
         const response =
-            await fetch("/api/admin/session");
+            await fetch(
+                "/api/admin/session",
+                {
+                    method:"GET",
+                    credentials:"same-origin"
+                }
+            );
 
-        if (response.ok) {
+        const data =
+            await response.json();
+
+        if (data.loggedIn === true) {
 
             showAdmin();
 
+        } else {
+
+            document.getElementById(
+                "loginScreen"
+            ).style.display = "flex";
+
+            document.getElementById(
+                "adminScreen"
+            ).style.display = "none";
         }
 
-    } catch {}
+    } catch(error) {
+
+        document.getElementById(
+            "loginScreen"
+        ).style.display = "flex";
+
+        document.getElementById(
+            "adminScreen"
+        ).style.display = "none";
+    }
 }
 
 async function login() {
@@ -650,6 +728,17 @@ async function login() {
             "loginMessage"
         );
 
+    message.textContent = "";
+
+    if (!password) {
+
+        message.style.color = "red";
+        message.textContent =
+            "Lütfen admin şifresini girin.";
+
+        return;
+    }
+
     try {
 
         const response =
@@ -657,6 +746,7 @@ async function login() {
                 "/api/admin/login",
                 {
                     method:"POST",
+                    credentials:"same-origin",
                     headers:{
                         "Content-Type":
                             "application/json"
@@ -672,11 +762,16 @@ async function login() {
             await response.json();
 
         if (!response.ok) {
+
             throw new Error(
                 data.message ||
                 "Giriş başarısız."
             );
         }
+
+        message.style.color = "green";
+        message.textContent =
+            "Giriş başarılı.";
 
         showAdmin();
 
@@ -703,12 +798,17 @@ function showAdmin() {
 
 async function logout() {
 
-    await fetch(
-        "/api/admin/logout",
-        {
-            method:"POST"
-        }
-    );
+    try {
+
+        await fetch(
+            "/api/admin/logout",
+            {
+                method:"POST",
+                credentials:"same-origin"
+            }
+        );
+
+    } catch {}
 
     location.reload();
 }
@@ -764,14 +864,21 @@ function showPage(page, button) {
 
 async function loadAll() {
 
-    await Promise.all([
-        loadProducts(),
-        loadOrders(),
-        loadCategories(),
-        loadPayment()
-    ]);
+    try {
 
-    updateDashboard();
+        await Promise.all([
+            loadProducts(),
+            loadOrders(),
+            loadCategories(),
+            loadPayment()
+        ]);
+
+        updateDashboard();
+
+    } catch(error) {
+
+        console.error(error);
+    }
 }
 
 /* =========================================================
@@ -780,14 +887,42 @@ async function loadAll() {
 
 async function loadProducts() {
 
-    const response =
-        await fetch("/api/products");
+    try {
 
-    products =
-        await response.json();
+        const result =
+            await apiFetch(
+                "/api/products"
+            );
 
-    renderProducts();
-    updateDashboard();
+        if (!result.response.ok) {
+
+            throw new Error(
+                result.data.message ||
+                "Ürünler yüklenemedi."
+            );
+        }
+
+        products =
+            Array.isArray(result.data)
+                ? result.data
+                : (
+                    Array.isArray(result.data.products)
+                        ? result.data.products
+                        : []
+                );
+
+        renderProducts();
+        updateDashboard();
+
+    } catch(error) {
+
+        console.error(
+            "Ürün yükleme hatası:",
+            error
+        );
+
+        throw error;
+    }
 }
 
 function renderProducts() {
@@ -1197,6 +1332,8 @@ function addSizeRow(
             "sizeRows"
         );
 
+    if (!container) return;
+
     const row =
         document.createElement("div");
 
@@ -1238,6 +1375,8 @@ function addPresetSizes(sizes) {
             "sizeRows"
         );
 
+    if (!container) return;
+
     container.innerHTML = "";
 
     sizes.forEach(size =>
@@ -1265,8 +1404,8 @@ async function uploadImages(files) {
                 file
             );
 
-            const response =
-                await fetch(
+            const result =
+                await apiFetch(
                     "/api/upload",
                     {
                         method:"POST",
@@ -1274,19 +1413,17 @@ async function uploadImages(files) {
                     }
                 );
 
-            const data =
-                await response.json();
+            if (!result.response.ok) {
 
-            if (!response.ok) {
                 throw new Error(
-                    data.message ||
+                    result.data.message ||
                     "Görsel yüklenemedi."
                 );
             }
 
             const returned =
-                data.files ||
-                data.images ||
+                result.data.files ||
+                result.data.images ||
                 [];
 
             if (Array.isArray(returned)) {
@@ -1339,6 +1476,7 @@ function renderUploadedImages() {
                     >
 
                     <button
+                        type="button"
                         onclick="removeImage(${index})"
                     >
                         ×
@@ -1452,12 +1590,12 @@ async function saveProduct() {
 
     try {
 
-        let response;
+        let result;
 
         if (editingProductId) {
 
-            response =
-                await fetch(
+            result =
+                await apiFetch(
                     "/api/products/" +
                     encodeURIComponent(
                         editingProductId
@@ -1475,8 +1613,8 @@ async function saveProduct() {
 
         } else {
 
-            response =
-                await fetch(
+            result =
+                await apiFetch(
                     "/api/products",
                     {
                         method:"POST",
@@ -1490,17 +1628,17 @@ async function saveProduct() {
                 );
         }
 
-        const data =
-            await response.json();
+        if (!result.response.ok) {
 
-        if (!response.ok) {
             throw new Error(
-                data.message ||
+                result.data.message ||
                 "Ürün kaydedilemedi."
             );
         }
 
-        alert("Ürün başarıyla kaydedildi.");
+        alert(
+            "Ürün başarıyla kaydedildi."
+        );
 
         editingProductId = null;
         uploadedImages = [];
@@ -1529,8 +1667,8 @@ async function deleteProduct(id) {
 
     try {
 
-        const response =
-            await fetch(
+        const result =
+            await apiFetch(
                 "/api/products/" +
                 encodeURIComponent(id),
                 {
@@ -1538,12 +1676,10 @@ async function deleteProduct(id) {
                 }
             );
 
-        const data =
-            await response.json();
+        if (!result.response.ok) {
 
-        if (!response.ok) {
             throw new Error(
-                data.message ||
+                result.data.message ||
                 "Ürün silinemedi."
             );
         }
@@ -1562,20 +1698,40 @@ async function deleteProduct(id) {
 
 async function loadCategories() {
 
-    const response =
-        await fetch(
-            "/api/categories"
+    try {
+
+        const result =
+            await apiFetch(
+                "/api/categories"
+            );
+
+        if (!result.response.ok) {
+
+            throw new Error(
+                result.data.message ||
+                "Kategoriler yüklenemedi."
+            );
+        }
+
+        const data =
+            result.data;
+
+        categories =
+            Array.isArray(data.categories)
+                ? data.categories
+                : [];
+
+        renderCategoriesAdmin();
+
+    } catch(error) {
+
+        console.error(
+            "Kategori yükleme hatası:",
+            error
         );
 
-    const data =
-        await response.json();
-
-    categories =
-        Array.isArray(data.categories)
-            ? data.categories
-            : [];
-
-    renderCategoriesAdmin();
+        throw error;
+    }
 }
 
 function renderCategoriesAdmin() {
@@ -1638,8 +1794,8 @@ async function addCategory() {
 
     try {
 
-        const response =
-            await fetch(
+        const result =
+            await apiFetch(
                 "/api/categories",
                 {
                     method:"POST",
@@ -1654,18 +1810,16 @@ async function addCategory() {
                 }
             );
 
-        const data =
-            await response.json();
+        if (!result.response.ok) {
 
-        if (!response.ok) {
             throw new Error(
-                data.message ||
+                result.data.message ||
                 "Kategori eklenemedi."
             );
         }
 
         categories =
-            data.categories || [];
+            result.data.categories || [];
 
         input.value = "";
 
@@ -1693,8 +1847,8 @@ async function deleteCategory(name) {
 
     try {
 
-        const response =
-            await fetch(
+        const result =
+            await apiFetch(
                 "/api/categories/" +
                 encodeURIComponent(name),
                 {
@@ -1702,18 +1856,16 @@ async function deleteCategory(name) {
                 }
             );
 
-        const data =
-            await response.json();
+        if (!result.response.ok) {
 
-        if (!response.ok) {
             throw new Error(
-                data.message ||
+                result.data.message ||
                 "Kategori silinemedi."
             );
         }
 
         categories =
-            data.categories || [];
+            result.data.categories || [];
 
         renderCategoriesAdmin();
 
@@ -1729,17 +1881,39 @@ async function deleteCategory(name) {
 
 async function loadOrders() {
 
-    const response =
-        await fetch("/api/orders");
+    try {
 
-    const data =
-        await response.json();
+        const result =
+            await apiFetch(
+                "/api/orders"
+            );
 
-    orders =
-        data.orders || [];
+        if (!result.response.ok) {
 
-    renderOrders();
-    updateDashboard();
+            throw new Error(
+                result.data.message ||
+                "Siparişler yüklenemedi."
+            );
+        }
+
+        const data =
+            result.data;
+
+        orders =
+            data.orders || [];
+
+        renderOrders();
+        updateDashboard();
+
+    } catch(error) {
+
+        console.error(
+            "Sipariş yükleme hatası:",
+            error
+        );
+
+        throw error;
+    }
 }
 
 function renderOrders() {
@@ -1938,20 +2112,18 @@ async function orderAction(url, method) {
 
     try {
 
-        const response =
-            await fetch(
+        const result =
+            await apiFetch(
                 url,
                 {
                     method
                 }
             );
 
-        const data =
-            await response.json();
+        if (!result.response.ok) {
 
-        if (!response.ok) {
             throw new Error(
-                data.message ||
+                result.data.message ||
                 "İşlem başarısız."
             );
         }
@@ -1982,8 +2154,8 @@ async function shippingForm(id) {
 
     try {
 
-        const response =
-            await fetch(
+        const result =
+            await apiFetch(
                 "/api/orders/" +
                 encodeURIComponent(id) +
                 "/shipping",
@@ -2002,12 +2174,10 @@ async function shippingForm(id) {
                 }
             );
 
-        const data =
-            await response.json();
+        if (!result.response.ok) {
 
-        if (!response.ok) {
             throw new Error(
-                data.message ||
+                result.data.message ||
                 "Kargo kaydedilemedi."
             );
         }
@@ -2028,33 +2198,58 @@ async function loadPayment() {
 
     try {
 
-        const response =
-            await fetch(
+        const result =
+            await apiFetch(
                 "/api/payment-info"
             );
 
-        const data =
-            await response.json();
+        if (!result.response.ok) {
+            throw new Error(
+                result.data.message ||
+                "Ödeme bilgileri alınamadı."
+            );
+        }
 
         const payment =
-            data.payment || {};
+            result.data.payment || {};
 
-        document.getElementById(
-            "bankName"
-        ).value =
-            payment.bankName || "";
+        const bank =
+            document.getElementById(
+                "bankName"
+            );
 
-        document.getElementById(
-            "accountName"
-        ).value =
-            payment.accountName || "";
+        const account =
+            document.getElementById(
+                "accountName"
+            );
 
-        document.getElementById(
-            "iban"
-        ).value =
-            payment.iban || "";
+        const iban =
+            document.getElementById(
+                "iban"
+            );
 
-    } catch {}
+        if (bank) {
+            bank.value =
+                payment.bankName || "";
+        }
+
+        if (account) {
+            account.value =
+                payment.accountName || "";
+        }
+
+        if (iban) {
+            iban.value =
+                payment.iban || "";
+        }
+
+    } catch(error) {
+
+        console.error(
+            "Ödeme bilgisi yükleme hatası:",
+            error
+        );
+    }
 }
 
 async function savePayment() {
@@ -2079,8 +2274,8 @@ async function savePayment() {
 
     try {
 
-        const response =
-            await fetch(
+        const result =
+            await apiFetch(
                 "/api/payment-info",
                 {
                     method:"PUT",
@@ -2093,17 +2288,17 @@ async function savePayment() {
                 }
             );
 
-        const data =
-            await response.json();
+        if (!result.response.ok) {
 
-        if (!response.ok) {
             throw new Error(
-                data.message ||
+                result.data.message ||
                 "Kaydedilemedi."
             );
         }
 
-        alert("Ödeme bilgileri kaydedildi.");
+        alert(
+            "Ödeme bilgileri kaydedildi."
+        );
 
     } catch(error) {
 
@@ -2129,8 +2324,8 @@ async function changePassword() {
 
     try {
 
-        const response =
-            await fetch(
+        const result =
+            await apiFetch(
                 "/api/admin/change-password",
                 {
                     method:"POST",
@@ -2146,12 +2341,10 @@ async function changePassword() {
                 }
             );
 
-        const data =
-            await response.json();
+        if (!result.response.ok) {
 
-        if (!response.ok) {
             throw new Error(
-                data.message ||
+                result.data.message ||
                 "Şifre değiştirilemedi."
             );
         }
@@ -2266,8 +2459,8 @@ function escapeJS(value) {
         .replaceAll("\n","\\n")
         .replaceAll("\r","\\r");
 }
+
 </script>
 
 </body>
 </html>
-```
