@@ -411,6 +411,13 @@ header{
     background:
         linear-gradient(135deg,#111,#333);
     box-shadow:0 8px 25px rgba(0,0,0,.1);
+    cursor:pointer;
+    transition:.25s;
+}
+
+.promo-card:hover{
+    transform:translateY(-5px);
+    box-shadow:0 15px 35px rgba(0,0,0,.18);
 }
 
 .promo-card:nth-child(2){
@@ -447,6 +454,103 @@ header{
     color:rgba(255,255,255,.82);
     position:relative;
     z-index:1;
+}
+
+.promo-arrow{
+    position:absolute;
+    right:20px;
+    bottom:18px;
+    z-index:2;
+    font-size:25px;
+    transition:.2s;
+}
+
+.promo-card:hover .promo-arrow{
+    transform:translateX(5px);
+}
+
+/* =========================================================
+   ÖZEL SAYFA
+========================================================= */
+
+.special-page{
+    display:none;
+}
+
+.special-page.active{
+    display:block;
+}
+
+.home-page.hidden{
+    display:none;
+}
+
+.special-header{
+    background:#fff;
+    border-radius:20px;
+    padding:28px;
+    margin-bottom:24px;
+    box-shadow:0 7px 25px rgba(0,0,0,.07);
+    position:relative;
+    overflow:hidden;
+}
+
+.special-header::after{
+    content:"";
+    position:absolute;
+    width:220px;
+    height:220px;
+    border-radius:50%;
+    right:-70px;
+    top:-100px;
+    background:rgba(233,30,99,.08);
+}
+
+.special-back{
+    border:1px solid #ddd;
+    background:#fff;
+    padding:9px 15px;
+    border-radius:8px;
+    font-weight:bold;
+    margin-bottom:20px;
+    position:relative;
+    z-index:2;
+}
+
+.special-back:hover{
+    background:#111;
+    color:#fff;
+}
+
+.special-title{
+    font-size:34px;
+    font-weight:900;
+    margin-bottom:8px;
+    position:relative;
+    z-index:2;
+}
+
+.special-subtitle{
+    color:#777;
+    line-height:1.6;
+    position:relative;
+    z-index:2;
+}
+
+.special-count{
+    margin-top:12px;
+    color:#e91e63;
+    font-weight:bold;
+    position:relative;
+    z-index:2;
+}
+
+.special-loading{
+    background:#fff;
+    border-radius:15px;
+    padding:60px 20px;
+    text-align:center;
+    color:#777;
 }
 
 /* =========================================================
@@ -569,6 +673,10 @@ header{
 
 .badge.best{
     background:#ff8f00;
+}
+
+.badge.offer{
+    background:#8e24aa;
 }
 
 .product-info{
@@ -1044,14 +1152,6 @@ header{
 }
 
 /* =========================================================
-   MOBİL ALT SEPET
-========================================================= */
-
-.mobile-cart-bar{
-    display:none;
-}
-
-/* =========================================================
    RESPONSIVE
 ========================================================= */
 
@@ -1177,6 +1277,10 @@ header{
         font-size:21px;
     }
 
+    .special-title{
+        font-size:27px;
+    }
+
 }
 
 @media(max-width:450px){
@@ -1282,238 +1386,250 @@ header{
 <main class="container">
 
     <!-- =====================================================
-         MEVCUT VİTRİN
-         BU KISIM DEĞİŞTİRİLMEDİ
+         ANA SAYFA
     ====================================================== -->
 
-    <section
-        class="hero-slider"
-        id="heroSlider"
+    <div
+        id="homePage"
+        class="home-page"
     >
 
-        <div class="hero-empty-message">
-            <div>
+        <!-- =====================================================
+             VİTRİN
+        ====================================================== -->
 
-                <h1 style="font-size:38px;margin-bottom:10px">
-                    REZAN GİYİM
-                </h1>
+        <section
+            class="hero-slider"
+            id="heroSlider"
+        >
+
+            <div class="hero-empty-message">
+                <div>
+
+                    <h1 style="font-size:38px;margin-bottom:10px">
+                        REZAN GİYİM
+                    </h1>
+
+                    <p>
+                        Tarzını keşfet.
+                    </p>
+
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             GÜVEN ALANLARI
+        ====================================================== -->
+
+        <section class="trust-strip">
+
+            <div class="trust-card">
+
+                <div class="trust-icon">
+                    🔒
+                </div>
+
+                <div>
+                    <strong>Güvenli Ödeme</strong>
+                    <span>Güvenli alışveriş deneyimi</span>
+                </div>
+
+            </div>
+
+
+            <div class="trust-card">
+
+                <div class="trust-icon">
+                    🚚
+                </div>
+
+                <div>
+                    <strong>Hızlı Kargo</strong>
+                    <span>Siparişiniz özenle hazırlanır</span>
+                </div>
+
+            </div>
+
+
+            <div class="trust-card">
+
+                <div class="trust-icon">
+                    ↩️
+                </div>
+
+                <div>
+                    <strong>Kolay İade</strong>
+                    <span>Müşteri memnuniyeti önceliğimiz</span>
+                </div>
+
+            </div>
+
+
+            <div class="trust-card">
+
+                <div class="trust-icon">
+                    💬
+                </div>
+
+                <div>
+                    <strong>Müşteri Desteği</strong>
+                    <span>Sorularınız için buradayız</span>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             KAMPANYA KARTLARI
+        ====================================================== -->
+
+        <section class="promo-grid">
+
+            <div
+                class="promo-card"
+                onclick="openSpecialPage('best')"
+            >
+
+                <h3>
+                    🔥 Çok Satanlar
+                </h3>
 
                 <p>
-                    Tarzını keşfet.
+                    Bu ay müşterilerin en çok tercih
+                    ettiği 20 ürünü keşfet.
                 </p>
 
-            </div>
-        </div>
+                <div class="promo-arrow">
+                    →
+                </div>
 
-    </section>
-
-
-    <!-- =====================================================
-         GÜVEN ALANLARI
-    ====================================================== -->
-
-    <section class="trust-strip">
-
-        <div class="trust-card">
-
-            <div class="trust-icon">
-                🔒
             </div>
 
-            <div>
-                <strong>Güvenli Ödeme</strong>
-                <span>Güvenli alışveriş deneyimi</span>
+
+            <div
+                class="promo-card"
+                onclick="openSpecialPage('offer')"
+            >
+
+                <h3>
+                    🏷️ Fırsat Ürünleri
+                </h3>
+
+                <p>
+                    Mağazada fırsat olarak belirlenen
+                    özel ürünleri incele.
+                </p>
+
+                <div class="promo-arrow">
+                    →
+                </div>
+
             </div>
 
-        </div>
 
+            <div
+                class="promo-card"
+                onclick="openSpecialPage('new')"
+            >
 
-        <div class="trust-card">
+                <h3>
+                    🆕 Yeni Gelenler
+                </h3>
 
-            <div class="trust-icon">
-                🚚
+                <p>
+                    Son 30 gün içinde mağazaya eklenen
+                    ürünleri ilk sen keşfet.
+                </p>
+
+                <div class="promo-arrow">
+                    →
+                </div>
+
             </div>
 
-            <div>
-                <strong>Hızlı Kargo</strong>
-                <span>Siparişiniz özenle hazırlanır</span>
-            </div>
-
-        </div>
+        </section>
 
 
-        <div class="trust-card">
+        <!-- =====================================================
+             TÜM ÜRÜNLER
+        ====================================================== -->
 
-            <div class="trust-icon">
-                ↩️
-            </div>
-
-            <div>
-                <strong>Kolay İade</strong>
-                <span>Müşteri memnuniyeti önceliğimiz</span>
-            </div>
-
-        </div>
-
-
-        <div class="trust-card">
-
-            <div class="trust-icon">
-                💬
-            </div>
-
-            <div>
-                <strong>Müşteri Desteği</strong>
-                <span>Sorularınız için buradayız</span>
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- =====================================================
-         KAMPANYALAR
-    ====================================================== -->
-
-    <section class="promo-grid">
-
-        <div
-            class="promo-card"
-            onclick="scrollToProducts()"
-            style="cursor:pointer"
+        <section
+            id="allProductsSection"
+            style="margin-top:35px"
         >
 
-            <h3>
-                🔥 Çok Satanlar
-            </h3>
+            <div class="section-heading">
 
-            <p>
-                Müşterilerin en çok tercih ettiği
-                ürünleri keşfet.
-            </p>
+                <h2>
+                    🛍️ Öne Çıkan Ürünler
+                </h2>
 
-        </div>
+                <span id="productCountText"></span>
 
+            </div>
 
-        <div
-            class="promo-card"
-            onclick="scrollToProducts()"
-            style="cursor:pointer"
-        >
+            <div
+                class="products"
+                id="products"
+            ></div>
 
-            <h3>
-                🏷️ Fırsat Ürünleri
-            </h3>
+        </section>
 
-            <p>
-                İndirimli ürünleri kaçırmadan
-                hemen incele.
-            </p>
-
-        </div>
-
-
-        <div
-            class="promo-card"
-            onclick="scrollToProducts()"
-            style="cursor:pointer"
-        >
-
-            <h3>
-                🆕 Yeni Gelenler
-            </h3>
-
-            <p>
-                Mağazaya yeni eklenen ürünleri
-                ilk sen keşfet.
-            </p>
-
-        </div>
-
-    </section>
+    </div>
 
 
     <!-- =====================================================
-         ÇOK SATANLAR
+         ÖZEL ÜRÜN SAYFASI
     ====================================================== -->
 
-    <section id="bestSellerSection">
-
-        <div class="section-heading">
-
-            <h2>
-                🔥 Çok Satanlar
-            </h2>
-
-            <span>
-                En çok ilgi gören ürünler
-            </span>
-
-        </div>
-
-        <div
-            class="products"
-            id="bestSellerProducts"
-        ></div>
-
-    </section>
-
-
-    <!-- =====================================================
-         YENİ GELENLER
-    ====================================================== -->
-
-    <section
-        id="newProductsSection"
-        style="margin-top:35px"
+    <div
+        id="specialPage"
+        class="special-page"
     >
 
-        <div class="section-heading">
+        <section class="special-header">
 
-            <h2>
-                🆕 Yeni Gelenler
-            </h2>
+            <button
+                class="special-back"
+                onclick="goHome()"
+            >
+                ← Ana Sayfaya Dön
+            </button>
 
-            <span>
-                En yeni ürünler
-            </span>
+            <div
+                class="special-title"
+                id="specialPageTitle"
+            >
+                Ürünler
+            </div>
 
-        </div>
+            <div
+                class="special-subtitle"
+                id="specialPageSubtitle"
+            >
+                Ürünler
+            </div>
 
-        <div
-            class="products"
-            id="newProducts"
-        ></div>
+            <div
+                class="special-count"
+                id="specialPageCount"
+            ></div>
 
-    </section>
+        </section>
 
-
-    <!-- =====================================================
-         TÜM ÜRÜNLER
-    ====================================================== -->
-
-    <section
-        id="allProductsSection"
-        style="margin-top:35px"
-    >
-
-        <div class="section-heading">
-
-            <h2>
-                🛍️ Öne Çıkan Ürünler
-            </h2>
-
-            <span id="productCountText"></span>
-
-        </div>
 
         <div
             class="products"
-            id="products"
+            id="specialProducts"
         ></div>
 
-    </section>
+    </div>
 
 </main>
 
@@ -1684,6 +1800,8 @@ let heroTimer = null;
 
 let favorites = [];
 
+let currentSpecialType = "";
+
 
 /* =========================================================
    FAVORİLERİ YÜKLE
@@ -1765,6 +1883,14 @@ document.addEventListener(
 
         }
 
+
+        handleSpecialHash();
+
+        window.addEventListener(
+            "hashchange",
+            handleSpecialHash
+        );
+
     }
 );
 
@@ -1791,7 +1917,17 @@ function searchProducts() {
         );
 
 
-    renderProducts();
+    if (currentSpecialType) {
+
+        renderSpecialPage(
+            currentSpecialType
+        );
+
+    } else {
+
+        renderProducts();
+
+    }
 
 }
 
@@ -2940,6 +3076,25 @@ function getDiscountPercent(product) {
 
 
 /* =========================================================
+   FIRSAT ÜRÜNÜ KONTROL
+========================================================= */
+
+function isFeaturedOffer(product) {
+
+    if (!product) return false;
+
+
+    return (
+        product.isFeaturedOffer === true ||
+        product.featuredOffer === true ||
+        product.isOpportunity === true ||
+        product.offer === true
+    );
+
+}
+
+
+/* =========================================================
    FAVORİ KONTROL
 ========================================================= */
 
@@ -3000,7 +3155,17 @@ function toggleFavorite(
     );
 
 
-    renderProducts();
+    if (currentSpecialType) {
+
+        renderSpecialPage(
+            currentSpecialType
+        );
+
+    } else {
+
+        renderProducts();
+
+    }
 
 }
 
@@ -3023,21 +3188,24 @@ function getSalesCount(product) {
 
 
 /* =========================================================
-   YENİ ÜRÜN KONTROL
+   TARİH
 ========================================================= */
 
-function isNewProduct(
-    product
-) {
+function getProductCreatedDate(product) {
+
+    if (!product) return null;
+
 
     const dateValue =
-        product?.createdAt ||
-        product?.date ||
-        product?.updatedAt;
+        product.createdAt ||
+        product.createdDate ||
+        product.dateAdded ||
+        product.addedAt ||
+        product.date;
 
 
     if (!dateValue) {
-        return false;
+        return null;
     }
 
 
@@ -3052,24 +3220,54 @@ function isNewProduct(
             date.getTime()
         )
     ) {
+        return null;
+    }
+
+
+    return date;
+
+}
+
+
+/* =========================================================
+   YENİ ÜRÜN KONTROL
+   SADECE SON 30 GÜN
+========================================================= */
+
+function isNewProduct(product) {
+
+    const date =
+        getProductCreatedDate(
+            product
+        );
+
+
+    if (!date) {
         return false;
     }
 
 
-    const days =
-        (
-            Date.now() -
-            date.getTime()
-        ) /
-        (
-            1000 *
-            60 *
-            60 *
-            24
-        );
+    const now =
+        Date.now();
 
 
-    return days <= 30;
+    const diff =
+        now -
+        date.getTime();
+
+
+    const thirtyDays =
+        30 *
+        24 *
+        60 *
+        60 *
+        1000;
+
+
+    return (
+        diff >= 0 &&
+        diff <= thirtyDays
+    );
 
 }
 
@@ -3142,6 +3340,12 @@ function createProductCard(
         );
 
 
+    const featuredOffer =
+        isFeaturedOffer(
+            product
+        );
+
+
     const productCategories =
         getProductCategories(
             product
@@ -3194,6 +3398,17 @@ function createProductCard(
         badges.push(`
             <span class="badge discount">
                 %${discount} İNDİRİM
+            </span>
+        `);
+
+    }
+
+
+    if (featuredOffer) {
+
+        badges.push(`
+            <span class="badge offer">
+                🏷️ Fırsat
             </span>
         `);
 
@@ -3582,36 +3797,322 @@ function renderProducts() {
 
     }
 
+}
 
-    renderSpecialSections();
+
+/* =========================================================
+   ÖZEL SAYFA HASH
+========================================================= */
+
+function handleSpecialHash() {
+
+    const hash =
+        String(
+            window.location.hash || ""
+        ).toLowerCase();
+
+
+    if (
+        hash === "#best-sellers" ||
+        hash === "#best"
+    ) {
+
+        openSpecialPage(
+            "best",
+            false
+        );
+
+        return;
+
+    }
+
+
+    if (
+        hash === "#offers" ||
+        hash === "#offer"
+    ) {
+
+        openSpecialPage(
+            "offer",
+            false
+        );
+
+        return;
+
+    }
+
+
+    if (
+        hash === "#new-arrivals" ||
+        hash === "#new"
+    ) {
+
+        openSpecialPage(
+            "new",
+            false
+        );
+
+        return;
+
+    }
+
+
+    goHome(
+        false
+    );
 
 }
 
 
 /* =========================================================
-   ÖZEL ÜRÜN SEKSİYONLARI
+   ÖZEL SAYFA AÇ
 ========================================================= */
 
-function renderSpecialSections() {
+function openSpecialPage(
+    type,
+    changeHash = true
+) {
 
-    const bestContainer =
-        document.getElementById(
-            "bestSellerProducts"
-        );
-
-
-    const newContainer =
-        document.getElementById(
-            "newProducts"
-        );
+    currentSpecialType =
+        type;
 
 
-    if (!bestContainer || !newContainer) {
-        return;
+    if (changeHash) {
+
+        const hash =
+            type === "best"
+                ? "#best-sellers"
+                : type === "offer"
+                    ? "#offers"
+                    : "#new-arrivals";
+
+
+        if (
+            window.location.hash !==
+            hash
+        ) {
+
+            history.pushState(
+                null,
+                "",
+                hash
+            );
+
+        }
+
     }
 
 
-    let sorted =
+    const home =
+        document.getElementById(
+            "homePage"
+        );
+
+
+    const special =
+        document.getElementById(
+            "specialPage"
+        );
+
+
+    if (home) {
+        home.classList.add(
+            "hidden"
+        );
+    }
+
+
+    if (special) {
+        special.classList.add(
+            "active"
+        );
+    }
+
+
+    renderSpecialPage(
+        type
+    );
+
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+
+}
+
+
+/* =========================================================
+   ANA SAYFAYA DÖN
+========================================================= */
+
+function goHome(
+    changeHash = true
+) {
+
+    currentSpecialType =
+        "";
+
+
+    const home =
+        document.getElementById(
+            "homePage"
+        );
+
+
+    const special =
+        document.getElementById(
+            "specialPage"
+        );
+
+
+    if (special) {
+        special.classList.remove(
+            "active"
+        );
+    }
+
+
+    if (home) {
+        home.classList.remove(
+            "hidden"
+        );
+    }
+
+
+    if (changeHash) {
+
+        history.pushState(
+            null,
+            "",
+            window.location.pathname +
+            window.location.search
+        );
+
+    }
+
+
+    renderProducts();
+
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+
+}
+
+
+/* =========================================================
+   ÖZEL ÜRÜNLERİ API'DEN AL
+========================================================= */
+
+async function fetchSpecialProducts(
+    type
+) {
+
+    let endpoint = "";
+
+
+    if (type === "best") {
+
+        endpoint =
+            "/api/products/best-sellers?limit=20";
+
+    } else if (type === "offer") {
+
+        endpoint =
+            "/api/products/featured-offers";
+
+    } else if (type === "new") {
+
+        endpoint =
+            "/api/products/new-arrivals?days=30";
+
+    }
+
+
+    if (!endpoint) {
+        return null;
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                endpoint,
+                {
+                    method:"GET",
+                    cache:"no-store",
+                    headers:{
+                        "Accept":"application/json"
+                    }
+                }
+            );
+
+
+        if (!response.ok) {
+
+            return null;
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        const result =
+            normalizeArray(
+                data,
+                [
+                    "products",
+                    "data",
+                    "results",
+                    "items"
+                ]
+            );
+
+
+        if (
+            Array.isArray(result)
+        ) {
+
+            return result.filter(
+                product =>
+                    product &&
+                    typeof product === "object"
+            );
+
+        }
+
+
+    } catch(error) {
+
+        console.warn(
+            "Özel ürün API'si kullanılamadı:",
+            endpoint,
+            error
+        );
+
+    }
+
+
+    return null;
+
+}
+
+
+/* =========================================================
+   ÖZEL ÜRÜNLERİ HESAPLA
+========================================================= */
+
+function getLocalSpecialProducts(
+    type
+) {
+
+    let result =
         products
             .slice()
             .filter(
@@ -3621,181 +4122,429 @@ function renderSpecialSections() {
             );
 
 
-    sorted.sort(
-        (a,b) => {
+    if (type === "best") {
 
-            const salesA =
-                getSalesCount(a);
+        result.sort(
+            (a,b) => {
 
-
-            const salesB =
-                getSalesCount(b);
-
-
-            if (salesA !== salesB) {
-                return salesB - salesA;
-            }
-
-
-            const ratingA =
-                getProductRating(a).average;
-
-
-            const ratingB =
-                getProductRating(b).average;
-
-
-            return ratingB - ratingA;
-
-        }
-    );
-
-
-    const best =
-        sorted
-            .filter(
-                product =>
+                const salesA =
                     getSalesCount(
-                        product
-                    ) > 0
-            )
-            .slice(
-                0,
-                4
-            );
+                        a
+                    );
 
 
-    bestContainer.innerHTML = "";
+                const salesB =
+                    getSalesCount(
+                        b
+                    );
 
 
-    if (best.length === 0) {
+                if (
+                    salesA !==
+                    salesB
+                ) {
 
-        bestContainer.innerHTML = `
-
-            <div class="empty">
-
-                Çok satan ürünler
-                yakında burada görünecek.
-
-            </div>
-
-        `;
-
-    } else {
-
-        best.forEach(
-            product => {
-
-                bestContainer.appendChild(
-                    createProductCard(
-                        product
-                    )
-                );
-
-            }
-        );
-
-    }
-
-
-    const newProducts =
-        products
-            .slice()
-            .sort(
-                (a,b) => {
-
-                    const dateA =
-                        new Date(
-                            a.createdAt ||
-                            a.date ||
-                            a.updatedAt ||
-                            0
-                        ).getTime();
-
-
-                    const dateB =
-                        new Date(
-                            b.createdAt ||
-                            b.date ||
-                            b.updatedAt ||
-                            0
-                        ).getTime();
-
-
-                    if (
-                        Number.isNaN(dateA) ||
-                        Number.isNaN(dateB)
-                    ) {
-
-                        return 0;
-
-                    }
-
-
-                    return dateB - dateA;
+                    return (
+                        salesB -
+                        salesA
+                    );
 
                 }
-            )
-            .slice(
-                0,
-                4
+
+
+                const ratingA =
+                    getProductRating(
+                        a
+                    ).average;
+
+
+                const ratingB =
+                    getProductRating(
+                        b
+                    ).average;
+
+
+                return (
+                    ratingB -
+                    ratingA
+                );
+
+            }
+        );
+
+
+        result =
+            result
+                .filter(
+                    product =>
+                        getSalesCount(
+                            product
+                        ) > 0
+                )
+                .slice(
+                    0,
+                    20
+                );
+
+    }
+
+
+    if (type === "offer") {
+
+        result =
+            result.filter(
+                product =>
+                    isFeaturedOffer(
+                        product
+                    )
+            );
+
+    }
+
+
+    if (type === "new") {
+
+        result =
+            result.filter(
+                product =>
+                    isNewProduct(
+                        product
+                    )
             );
 
 
-    newContainer.innerHTML = "";
+        result.sort(
+            (a,b) => {
+
+                const dateA =
+                    getProductCreatedDate(
+                        a
+                    );
 
 
-    if (newProducts.length === 0) {
+                const dateB =
+                    getProductCreatedDate(
+                        b
+                    );
 
-        newContainer.innerHTML = `
 
-            <div class="empty">
+                if (
+                    !dateA ||
+                    !dateB
+                ) {
 
-                Yeni ürün bulunmuyor.
+                    return 0;
 
-            </div>
+                }
 
-        `;
 
-    } else {
-
-        newProducts.forEach(
-            product => {
-
-                newContainer.appendChild(
-                    createProductCard(
-                        product
-                    )
+                return (
+                    dateB.getTime() -
+                    dateA.getTime()
                 );
 
             }
         );
 
     }
+
+
+    if (searchText) {
+
+        const lower =
+            searchText;
+
+
+        result =
+            result.filter(
+                product => {
+
+                    const categoriesText =
+                        getProductCategories(
+                            product
+                        ).join(" ");
+
+
+                    const text =
+                        (
+                            String(
+                                product.name ||
+                                ""
+                            ) +
+                            " " +
+                            categoriesText +
+                            " " +
+                            String(
+                                product.description ||
+                                ""
+                            )
+                        )
+                        .toLocaleLowerCase(
+                            "tr-TR"
+                        );
+
+
+                    return text.includes(
+                        lower
+                    );
+
+                }
+            );
+
+    }
+
+
+    return result;
 
 }
 
 
 /* =========================================================
-   ÜRÜNLERE KAYDIR
+   ÖZEL SAYFAYI GÖSTER
 ========================================================= */
 
-function scrollToProducts() {
+async function renderSpecialPage(
+    type
+) {
 
-    const element =
+    const container =
         document.getElementById(
-            "allProductsSection"
+            "specialProducts"
         );
 
 
-    if (element) {
+    const title =
+        document.getElementById(
+            "specialPageTitle"
+        );
 
-        element.scrollIntoView({
-            behavior:"smooth",
-            block:"start"
-        });
+
+    const subtitle =
+        document.getElementById(
+            "specialPageSubtitle"
+        );
+
+
+    const count =
+        document.getElementById(
+            "specialPageCount"
+        );
+
+
+    if (
+        !container ||
+        !title ||
+        !subtitle ||
+        !count
+    ) {
+
+        return;
 
     }
+
+
+    if (type === "best") {
+
+        title.textContent =
+            "🔥 Bu Ayın Çok Satanları";
+
+
+        subtitle.textContent =
+            "Bu ay en çok satılan 20 ürünü keşfet.";
+
+    }
+
+
+    if (type === "offer") {
+
+        title.textContent =
+            "🏷️ Fırsat Ürünleri";
+
+
+        subtitle.textContent =
+            "Admin tarafından fırsat ürünü olarak işaretlenen ürünler.";
+
+    }
+
+
+    if (type === "new") {
+
+        title.textContent =
+            "🆕 Yeni Gelenler";
+
+
+        subtitle.textContent =
+            "Son 30 gün içinde mağazaya eklenen ürünler.";
+
+    }
+
+
+    container.innerHTML = `
+
+        <div class="special-loading">
+
+            Ürünler hazırlanıyor...
+
+        </div>
+
+    `;
+
+
+    let specialProducts =
+        await fetchSpecialProducts(
+            type
+        );
+
+
+    /*
+       API yeni özel endpointleri desteklemiyorsa
+       mevcut ürünlerden hesaplama yapılır.
+    */
+
+    if (
+        !Array.isArray(
+            specialProducts
+        )
+    ) {
+
+        specialProducts =
+            getLocalSpecialProducts(
+                type
+            );
+
+    } else {
+
+        if (searchText) {
+
+            specialProducts =
+                specialProducts.filter(
+                    product => {
+
+                        const categoriesText =
+                            getProductCategories(
+                                product
+                            ).join(" ");
+
+
+                        const text =
+                            (
+                                String(
+                                    product.name ||
+                                    ""
+                                ) +
+                                " " +
+                                categoriesText +
+                                " " +
+                                String(
+                                    product.description ||
+                                    ""
+                                )
+                            )
+                            .toLocaleLowerCase(
+                                "tr-TR"
+                            );
+
+
+                        return text.includes(
+                            searchText
+                        );
+
+                    }
+                );
+
+        }
+
+    }
+
+
+    /*
+       Çok satanlar endpointinden 20'den fazla
+       veri gelirse yine ilk 20 alınır.
+    */
+
+    if (
+        type === "best"
+    ) {
+
+        specialProducts =
+            specialProducts
+                .slice(
+                    0,
+                    20
+                );
+
+    }
+
+
+    count.textContent =
+        specialProducts.length +
+        " ürün";
+
+
+    container.innerHTML = "";
+
+
+    if (
+        specialProducts.length === 0
+    ) {
+
+        let message =
+            "Bu bölümde henüz ürün bulunmuyor.";
+
+
+        if (type === "best") {
+
+            message =
+                "Bu ay için henüz satış verisi bulunmuyor.";
+
+        }
+
+
+        if (type === "offer") {
+
+            message =
+                "Henüz fırsat ürünü bulunmuyor.";
+
+        }
+
+
+        if (type === "new") {
+
+            message =
+                "Son 30 gün içinde eklenmiş ürün bulunmuyor.";
+
+        }
+
+
+        container.innerHTML = `
+
+            <div class="empty">
+
+                ${escapeHTML(
+                    message
+                )}
+
+            </div>
+
+        `;
+
+
+        return;
+
+    }
+
+
+    specialProducts.forEach(
+        product => {
+
+            container.appendChild(
+                createProductCard(
+                    product
+                )
+            );
+
+        }
+    );
 
 }
 
@@ -3814,7 +4563,25 @@ function openProduct(id) {
         );
 
 
+    /*
+       Özel API'den gelen ürün products içinde
+       bulunmuyorsa yine onunla çalışabilmek için
+       mevcut listeye eklenir.
+    */
+
     if (!selectedProduct) {
+
+        const specialContainer =
+            document.getElementById(
+                "specialProducts"
+            );
+
+
+        /*
+           Kart üzerinden gelen ürün normalde
+           products içinde bulunmalıdır.
+           Bulunamazsa hata verilir.
+        */
 
         console.error(
             "Ürün bulunamadı:",
@@ -4145,6 +4912,22 @@ function renderProductDetail() {
                             margin-bottom:10px">
 
                             🏷️ %${discount} indirim
+
+                        </div>
+                    `
+                    : ""
+            }
+
+
+            ${
+                isFeaturedOffer(p)
+                    ? `
+                        <div style="
+                            color:#8e24aa;
+                            font-weight:bold;
+                            margin-bottom:10px">
+
+                            🏷️ Fırsat Ürünü
 
                         </div>
                     `
@@ -4668,7 +5451,17 @@ async function submitReview() {
         renderProductDetail();
 
 
-        renderProducts();
+        if (currentSpecialType) {
+
+            renderSpecialPage(
+                currentSpecialType
+            );
+
+        } else {
+
+            renderProducts();
+
+        }
 
 
     } catch(error) {
@@ -5330,6 +6123,14 @@ async function createOrder() {
         showPayment(
             data.order
         );
+
+
+        /*
+           Yeni sipariş sonrasında özel sayfayı
+           yenilemek için ürün verisini tekrar alıyoruz.
+        */
+
+        await loadProducts();
 
 
     } catch(error) {
