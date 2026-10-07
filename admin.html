@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
+
 <meta name="robots" content="noindex,nofollow,noarchive">
 
 <title>REZAN GİYİM ADMIN</title>
 
 <style>
+
 *{
     box-sizing:border-box;
 }
@@ -80,13 +83,21 @@ button{
     color:#111;
 }
 
+.btn.blue{
+    background:#1976d2;
+}
+
+.btn.orange{
+    background:#ef6c00;
+}
+
 .admin{
     display:none;
     min-height:100vh;
 }
 
 .sidebar{
-    width:240px;
+    width:250px;
     position:fixed;
     left:0;
     top:0;
@@ -94,6 +105,7 @@ button{
     background:#111;
     color:white;
     padding:20px;
+    overflow-y:auto;
 }
 
 .sidebar h2{
@@ -122,7 +134,7 @@ button{
 }
 
 .content{
-    margin-left:240px;
+    margin-left:250px;
     padding:25px;
 }
 
@@ -162,6 +174,7 @@ button{
     padding:12px;
     border-bottom:1px solid #ddd;
     text-align:left;
+    vertical-align:middle;
 }
 
 .product-img{
@@ -203,6 +216,7 @@ button{
 
 .form textarea{
     min-height:120px;
+    resize:vertical;
 }
 
 .images{
@@ -291,11 +305,137 @@ button{
 .category-select-row{
     display:flex;
     gap:8px;
-    align-items:center;
+    align-items:flex-start;
 }
 
 .category-select-row select{
     flex:1;
+}
+
+.multi-category{
+    width:100%;
+    min-height:150px;
+}
+
+.help{
+    color:#666;
+    font-size:13px;
+    line-height:1.5;
+}
+
+.tag-list{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+}
+
+.tag{
+    background:#eee;
+    border-radius:20px;
+    padding:6px 10px;
+    font-size:13px;
+}
+
+.review-box{
+    background:#f7f7f7;
+    border:1px solid #ddd;
+    border-radius:10px;
+    padding:12px;
+    margin-top:10px;
+}
+
+.stars{
+    color:#f5a000;
+    letter-spacing:2px;
+}
+
+.hero-admin-card{
+    background:white;
+    border-radius:14px;
+    padding:15px;
+    margin-bottom:15px;
+    box-shadow:0 3px 15px rgba(0,0,0,.06);
+}
+
+.hero-admin-grid{
+    display:grid;
+    grid-template-columns:180px 1fr;
+    gap:18px;
+    align-items:start;
+}
+
+.hero-admin-image{
+    width:180px;
+    height:110px;
+    object-fit:cover;
+    border-radius:10px;
+    background:#eee;
+}
+
+.hero-form{
+    background:#fff;
+    border-radius:12px;
+    padding:20px;
+    margin-bottom:20px;
+    border:1px solid #ddd;
+}
+
+.hero-preview{
+    width:100%;
+    max-width:500px;
+    height:230px;
+    object-fit:cover;
+    border-radius:12px;
+    margin-top:10px;
+    background:#eee;
+}
+
+.empty-box{
+    background:white;
+    padding:25px;
+    border-radius:12px;
+    color:#666;
+}
+
+.notice-box{
+    padding:15px;
+    border-radius:10px;
+    background:#fff3cd;
+    border:1px solid #ffe69c;
+    margin-bottom:15px;
+}
+
+.success-box{
+    padding:15px;
+    border-radius:10px;
+    background:#d1e7dd;
+    border:1px solid #badbcc;
+}
+
+.danger-box{
+    padding:15px;
+    border-radius:10px;
+    background:#f8d7da;
+    border:1px solid #f5c2c7;
+}
+
+.slide-buttons{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-top:12px;
+}
+
+.small{
+    font-size:13px;
+}
+
+@media(max-width:1000px){
+
+    .cards{
+        grid-template-columns:1fr 1fr;
+    }
+
 }
 
 @media(max-width:800px){
@@ -322,13 +462,44 @@ button{
         flex-direction:column;
         align-items:stretch;
     }
+
+    .hero-admin-grid{
+        grid-template-columns:1fr;
+    }
+
+    .hero-admin-image{
+        width:100%;
+        height:200px;
+    }
+
 }
+
+@media(max-width:500px){
+
+    .cards{
+        grid-template-columns:1fr;
+    }
+
+    .content{
+        padding:15px;
+    }
+
+    .table{
+        display:block;
+        overflow-x:auto;
+    }
+
+}
+
 </style>
+
 </head>
 
 <body>
 
-<!-- LOGIN -->
+<!-- =====================================================
+     LOGIN
+===================================================== -->
 
 <div
     class="login"
@@ -362,7 +533,10 @@ button{
 
 </div>
 
-<!-- ADMIN -->
+
+<!-- =====================================================
+     ADMIN
+===================================================== -->
 
 <div
     class="admin"
@@ -401,6 +575,12 @@ button{
             </button>
 
             <button
+                onclick="showPage('homepage',this)"
+            >
+                🖼️ Ana Sayfa / Vitrin
+            </button>
+
+            <button
                 onclick="showPage('payment',this)"
             >
                 💳 Ödeme Ayarları
@@ -422,9 +602,13 @@ button{
 
     </aside>
 
+
     <main class="content">
 
-        <!-- DASHBOARD -->
+
+        <!-- =================================================
+             DASHBOARD
+        ================================================== -->
 
         <section
             class="page active"
@@ -440,27 +624,33 @@ button{
 
         </section>
 
-        <!-- ORDERS -->
+
+        <!-- =================================================
+             ORDERS
+        ================================================== -->
 
         <section
             class="page"
             id="page-orders"
         >
 
-            <h1>Siparişler</h1>
+            <h1>📦 Siparişler</h1>
 
             <div id="ordersList"></div>
 
         </section>
 
-        <!-- PRODUCTS -->
+
+        <!-- =================================================
+             PRODUCTS
+        ================================================== -->
 
         <section
             class="page"
             id="page-products"
         >
 
-            <h1>Ürünler</h1>
+            <h1>🛍️ Ürünler</h1>
 
             <button
                 class="btn green"
@@ -475,7 +665,10 @@ button{
 
         </section>
 
-        <!-- CATEGORIES -->
+
+        <!-- =================================================
+             CATEGORIES
+        ================================================== -->
 
         <section
             class="page"
@@ -526,7 +719,139 @@ button{
 
         </section>
 
-        <!-- PAYMENT -->
+
+        <!-- =================================================
+             HOMEPAGE
+        ================================================== -->
+
+        <section
+            class="page"
+            id="page-homepage"
+        >
+
+            <h1>🖼️ Ana Sayfa / Vitrin Yönetimi</h1>
+
+            <div class="notice-box">
+
+                <strong>Nasıl çalışır?</strong>
+
+                <p>
+                    Buraya eklediğiniz görseller REZAN GİYİM
+                    ana sayfasındaki büyük vitrin alanında
+                    otomatik olarak sırayla gösterilecektir.
+                </p>
+
+                <p class="small">
+                    Birden fazla görsel ekleyebilir,
+                    başlık/açıklama yazabilir ve sıralamayı
+                    değiştirebilirsiniz.
+                </p>
+
+            </div>
+
+
+            <div class="hero-form">
+
+                <h2>Yeni Vitrin Görseli</h2>
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+
+                        <label>Görsel</label>
+
+                        <input
+                            id="heroImageInput"
+                            type="file"
+                            accept="image/jpeg,image/png,image/webp,image/gif"
+                            onchange="previewHeroImage(this)"
+                        >
+
+                        <img
+                            id="heroPreview"
+                            class="hero-preview"
+                            style="display:none"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>Başlık</label>
+
+                        <input
+                            id="heroTitle"
+                            placeholder="Örn: Yeni Sezon"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group full">
+
+                        <label>Açıklama</label>
+
+                        <textarea
+                            id="heroText"
+                            placeholder="Örn: Yeni sezon ürünlerini keşfet."
+                        ></textarea>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>Buton Yazısı</label>
+
+                        <input
+                            id="heroButtonText"
+                            value="Şimdi Keşfet"
+                            placeholder="Şimdi Keşfet"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>Buton Bağlantısı</label>
+
+                        <input
+                            id="heroButtonLink"
+                            placeholder="#products"
+                            value="#products"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group full">
+
+                        <button
+                            class="btn green"
+                            onclick="addHeroSlide()"
+                        >
+                            + Vitrine Ekle
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <h2>Mevcut Vitrinler</h2>
+
+            <div id="heroSlidesList"></div>
+
+        </section>
+
+
+        <!-- =================================================
+             PAYMENT
+        ================================================== -->
 
         <section
             class="page"
@@ -540,19 +865,68 @@ button{
                 <div class="form-grid">
 
                     <div class="form-group">
+
                         <label>Banka</label>
-                        <input id="bankName">
+
+                        <input
+                            id="bankName"
+                        >
+
                     </div>
+
 
                     <div class="form-group">
+
                         <label>Hesap Sahibi</label>
-                        <input id="accountName">
+
+                        <input
+                            id="accountName"
+                        >
+
                     </div>
 
+
                     <div class="form-group full">
+
                         <label>IBAN</label>
-                        <input id="iban">
+
+                        <input
+                            id="iban"
+                        >
+
                     </div>
+
+
+                    <div class="form-group full">
+
+                        <label>
+                            ⚠️ Müşteriye Gösterilecek Önemli Açıklama
+                        </label>
+
+                        <textarea
+                            id="paymentDescription"
+                            placeholder="lütfen açıklamayı boş bırakın yoksa sipariş gerçekleştirilmez"
+                        ></textarea>
+
+                        <div class="help">
+
+                            Bu alan müşterinin ödeme ekranında
+                            ödeme bilgilerinin altında gösterilir.
+
+                            <br>
+
+                            Boş bırakırsanız sistem otomatik olarak:
+
+                            <strong>
+                                lütfen açıklamayı boş bırakın yoksa sipariş gerçekleştirilmez
+                            </strong>
+
+                            yazısını kullanır.
+
+                        </div>
+
+                    </div>
+
 
                     <div class="form-group full">
 
@@ -560,7 +934,7 @@ button{
                             class="btn green"
                             onclick="savePayment()"
                         >
-                            Kaydet
+                            💾 Ödeme Bilgilerini Kaydet
                         </button>
 
                     </div>
@@ -571,7 +945,10 @@ button{
 
         </section>
 
-        <!-- PASSWORD -->
+
+        <!-- =================================================
+             PASSWORD
+        ================================================== -->
 
         <section
             class="page"
@@ -585,20 +962,28 @@ button{
                 <div class="form-grid">
 
                     <div class="form-group">
+
                         <label>Eski Şifre</label>
+
                         <input
                             id="oldPassword"
                             type="password"
                         >
+
                     </div>
 
+
                     <div class="form-group">
+
                         <label>Yeni Şifre</label>
+
                         <input
                             id="newPassword"
                             type="password"
                         >
+
                     </div>
+
 
                     <div class="form-group full">
 
@@ -621,17 +1006,33 @@ button{
 
 </div>
 
+
 <script>
+
+/* =========================================================
+   GLOBAL
+========================================================= */
 
 let products = [];
 let categories = [];
 let orders = [];
 
+let heroSlides = [];
+
 let editingProductId = null;
 let uploadedImages = [];
 
+
 /* =========================================================
-   GENEL API YARDIMCISI
+   SABİT ÖDEME AÇIKLAMASI
+========================================================= */
+
+const DEFAULT_PAYMENT_DESCRIPTION =
+    "lütfen açıklamayı boş bırakın yoksa sipariş gerçekleştirilmez";
+
+
+/* =========================================================
+   API
 ========================================================= */
 
 async function apiFetch(url, options = {}) {
@@ -644,7 +1045,10 @@ async function apiFetch(url, options = {}) {
     let data = {};
 
     try {
-        data = await response.json();
+
+        data =
+            await response.json();
+
     } catch {}
 
     if (
@@ -679,14 +1083,20 @@ async function apiFetch(url, options = {}) {
     };
 }
 
+
 /* =========================================================
-   LOGIN
+   DOM READY
 ========================================================= */
 
 document.addEventListener(
     "DOMContentLoaded",
     checkSession
 );
+
+
+/* =========================================================
+   SESSION
+========================================================= */
 
 async function checkSession() {
 
@@ -731,6 +1141,11 @@ async function checkSession() {
     }
 }
 
+
+/* =========================================================
+   LOGIN
+========================================================= */
+
 async function login() {
 
     const password =
@@ -748,6 +1163,7 @@ async function login() {
     if (!password) {
 
         message.style.color = "red";
+
         message.textContent =
             "Lütfen admin şifresini girin.";
 
@@ -785,6 +1201,7 @@ async function login() {
         }
 
         message.style.color = "green";
+
         message.textContent =
             "Giriş başarılı.";
 
@@ -793,10 +1210,12 @@ async function login() {
     } catch(error) {
 
         message.style.color = "red";
+
         message.textContent =
             error.message;
     }
 }
+
 
 function showAdmin() {
 
@@ -810,6 +1229,7 @@ function showAdmin() {
 
     loadAll();
 }
+
 
 async function logout() {
 
@@ -827,6 +1247,7 @@ async function logout() {
 
     location.reload();
 }
+
 
 /* =========================================================
    NAVIGATION
@@ -852,34 +1273,40 @@ async function showPage(page, button) {
         );
 
     if (pageElement) {
+
         pageElement.classList.add("active");
     }
 
     if (button) {
+
         button.classList.add("active");
     }
 
     try {
 
         if (page === "orders") {
+
             await loadOrders();
         }
 
         if (page === "products") {
 
-            /*
-             * Ürünler sayfasına her girildiğinde
-             * kategorileri yeniden sunucudan alıyoruz.
-             */
             await loadCategories();
             await loadProducts();
         }
 
         if (page === "categories") {
+
             await loadCategories();
         }
 
+        if (page === "homepage") {
+
+            await loadHomepage();
+        }
+
         if (page === "payment") {
+
             await loadPayment();
         }
 
@@ -891,6 +1318,7 @@ async function showPage(page, button) {
         );
     }
 }
+
 
 /* =========================================================
    LOAD ALL
@@ -904,7 +1332,8 @@ async function loadAll() {
             loadProducts(),
             loadOrders(),
             loadCategories(),
-            loadPayment()
+            loadPayment(),
+            loadHomepage()
         ]);
 
         updateDashboard();
@@ -914,6 +1343,7 @@ async function loadAll() {
         console.error(error);
     }
 }
+
 
 /* =========================================================
    PRODUCTS
@@ -946,6 +1376,7 @@ async function loadProducts() {
                 );
 
         renderProducts();
+
         updateDashboard();
 
     } catch(error) {
@@ -958,6 +1389,61 @@ async function loadProducts() {
         throw error;
     }
 }
+
+
+/* =========================================================
+   PRODUCT CATEGORIES
+========================================================= */
+
+function getProductCategories(product) {
+
+    if (
+        product &&
+        Array.isArray(product.categories)
+    ) {
+
+        return product.categories
+            .map(item => {
+
+                if (
+                    item &&
+                    typeof item === "object"
+                ) {
+
+                    return String(
+                        item.name ??
+                        ""
+                    ).trim();
+                }
+
+                return String(
+                    item ??
+                    ""
+                ).trim();
+
+            })
+            .filter(Boolean);
+    }
+
+    if (
+        product &&
+        product.category
+    ) {
+
+        return [
+            String(
+                product.category
+            ).trim()
+        ];
+    }
+
+    return [];
+}
+
+
+/* =========================================================
+   RENDER PRODUCTS
+========================================================= */
 
 function renderProducts() {
 
@@ -986,12 +1472,21 @@ function renderProducts() {
             <thead>
 
                 <tr>
+
                     <th>Görsel</th>
+
                     <th>Ürün</th>
-                    <th>Kategori</th>
+
+                    <th>Kategoriler</th>
+
                     <th>Fiyat</th>
+
                     <th>Stok</th>
+
+                    <th>Yorum</th>
+
                     <th>İşlem</th>
+
                 </tr>
 
             </thead>
@@ -1006,56 +1501,115 @@ function renderProducts() {
                     const stock =
                         getTotalStock(product);
 
+                    const productCategories =
+                        getProductCategories(product);
+
+                    const reviews =
+                        Array.isArray(product.reviews)
+                            ? product.reviews
+                            : [];
+
                     return `
 
                         <tr>
 
                             <td>
+
                                 ${
                                     image
-                                        ? `<img
-                                            class="product-img"
-                                            src="${escapeHTML(image)}"
-                                           >`
+                                        ? `
+                                            <img
+                                                class="product-img"
+                                                src="${escapeHTML(image)}"
+                                            >
+                                          `
                                         : "-"
                                 }
+
                             </td>
 
-                            <td>
-                                ${escapeHTML(product.name)}
-                            </td>
 
                             <td>
-                                ${escapeHTML(product.category || "-")}
+
+                                <strong>
+                                    ${escapeHTML(product.name)}
+                                </strong>
+
                             </td>
+
+
+                            <td>
+
+                                <div class="tag-list">
+
+                                    ${
+                                        productCategories.length
+                                            ? productCategories
+                                                .map(category => `
+                                                    <span class="tag">
+                                                        ${escapeHTML(category)}
+                                                    </span>
+                                                `)
+                                                .join("")
+                                            : "-"
+                                    }
+
+                                </div>
+
+                            </td>
+
 
                             <td>
                                 ${formatPrice(product.price)}
                             </td>
 
+
                             <td>
                                 ${stock}
                             </td>
 
+
                             <td>
 
                                 <button
-                                    class="btn"
-                                    onclick="editProduct('${escapeJS(product.id)}')"
+                                    class="btn blue"
+                                    onclick="showReviews('${escapeJS(product.id)}')"
                                 >
-                                    Düzenle
-                                </button>
-
-                                <button
-                                    class="btn red"
-                                    onclick="deleteProduct('${escapeJS(product.id)}')"
-                                >
-                                    Sil
+                                    ⭐ ${reviews.length}
                                 </button>
 
                             </td>
 
+
+                            <td>
+
+                                <div style="
+                                    display:flex;
+                                    gap:6px;
+                                    flex-wrap:wrap;
+                                ">
+
+                                    <button
+                                        class="btn"
+                                        onclick="editProduct('${escapeJS(product.id)}')"
+                                    >
+                                        Düzenle
+                                    </button>
+
+
+                                    <button
+                                        class="btn red"
+                                        onclick="deleteProduct('${escapeJS(product.id)}')"
+                                    >
+                                        Sil
+                                    </button>
+
+                                </div>
+
+                            </td>
+
                         </tr>
+
                     `;
 
                 }).join("")}
@@ -1063,8 +1617,14 @@ function renderProducts() {
             </tbody>
 
         </table>
+
     `;
 }
+
+
+/* =========================================================
+   STOCK
+========================================================= */
 
 function getTotalStock(product) {
 
@@ -1080,16 +1640,20 @@ function getTotalStock(product) {
         );
     }
 
-    return Number(product.stock || 0);
+    return Number(
+        product.stock || 0
+    );
 }
 
+
 /* =========================================================
-   PRODUCT FORM
+   NEW PRODUCT
 ========================================================= */
 
 async function newProduct() {
 
     editingProductId = null;
+
     uploadedImages = [];
 
     try {
@@ -1107,11 +1671,18 @@ async function newProduct() {
     }
 }
 
+
+/* =========================================================
+   EDIT PRODUCT
+========================================================= */
+
 async function editProduct(id) {
 
     const product =
         products.find(
-            p => String(p.id) === String(id)
+            p =>
+                String(p.id) ===
+                String(id)
         );
 
     if (!product) return;
@@ -1130,7 +1701,8 @@ async function editProduct(id) {
         return;
     }
 
-    editingProductId = product.id;
+    editingProductId =
+        product.id;
 
     uploadedImages =
         Array.isArray(product.images)
@@ -1140,6 +1712,11 @@ async function editProduct(id) {
     showProductForm(product);
 }
 
+
+/* =========================================================
+   PRODUCT FORM
+========================================================= */
+
 function showProductForm(product = null) {
 
     const container =
@@ -1148,55 +1725,57 @@ function showProductForm(product = null) {
         );
 
     const isEdit =
-        Boolean(product);
+        product !== null;
 
-    /*
-     * Kategoriler artık obje:
-     * {
-     *   id: "...",
-     *   name: "Kadın"
-     * }
-     *
-     * Bu nedenle select içinde category.name
-     * kullanıyoruz.
-     */
+
+    const selectedCategories =
+        getProductCategories(product);
+
 
     const categoryOptions =
         categories.length
-            ? categories.map(category => {
+            ? categories
+                .map(category => {
 
-                const categoryName =
-                    String(
-                        category?.name ?? category ?? ""
-                    ).trim();
+                    const categoryName =
+                        String(
+                            category?.name ??
+                            category ??
+                            ""
+                        ).trim();
 
-                if (!categoryName) {
-                    return "";
-                }
+                    if (!categoryName) {
+                        return "";
+                    }
 
-                const selected =
-                    normalizeTurkish(
-                        product?.category || ""
-                    ) ===
-                    normalizeTurkish(
-                        categoryName
-                    );
+                    const selected =
+                        selectedCategories.some(
+                            item =>
+                                normalizeTurkish(item) ===
+                                normalizeTurkish(categoryName)
+                        );
 
-                return `
-                    <option
-                        value="${escapeHTML(categoryName)}"
-                        ${selected ? "selected" : ""}
-                    >
-                        ${escapeHTML(categoryName)}
-                    </option>
-                `;
+                    return `
 
-            }).join("")
+                        <option
+                            value="${escapeHTML(categoryName)}"
+                            ${selected ? "selected" : ""}
+                        >
+                            ${escapeHTML(categoryName)}
+                        </option>
+
+                    `;
+
+                })
+                .join("")
             : `
+
                 <option value="" disabled>
                     Henüz kategori eklenmemiş
                 </option>
-            `;
+
+              `;
+
 
     container.innerHTML = `
 
@@ -1212,32 +1791,46 @@ function showProductForm(product = null) {
 
             <br>
 
+
             <div class="form-grid">
 
+
+                <!-- ÜRÜN ADI -->
+
                 <div class="form-group">
-                    <label>Ürün Adı</label>
+
+                    <label>
+                        Ürün Adı
+                    </label>
 
                     <input
                         id="pName"
                         value="${escapeHTML(product?.name || "")}"
                     >
+
                 </div>
+
+
+                <!-- ÇOKLU KATEGORİ -->
 
                 <div class="form-group">
 
-                    <label>Kategori</label>
+                    <label>
+                        Kategoriler
+                    </label>
 
                     <div class="category-select-row">
 
-                        <select id="pCategory">
-
-                            <option value="">
-                                Kategori seç
-                            </option>
+                        <select
+                            id="pCategories"
+                            class="multi-category"
+                            multiple
+                        >
 
                             ${categoryOptions}
 
                         </select>
+
 
                         <button
                             type="button"
@@ -1249,31 +1842,70 @@ function showProductForm(product = null) {
 
                     </div>
 
+
+                    <div class="help">
+
+                        Birden fazla kategori seçmek için
+                        bilgisayarda <strong>CTRL</strong>
+                        tuşuna basılı tutarak kategorileri
+                        seçebilirsiniz.
+
+                        <br><br>
+
+                        Örneğin bir ürünü aynı anda:
+
+                        <strong>
+                            Kadın + Tişört + Yeni Sezon
+                        </strong>
+
+                        kategorilerine koyabilirsiniz.
+
+                    </div>
+
                 </div>
 
+
+                <!-- FİYAT -->
+
                 <div class="form-group">
-                    <label>Satış Fiyatı</label>
+
+                    <label>
+                        Satış Fiyatı
+                    </label>
 
                     <input
                         id="pPrice"
                         type="number"
                         value="${product?.price || ""}"
                     >
+
                 </div>
 
+
+                <!-- ESKİ FİYAT -->
+
                 <div class="form-group">
-                    <label>Eski Fiyat</label>
+
+                    <label>
+                        Eski Fiyat
+                    </label>
 
                     <input
                         id="pOldPrice"
                         type="number"
                         value="${product?.oldPrice || ""}"
                     >
+
                 </div>
+
+
+                <!-- AÇIKLAMA -->
 
                 <div class="form-group full">
 
-                    <label>Açıklama</label>
+                    <label>
+                        Açıklama
+                    </label>
 
                     <textarea
                         id="pDescription"
@@ -1281,9 +1913,14 @@ function showProductForm(product = null) {
 
                 </div>
 
+
+                <!-- GÖRSELLER -->
+
                 <div class="form-group full">
 
-                    <label>Ürün Görselleri</label>
+                    <label>
+                        Ürün Görselleri
+                    </label>
 
                     <div class="upload-box">
 
@@ -1301,12 +1938,16 @@ function showProductForm(product = null) {
 
                     </div>
 
+
                     <div
                         class="images"
                         id="imagePreview"
                     ></div>
 
                 </div>
+
+
+                <!-- BEDEN -->
 
                 <div class="form-group full">
 
@@ -1320,6 +1961,7 @@ function showProductForm(product = null) {
                             class="size-row"
                             id="sizeRows"
                         ></div>
+
 
                         <div style="
                             display:flex;
@@ -1335,6 +1977,7 @@ function showProductForm(product = null) {
                                 S-M-L-XL-XXL
                             </button>
 
+
                             <button
                                 type="button"
                                 class="btn gray"
@@ -1343,6 +1986,7 @@ function showProductForm(product = null) {
                                 Ayakkabı 36-45
                             </button>
 
+
                             <button
                                 type="button"
                                 class="btn gray"
@@ -1350,6 +1994,7 @@ function showProductForm(product = null) {
                             >
                                 Pantolon
                             </button>
+
 
                             <button
                                 type="button"
@@ -1365,10 +2010,10 @@ function showProductForm(product = null) {
 
                 </div>
 
-                <div
-                    class="form-group"
-                    id="normalStockGroup"
-                >
+
+                <!-- GENEL STOK -->
+
+                <div class="form-group">
 
                     <label>
                         Beden kullanılmıyorsa genel stok
@@ -1383,19 +2028,24 @@ function showProductForm(product = null) {
 
                 </div>
 
+
+                <!-- BUTTONS -->
+
                 <div class="form-group full">
 
                     <div style="
                         display:flex;
                         gap:10px;
+                        flex-wrap:wrap;
                     ">
 
                         <button
                             class="btn green"
                             onclick="saveProduct()"
                         >
-                            Ürünü Kaydet
+                            💾 Ürünü Kaydet
                         </button>
+
 
                         <button
                             class="btn gray"
@@ -1411,14 +2061,18 @@ function showProductForm(product = null) {
             </div>
 
         </div>
+
     `;
 
+
     renderUploadedImages();
+
 
     const existingSizes =
         Array.isArray(product?.sizes)
             ? product.sizes
             : [];
+
 
     existingSizes.forEach(size =>
         addSizeRow(
@@ -1428,50 +2082,63 @@ function showProductForm(product = null) {
     );
 }
 
+
 /* =========================================================
-   PRODUCT KATEGORİLERİNİ MANUEL YENİLE
+   REFRESH CATEGORIES
 ========================================================= */
 
 async function refreshProductCategories() {
 
     const select =
         document.getElementById(
-            "pCategory"
+            "pCategories"
         );
 
     if (!select) return;
 
-    const currentValue =
-        select.value || "";
+
+    const selectedBefore =
+        Array.from(
+            select.selectedOptions
+        )
+        .map(
+            option =>
+                option.value
+        );
+
 
     try {
 
         await loadCategories();
 
+
         const updatedSelect =
             document.getElementById(
-                "pCategory"
+                "pCategories"
             );
 
         if (!updatedSelect) return;
 
-        updatedSelect.innerHTML = `
-            <option value="">
-                Kategori seç
-            </option>
-        `;
+
+        updatedSelect.innerHTML = "";
+
 
         categories.forEach(category => {
 
             const categoryName =
                 String(
-                    category?.name ?? category ?? ""
+                    category?.name ??
+                    category ??
+                    ""
                 ).trim();
 
             if (!categoryName) return;
 
+
             const option =
-                document.createElement("option");
+                document.createElement(
+                    "option"
+                );
 
             option.value =
                 categoryName;
@@ -1479,31 +2146,25 @@ async function refreshProductCategories() {
             option.textContent =
                 categoryName;
 
+
+            if (
+                selectedBefore.some(
+                    value =>
+                        normalizeTurkish(value) ===
+                        normalizeTurkish(categoryName)
+                )
+            ) {
+
+                option.selected = true;
+            }
+
+
             updatedSelect.appendChild(
                 option
             );
+
         });
 
-        if (
-            currentValue &&
-            categories.some(
-                category =>
-                    normalizeTurkish(
-                        String(
-                            category?.name ??
-                            category ??
-                            ""
-                        )
-                    ) ===
-                    normalizeTurkish(
-                        currentValue
-                    )
-            )
-        ) {
-
-            updatedSelect.value =
-                currentValue;
-        }
 
         alert(
             categories.length +
@@ -1518,6 +2179,7 @@ async function refreshProductCategories() {
         );
     }
 }
+
 
 /* =========================================================
    SIZES
@@ -1535,11 +2197,15 @@ function addSizeRow(
 
     if (!container) return;
 
+
     const row =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
     row.className =
         "size-row";
+
 
     row.innerHTML = `
 
@@ -1549,6 +2215,7 @@ function addSizeRow(
             value="${escapeHTML(name)}"
         >
 
+
         <input
             class="size-stock"
             type="number"
@@ -1557,6 +2224,7 @@ function addSizeRow(
             value="${Number(stock || 0)}"
         >
 
+
         <button
             type="button"
             class="btn red"
@@ -1564,10 +2232,13 @@ function addSizeRow(
         >
             ×
         </button>
+
     `;
+
 
     container.appendChild(row);
 }
+
 
 function addPresetSizes(sizes) {
 
@@ -1578,12 +2249,18 @@ function addPresetSizes(sizes) {
 
     if (!container) return;
 
+
     container.innerHTML = "";
 
+
     sizes.forEach(size =>
-        addSizeRow(size,0)
+        addSizeRow(
+            size,
+            0
+        )
     );
 }
+
 
 /* =========================================================
    IMAGE UPLOAD
@@ -1591,19 +2268,27 @@ function addPresetSizes(sizes) {
 
 async function uploadImages(files) {
 
-    if (!files || !files.length) return;
+    if (
+        !files ||
+        !files.length
+    ) return;
 
-    for (const file of files) {
+
+    for (
+        const file of files
+    ) {
 
         try {
 
             const formData =
                 new FormData();
 
+
             formData.append(
                 "images",
                 file
             );
+
 
             const result =
                 await apiFetch(
@@ -1614,6 +2299,7 @@ async function uploadImages(files) {
                     }
                 );
 
+
             if (!result.response.ok) {
 
                 throw new Error(
@@ -1622,12 +2308,16 @@ async function uploadImages(files) {
                 );
             }
 
+
             const returned =
                 result.data.files ||
                 result.data.images ||
                 [];
 
-            if (Array.isArray(returned)) {
+
+            if (
+                Array.isArray(returned)
+            ) {
 
                 returned.forEach(item => {
 
@@ -1638,11 +2328,16 @@ async function uploadImages(files) {
                               item.path ||
                               item.location;
 
+
                     if (url) {
-                        uploadedImages.push(url);
+
+                        uploadedImages.push(
+                            url
+                        );
                     }
 
                 });
+
             }
 
         } catch(error) {
@@ -1652,10 +2347,17 @@ async function uploadImages(files) {
                 error.message
             );
         }
+
     }
+
 
     renderUploadedImages();
 }
+
+
+/* =========================================================
+   RENDER IMAGES
+========================================================= */
 
 function renderUploadedImages() {
 
@@ -1666,34 +2368,43 @@ function renderUploadedImages() {
 
     if (!container) return;
 
+
     container.innerHTML =
-        uploadedImages.map(
-            (image,index) => `
+        uploadedImages
+            .map(
+                (image,index) => `
 
-                <div class="image-item">
+                    <div class="image-item">
 
-                    <img
-                        src="${escapeHTML(image)}"
-                    >
+                        <img
+                            src="${escapeHTML(image)}"
+                        >
 
-                    <button
-                        type="button"
-                        onclick="removeImage(${index})"
-                    >
-                        ×
-                    </button>
+                        <button
+                            type="button"
+                            onclick="removeImage(${index})"
+                        >
+                            ×
+                        </button>
 
-                </div>
-            `
-        ).join("");
+                    </div>
+
+                `
+            )
+            .join("");
 }
+
 
 function removeImage(index) {
 
-    uploadedImages.splice(index,1);
+    uploadedImages.splice(
+        index,
+        1
+    );
 
     renderUploadedImages();
 }
+
 
 /* =========================================================
    SAVE PRODUCT
@@ -1706,10 +2417,25 @@ async function saveProduct() {
             "pName"
         ).value.trim();
 
-    const category =
+
+    const categorySelect =
         document.getElementById(
-            "pCategory"
-        ).value.trim();
+            "pCategories"
+        );
+
+
+    const selectedCategories =
+        categorySelect
+            ? Array.from(
+                categorySelect.selectedOptions
+              )
+              .map(
+                  option =>
+                      option.value.trim()
+              )
+              .filter(Boolean)
+            : [];
+
 
     const price =
         Number(
@@ -1718,6 +2444,7 @@ async function saveProduct() {
             ).value || 0
         );
 
+
     const oldPrice =
         Number(
             document.getElementById(
@@ -1725,10 +2452,12 @@ async function saveProduct() {
             ).value || 0
         );
 
+
     const description =
         document.getElementById(
             "pDescription"
         ).value;
+
 
     const stock =
         Number(
@@ -1737,12 +2466,15 @@ async function saveProduct() {
             ).value || 0
         );
 
+
     const sizeRows =
         document.querySelectorAll(
             "#sizeRows .size-row"
         );
 
+
     const sizes = [];
+
 
     sizeRows.forEach(row => {
 
@@ -1751,6 +2483,7 @@ async function saveProduct() {
                 ".size-name"
             ).value.trim();
 
+
         const sizeStock =
             Number(
                 row.querySelector(
@@ -1758,42 +2491,81 @@ async function saveProduct() {
                 ).value || 0
             );
 
+
         if (sizeName) {
 
             sizes.push({
                 name:sizeName,
                 stock:sizeStock
             });
+
         }
+
     });
 
+
     if (!name) {
-        alert("Ürün adı gerekli.");
+
+        alert(
+            "Ürün adı gerekli."
+        );
+
         return;
     }
 
-    if (!category) {
-        alert("Lütfen kategori seçin.");
+
+    if (
+        selectedCategories.length === 0
+    ) {
+
+        alert(
+            "Lütfen en az bir kategori seçin."
+        );
+
         return;
     }
+
 
     const payload = {
 
         name,
-        category,
+
+        categories:
+            selectedCategories,
+
+        /*
+         * Eski sistemle uyumluluk için
+         * ilk kategoriyi category olarak
+         * da gönderiyoruz.
+         */
+
+        category:
+            selectedCategories[0],
+
         price,
+
         oldPrice,
+
         description,
-        images:uploadedImages,
+
+        images:
+            uploadedImages,
+
         sizes,
+
         stock
+
     };
+
 
     try {
 
         let result;
 
-        if (editingProductId) {
+
+        if (
+            editingProductId !== null
+        ) {
 
             result =
                 await apiFetch(
@@ -1803,12 +2575,16 @@ async function saveProduct() {
                     ),
                     {
                         method:"PUT",
+
                         headers:{
                             "Content-Type":
                                 "application/json"
                         },
+
                         body:
-                            JSON.stringify(payload)
+                            JSON.stringify(
+                                payload
+                            )
                     }
                 );
 
@@ -1819,17 +2595,24 @@ async function saveProduct() {
                     "/api/products",
                     {
                         method:"POST",
+
                         headers:{
                             "Content-Type":
                                 "application/json"
                         },
+
                         body:
-                            JSON.stringify(payload)
+                            JSON.stringify(
+                                payload
+                            )
                     }
                 );
         }
 
-        if (!result.response.ok) {
+
+        if (
+            !result.response.ok
+        ) {
 
             throw new Error(
                 result.data.message ||
@@ -1837,20 +2620,29 @@ async function saveProduct() {
             );
         }
 
+
         alert(
             "Ürün başarıyla kaydedildi."
         );
 
-        editingProductId = null;
-        uploadedImages = [];
+
+        editingProductId =
+            null;
+
+        uploadedImages =
+            [];
+
 
         await loadProducts();
 
     } catch(error) {
 
-        alert(error.message);
+        alert(
+            error.message
+        );
     }
 }
+
 
 /* =========================================================
    DELETE PRODUCT
@@ -1863,8 +2655,10 @@ async function deleteProduct(id) {
             "Bu ürünü silmek istediğinizden emin misiniz?"
         )
     ) {
+
         return;
     }
+
 
     try {
 
@@ -1877,7 +2671,10 @@ async function deleteProduct(id) {
                 }
             );
 
-        if (!result.response.ok) {
+
+        if (
+            !result.response.ok
+        ) {
 
             throw new Error(
                 result.data.message ||
@@ -1885,13 +2682,264 @@ async function deleteProduct(id) {
             );
         }
 
+
         await loadProducts();
 
     } catch(error) {
 
-        alert(error.message);
+        alert(
+            error.message
+        );
     }
 }
+
+
+/* =========================================================
+   REVIEWS
+========================================================= */
+
+function showReviews(productId) {
+
+    const product =
+        products.find(
+            p =>
+                String(p.id) ===
+                String(productId)
+        );
+
+
+    if (!product) return;
+
+
+    const reviews =
+        Array.isArray(product.reviews)
+            ? product.reviews
+            : [];
+
+
+    if (!reviews.length) {
+
+        alert(
+            "Bu üründe henüz yorum bulunmuyor."
+        );
+
+        return;
+    }
+
+
+    const reviewText =
+        reviews
+            .map(
+                review => {
+
+                    const stars =
+                        "★".repeat(
+                            Number(
+                                review.rating || 0
+                            )
+                        ) +
+                        "☆".repeat(
+                            Math.max(
+                                0,
+                                5 -
+                                Number(
+                                    review.rating || 0
+                                )
+                            )
+                        );
+
+
+                    return `
+
+                        <div
+                            class="review-box"
+                            id="review-${escapeHTML(review.id)}"
+                        >
+
+                            <strong>
+                                ${escapeHTML(
+                                    review.name ||
+                                    "Müşteri"
+                                )}
+                            </strong>
+
+                            <div class="stars">
+                                ${stars}
+                            </div>
+
+                            <p>
+                                ${escapeHTML(
+                                    review.text ||
+                                    review.comment ||
+                                    ""
+                                )}
+                            </p>
+
+                            <small>
+                                ${escapeHTML(
+                                    review.createdAt ||
+                                    ""
+                                )}
+                            </small>
+
+                            <br><br>
+
+                            <button
+                                class="btn red"
+                                onclick="deleteReview(
+                                    '${escapeJS(product.id)}',
+                                    '${escapeJS(review.id)}'
+                                )"
+                            >
+                                Yorumu Sil
+                            </button>
+
+                        </div>
+
+                    `;
+
+                }
+            )
+            .join("");
+
+
+    const modal =
+        document.createElement(
+            "div"
+        );
+
+
+    modal.id =
+        "reviewsModal";
+
+
+    modal.style.cssText = `
+        position:fixed;
+        inset:0;
+        background:rgba(0,0,0,.65);
+        z-index:9999;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        padding:20px;
+    `;
+
+
+    modal.innerHTML = `
+
+        <div
+            style="
+                background:white;
+                width:700px;
+                max-width:100%;
+                max-height:90vh;
+                overflow:auto;
+                border-radius:15px;
+                padding:25px;
+            "
+        >
+
+            <div style="
+                display:flex;
+                justify-content:space-between;
+                gap:10px;
+                align-items:center;
+            ">
+
+                <h2>
+                    ⭐ ${escapeHTML(product.name)}
+                    — Yorumlar
+                </h2>
+
+                <button
+                    class="btn gray"
+                    onclick="document.getElementById('reviewsModal').remove()"
+                >
+                    Kapat
+                </button>
+
+            </div>
+
+            ${reviewText}
+
+        </div>
+
+    `;
+
+
+    document.body.appendChild(
+        modal
+    );
+}
+
+
+async function deleteReview(
+    productId,
+    reviewId
+) {
+
+    if (
+        !confirm(
+            "Bu yorumu silmek istediğinize emin misiniz?"
+        )
+    ) {
+
+        return;
+    }
+
+
+    try {
+
+        const result =
+            await apiFetch(
+                "/api/products/" +
+                encodeURIComponent(productId) +
+                "/reviews/" +
+                encodeURIComponent(reviewId),
+                {
+                    method:"DELETE"
+                }
+            );
+
+
+        if (
+            !result.response.ok
+        ) {
+
+            throw new Error(
+                result.data.message ||
+                "Yorum silinemedi."
+            );
+        }
+
+
+        const modal =
+            document.getElementById(
+                "reviewsModal"
+            );
+
+
+        if (modal) {
+
+            modal.remove();
+        }
+
+
+        await loadProducts();
+
+
+        alert(
+            "Yorum silindi."
+        );
+
+    } catch(error) {
+
+        alert(
+            error.message
+        );
+    }
+}
+
 
 /* =========================================================
    CATEGORIES
@@ -1906,7 +2954,10 @@ async function loadCategories() {
                 "/api/categories"
             );
 
-        if (!result.response.ok) {
+
+        if (
+            !result.response.ok
+        ) {
 
             throw new Error(
                 result.data.message ||
@@ -1914,31 +2965,22 @@ async function loadCategories() {
             );
         }
 
+
         const data =
             result.data;
 
-        /*
-         * SERVER:
-         *
-         * {
-         *   success:true,
-         *   categories:[
-         *      {id:"...", name:"Kadın"}
-         *   ]
-         * }
-         *
-         * Burada kategorileri güvenli şekilde
-         * obje olarak saklıyoruz.
-         */
 
         const rawCategories =
             Array.isArray(data)
                 ? data
                 : (
-                    Array.isArray(data.categories)
+                    Array.isArray(
+                        data.categories
+                    )
                         ? data.categories
                         : []
                 );
+
 
         categories =
             rawCategories
@@ -1950,6 +2992,7 @@ async function loadCategories() {
                     ) {
 
                         return {
+
                             id:
                                 String(
                                     category.id ??
@@ -1961,21 +3004,21 @@ async function loadCategories() {
                                     category.name ??
                                     ""
                                 ).trim()
-                        };
 
+                        };
                     }
 
-                    /*
-                     * Eski formatta sadece yazı
-                     * gelirse de çalışmaya devam etsin.
-                     */
 
                     return {
+
                         id:"",
+
                         name:
                             String(
-                                category ?? ""
+                                category ??
+                                ""
                             ).trim()
+
                     };
 
                 })
@@ -1984,11 +3027,9 @@ async function loadCategories() {
                         category.name
                 );
 
-        /*
-         * Aynı isimli kategorileri tekilleştir.
-         */
 
         const unique = [];
+
 
         categories.forEach(category => {
 
@@ -2003,14 +3044,23 @@ async function loadCategories() {
                         )
                 );
 
+
             if (!exists) {
-                unique.push(category);
+
+                unique.push(
+                    category
+                );
             }
+
         });
 
-        categories = unique;
+
+        categories =
+            unique;
+
 
         renderCategoriesAdmin();
+
 
         return categories;
 
@@ -2025,6 +3075,7 @@ async function loadCategories() {
     }
 }
 
+
 function renderCategoriesAdmin() {
 
     const container =
@@ -2032,43 +3083,59 @@ function renderCategoriesAdmin() {
             "categoryAdminList"
         );
 
+
     if (!container) return;
 
-    if (!categories.length) {
+
+    if (
+        !categories.length
+    ) {
 
         container.innerHTML = `
+
             <div class="card">
                 Henüz kategori yok.
             </div>
+
         `;
 
         return;
     }
 
+
     container.innerHTML =
-        categories.map(
-            category => `
+        categories
+            .map(
+                category => `
 
-                <div class="category-item">
+                    <div class="category-item">
 
-                    <strong>
-                        ${escapeHTML(category.name)}
-                    </strong>
+                        <strong>
+                            ${escapeHTML(
+                                category.name
+                            )}
+                        </strong>
 
-                    <button
-                        class="btn red"
-                        onclick="deleteCategory('${escapeJS(category.id)}')"
-                    >
-                        Kategoriyi Sil
-                    </button>
 
-                </div>
-            `
-        ).join("");
+                        <button
+                            class="btn red"
+                            onclick="deleteCategory(
+                                '${escapeJS(category.id)}'
+                            )"
+                        >
+                            Kategoriyi Sil
+                        </button>
+
+                    </div>
+
+                `
+            )
+            .join("");
 }
 
+
 /* =========================================================
-   KATEGORİ EKLEME
+   ADD CATEGORY
 ========================================================= */
 
 async function addCategory() {
@@ -2078,14 +3145,20 @@ async function addCategory() {
             "newCategory"
         );
 
+
     const name =
         input.value.trim();
 
+
     if (!name) {
 
-        alert("Kategori adı girin.");
+        alert(
+            "Kategori adı girin."
+        );
+
         return;
     }
+
 
     try {
 
@@ -2094,10 +3167,12 @@ async function addCategory() {
                 "/api/categories",
                 {
                     method:"POST",
+
                     headers:{
                         "Content-Type":
                             "application/json"
                     },
+
                     body:
                         JSON.stringify({
                             name
@@ -2105,7 +3180,10 @@ async function addCategory() {
                 }
             );
 
-        if (!result.response.ok) {
+
+        if (
+            !result.response.ok
+        ) {
 
             throw new Error(
                 result.data.message ||
@@ -2113,14 +3191,12 @@ async function addCategory() {
             );
         }
 
-        /*
-         * Kategori eklendikten sonra
-         * güncel kategorileri tekrar al.
-         */
 
         await loadCategories();
 
+
         input.value = "";
+
 
         alert(
             "Kategori başarıyla eklendi."
@@ -2128,17 +3204,12 @@ async function addCategory() {
 
     } catch(error) {
 
-        console.error(
-            "Kategori ekleme hatası:",
-            error
-        );
-
         alert(
-            error.message ||
-            "Kategori eklenemedi."
+            error.message
         );
     }
 }
+
 
 /* =========================================================
    DELETE CATEGORY
@@ -2153,24 +3224,21 @@ async function deleteCategory(id) {
                 String(id)
         );
 
+
     const name =
-        category?.name || "Bu kategori";
+        category?.name ||
+        "Bu kategori";
+
 
     if (
         !confirm(
             `"${name}" kategorisini silmek istediğinizden emin misiniz?`
         )
     ) {
+
         return;
     }
 
-    /*
-     * SERVER /api/categories/:id
-     * bekliyor.
-     *
-     * Eskiden burada kategori adı
-     * gönderiliyordu. Şimdi gerçek ID gönderiliyor.
-     */
 
     if (!id) {
 
@@ -2180,6 +3248,7 @@ async function deleteCategory(id) {
 
         return;
     }
+
 
     try {
 
@@ -2192,7 +3261,10 @@ async function deleteCategory(id) {
                 }
             );
 
-        if (!result.response.ok) {
+
+        if (
+            !result.response.ok
+        ) {
 
             throw new Error(
                 result.data.message ||
@@ -2200,7 +3272,9 @@ async function deleteCategory(id) {
             );
         }
 
+
         await loadCategories();
+
 
         alert(
             "Kategori silindi."
@@ -2208,9 +3282,12 @@ async function deleteCategory(id) {
 
     } catch(error) {
 
-        alert(error.message);
+        alert(
+            error.message
+        );
     }
 }
+
 
 /* =========================================================
    ORDERS
@@ -2225,7 +3302,10 @@ async function loadOrders() {
                 "/api/orders"
             );
 
-        if (!result.response.ok) {
+
+        if (
+            !result.response.ok
+        ) {
 
             throw new Error(
                 result.data.message ||
@@ -2233,19 +3313,26 @@ async function loadOrders() {
             );
         }
 
+
         const data =
             result.data;
+
 
         orders =
             Array.isArray(data)
                 ? data
                 : (
-                    Array.isArray(data.orders)
+                    Array.isArray(
+                        data.orders
+                    )
                         ? data.orders
                         : []
                 );
 
+
         renderOrders();
+
+
         updateDashboard();
 
     } catch(error) {
@@ -2259,6 +3346,11 @@ async function loadOrders() {
     }
 }
 
+
+/* =========================================================
+   RENDER ORDERS
+========================================================= */
+
 function renderOrders() {
 
     const container =
@@ -2266,152 +3358,301 @@ function renderOrders() {
             "ordersList"
         );
 
+
     if (!container) return;
+
 
     if (!orders.length) {
 
         container.innerHTML = `
+
             <div class="card">
                 Henüz sipariş yok.
             </div>
+
         `;
 
         return;
     }
 
+
     container.innerHTML =
         orders
             .slice()
             .reverse()
-            .map(order => `
+            .map(
+                order => `
 
-                <div class="order">
+                    <div class="order">
 
-                    <h3>
-                        ${escapeHTML(order.id)}
-                    </h3>
+                        <h3>
+                            ${escapeHTML(order.id)}
+                        </h3>
 
-                    <p>
-                        <strong>Müşteri:</strong>
-                        ${escapeHTML(order.customer?.name || "")}
-                    </p>
 
-                    <p>
-                        <strong>Telefon:</strong>
-                        ${escapeHTML(order.customer?.phone || "")}
-                    </p>
+                        <p>
+                            <strong>Müşteri:</strong>
+                            ${escapeHTML(
+                                order.customer?.name ||
+                                ""
+                            )}
+                        </p>
 
-                    <p>
-                        <strong>E-posta:</strong>
-                        ${escapeHTML(order.customer?.email || "")}
-                    </p>
 
-                    <p>
-                        <strong>Adres:</strong><br>
-                        ${escapeHTML(order.customer?.city || "")}
-                        /
-                        ${escapeHTML(order.customer?.district || "")}
-                        /
-                        ${escapeHTML(order.customer?.neighborhood || "")}
-                        <br>
-                        ${escapeHTML(order.customer?.address || "")}
-                        <br>
-                        Bina:
-                        ${escapeHTML(order.customer?.buildingNo || "-")}
-                        |
-                        Daire:
-                        ${escapeHTML(order.customer?.apartmentNo || "-")}
-                    </p>
+                        <p>
+                            <strong>Telefon:</strong>
+                            ${escapeHTML(
+                                order.customer?.phone ||
+                                ""
+                            )}
+                        </p>
 
-                    <hr>
 
-                    <strong>Ürünler:</strong>
+                        <p>
+                            <strong>E-posta:</strong>
+                            ${escapeHTML(
+                                order.customer?.email ||
+                                ""
+                            )}
+                        </p>
 
-                    <ul>
+
+                        <p>
+
+                            <strong>Adres:</strong>
+
+                            <br>
+
+                            ${escapeHTML(
+                                order.customer?.city ||
+                                ""
+                            )}
+
+                            /
+
+                            ${escapeHTML(
+                                order.customer?.district ||
+                                ""
+                            )}
+
+                            /
+
+                            ${escapeHTML(
+                                order.customer?.neighborhood ||
+                                ""
+                            )}
+
+                            <br>
+
+                            ${escapeHTML(
+                                order.customer?.address ||
+                                ""
+                            )}
+
+                            <br>
+
+                            Bina:
+                            ${escapeHTML(
+                                order.customer?.buildingNo ||
+                                "-"
+                            )}
+
+                            |
+
+                            Daire:
+                            ${escapeHTML(
+                                order.customer?.apartmentNo ||
+                                "-"
+                            )}
+
+                        </p>
+
+
                         ${
-                            (order.items || [])
-                                .map(item => `
-                                    <li>
-                                        ${escapeHTML(item.name)}
-                                        ${
-                                            item.size
-                                                ? " - " +
-                                                  escapeHTML(item.size)
-                                                : ""
-                                        }
-                                        × ${item.quantity}
-                                    </li>
-                                `)
-                                .join("")
+                            order.customer?.note
+                                ? `
+
+                                    <div class="notice-box">
+
+                                        <strong>
+                                            📝 Sipariş Notu
+                                        </strong>
+
+                                        <p>
+                                            ${escapeHTML(
+                                                order.customer.note
+                                            )}
+                                        </p>
+
+                                    </div>
+
+                                  `
+                                : ""
                         }
-                    </ul>
 
-                    <h3>
-                        Toplam:
-                        ${formatPrice(order.total)}
-                    </h3>
 
-                    <p>
-                        <strong>Ödeme:</strong>
-                        ${escapeHTML(order.paymentStatus || "-")}
-                    </p>
+                        <hr>
 
-                    <p>
-                        <strong>Durum:</strong>
-                        ${escapeHTML(order.orderStatus || "-")}
-                    </p>
 
-                    ${
-                        order.shipping?.company
-                            ? `
-                                <p>
-                                    <strong>Kargo:</strong>
-                                    ${escapeHTML(order.shipping.company)}
-                                    <br>
-                                    Takip:
-                                    ${escapeHTML(order.shipping.trackingNumber)}
-                                </p>
-                              `
-                            : ""
-                    }
+                        <strong>
+                            Ürünler:
+                        </strong>
 
-                    <div class="order-actions">
 
-                        <button
-                            class="btn green"
-                            onclick="confirmPayment('${escapeJS(order.id)}')"
-                        >
-                            ÖDEMEYİ ONAYLA
-                        </button>
+                        <ul>
 
-                        <button
-                            class="btn gray"
-                            onclick="paymentNotReceived('${escapeJS(order.id)}')"
-                        >
-                            ÖDEME ALINMADI
-                        </button>
+                            ${
+                                (order.items || [])
+                                    .map(
+                                        item => `
 
-                        <button
-                            class="btn"
-                            onclick="shippingForm('${escapeJS(order.id)}')"
-                        >
-                            KARGO GİR
-                        </button>
+                                            <li>
 
-                        <button
-                            class="btn red"
-                            onclick="cancelOrder('${escapeJS(order.id)}')"
-                        >
-                            SİPARİŞİ İPTAL ET
-                        </button>
+                                                ${escapeHTML(
+                                                    item.name
+                                                )}
+
+                                                ${
+                                                    item.size
+                                                        ? " - " +
+                                                          escapeHTML(
+                                                              item.size
+                                                          )
+                                                        : ""
+                                                }
+
+                                                ×
+                                                ${item.quantity}
+
+                                            </li>
+
+                                        `
+                                    )
+                                    .join("")
+                            }
+
+                        </ul>
+
+
+                        <h3>
+
+                            Toplam:
+                            ${formatPrice(
+                                order.total
+                            )}
+
+                        </h3>
+
+
+                        <p>
+
+                            <strong>
+                                Ödeme:
+                            </strong>
+
+                            ${escapeHTML(
+                                order.paymentStatus ||
+                                "-"
+                            )}
+
+                        </p>
+
+
+                        <p>
+
+                            <strong>
+                                Durum:
+                            </strong>
+
+                            ${escapeHTML(
+                                order.orderStatus ||
+                                "-"
+                            )}
+
+                        </p>
+
+
+                        ${
+                            order.shipping?.company
+                                ? `
+
+                                    <p>
+
+                                        <strong>
+                                            Kargo:
+                                        </strong>
+
+                                        ${escapeHTML(
+                                            order.shipping.company
+                                        )}
+
+                                        <br>
+
+                                        Takip:
+                                        ${escapeHTML(
+                                            order.shipping.trackingNumber
+                                        )}
+
+                                    </p>
+
+                                  `
+                                : ""
+                        }
+
+
+                        <div class="order-actions">
+
+
+                            <button
+                                class="btn green"
+                                onclick="confirmPayment(
+                                    '${escapeJS(order.id)}'
+                                )"
+                            >
+                                ÖDEMEYİ ONAYLA
+                            </button>
+
+
+                            <button
+                                class="btn gray"
+                                onclick="paymentNotReceived(
+                                    '${escapeJS(order.id)}'
+                                )"
+                            >
+                                ÖDEME ALINMADI
+                            </button>
+
+
+                            <button
+                                class="btn"
+                                onclick="shippingForm(
+                                    '${escapeJS(order.id)}'
+                                )"
+                            >
+                                KARGO GİR
+                            </button>
+
+
+                            <button
+                                class="btn red"
+                                onclick="cancelOrder(
+                                    '${escapeJS(order.id)}'
+                                )"
+                            >
+                                SİPARİŞİ İPTAL ET
+                            </button>
+
+
+                        </div>
+
 
                     </div>
 
-                </div>
-
-            `)
+                `
+            )
             .join("");
 }
+
 
 /* =========================================================
    ORDER ACTIONS
@@ -2427,6 +3668,7 @@ async function confirmPayment(id) {
     );
 }
 
+
 async function paymentNotReceived(id) {
 
     await orderAction(
@@ -2437,11 +3679,18 @@ async function paymentNotReceived(id) {
     );
 }
 
+
 async function cancelOrder(id) {
 
-    if (!confirm("Sipariş iptal edilsin mi?")) {
+    if (
+        !confirm(
+            "Sipariş iptal edilsin mi?"
+        )
+    ) {
+
         return;
     }
+
 
     await orderAction(
         "/api/orders/" +
@@ -2451,7 +3700,11 @@ async function cancelOrder(id) {
     );
 }
 
-async function orderAction(url, method) {
+
+async function orderAction(
+    url,
+    method
+) {
 
     try {
 
@@ -2463,7 +3716,10 @@ async function orderAction(url, method) {
                 }
             );
 
-        if (!result.response.ok) {
+
+        if (
+            !result.response.ok
+        ) {
 
             throw new Error(
                 result.data.message ||
@@ -2471,13 +3727,21 @@ async function orderAction(url, method) {
             );
         }
 
+
         await loadOrders();
 
     } catch(error) {
 
-        alert(error.message);
+        alert(
+            error.message
+        );
     }
 }
+
+
+/* =========================================================
+   SHIPPING
+========================================================= */
 
 async function shippingForm(id) {
 
@@ -2486,14 +3750,18 @@ async function shippingForm(id) {
             "Kargo firması:"
         );
 
+
     if (!company) return;
+
 
     const tracking =
         prompt(
             "Takip numarası:"
         );
 
+
     if (!tracking) return;
+
 
     try {
 
@@ -2504,20 +3772,28 @@ async function shippingForm(id) {
                 "/shipping",
                 {
                     method:"POST",
+
                     headers:{
                         "Content-Type":
                             "application/json"
                     },
+
                     body:
                         JSON.stringify({
+
                             company,
+
                             trackingNumber:
                                 tracking
+
                         })
                 }
             );
 
-        if (!result.response.ok) {
+
+        if (
+            !result.response.ok
+        ) {
 
             throw new Error(
                 result.data.message ||
@@ -2525,16 +3801,20 @@ async function shippingForm(id) {
             );
         }
 
+
         await loadOrders();
 
     } catch(error) {
 
-        alert(error.message);
+        alert(
+            error.message
+        );
     }
 }
 
+
 /* =========================================================
-   PAYMENT
+   PAYMENT LOAD
 ========================================================= */
 
 async function loadPayment() {
@@ -2546,7 +3826,10 @@ async function loadPayment() {
                 "/api/payment-info"
             );
 
-        if (!result.response.ok) {
+
+        if (
+            !result.response.ok
+        ) {
 
             throw new Error(
                 result.data.message ||
@@ -2554,44 +3837,68 @@ async function loadPayment() {
             );
         }
 
-        /*
-         * SERVER paymentInfo gönderiyor.
-         */
 
         const payment =
             result.data.paymentInfo ||
             result.data.payment ||
             {};
 
+
         const bank =
             document.getElementById(
                 "bankName"
             );
+
 
         const account =
             document.getElementById(
                 "accountName"
             );
 
+
         const iban =
             document.getElementById(
                 "iban"
             );
 
+
+        const description =
+            document.getElementById(
+                "paymentDescription"
+            );
+
+
         if (bank) {
+
             bank.value =
-                payment.bankName || "";
+                payment.bankName ||
+                "";
         }
+
 
         if (account) {
+
             account.value =
-                payment.accountName || "";
+                payment.accountName ||
+                "";
         }
 
+
         if (iban) {
+
             iban.value =
-                payment.iban || "";
+                payment.iban ||
+                "";
         }
+
+
+        if (description) {
+
+            description.value =
+                payment.description ||
+                DEFAULT_PAYMENT_DESCRIPTION;
+        }
+
 
     } catch(error) {
 
@@ -2602,25 +3909,50 @@ async function loadPayment() {
     }
 }
 
+
+/* =========================================================
+   PAYMENT SAVE
+========================================================= */
+
 async function savePayment() {
+
+    let description =
+        document.getElementById(
+            "paymentDescription"
+        ).value.trim();
+
+
+    if (!description) {
+
+        description =
+            DEFAULT_PAYMENT_DESCRIPTION;
+    }
+
 
     const payment = {
 
         bankName:
             document.getElementById(
                 "bankName"
-            ).value,
+            ).value.trim(),
+
 
         accountName:
             document.getElementById(
                 "accountName"
-            ).value,
+            ).value.trim(),
+
 
         iban:
             document.getElementById(
                 "iban"
-            ).value
+            ).value.trim(),
+
+
+        description
+
     };
+
 
     try {
 
@@ -2629,16 +3961,23 @@ async function savePayment() {
                 "/api/payment-info",
                 {
                     method:"PUT",
+
                     headers:{
                         "Content-Type":
                             "application/json"
                     },
+
                     body:
-                        JSON.stringify(payment)
+                        JSON.stringify(
+                            payment
+                        )
                 }
             );
 
-        if (!result.response.ok) {
+
+        if (
+            !result.response.ok
+        ) {
 
             throw new Error(
                 result.data.message ||
@@ -2646,15 +3985,850 @@ async function savePayment() {
             );
         }
 
+
         alert(
             "Ödeme bilgileri kaydedildi."
         );
 
+
     } catch(error) {
 
-        alert(error.message);
+        alert(
+            error.message
+        );
     }
 }
+
+
+/* =========================================================
+   HOMEPAGE / HERO
+========================================================= */
+
+async function loadHomepage() {
+
+    try {
+
+        const result =
+            await apiFetch(
+                "/api/admin/homepage"
+            );
+
+
+        if (
+            !result.response.ok
+        ) {
+
+            throw new Error(
+                result.data.message ||
+                "Ana sayfa bilgileri alınamadı."
+            );
+        }
+
+
+        const data =
+            result.data;
+
+
+        heroSlides =
+            Array.isArray(
+                data.slides
+            )
+                ? data.slides
+                : (
+                    Array.isArray(
+                        data.homepage?.slides
+                    )
+                        ? data.homepage.slides
+                        : []
+                );
+
+
+        renderHeroSlides();
+
+    } catch(error) {
+
+        console.error(
+            "Homepage yükleme hatası:",
+            error
+        );
+
+        const container =
+            document.getElementById(
+                "heroSlidesList"
+            );
+
+
+        if (container) {
+
+            container.innerHTML = `
+
+                <div class="danger-box">
+
+                    Ana sayfa vitrinleri
+                    yüklenemedi.
+
+                    <br><br>
+
+                    ${escapeHTML(
+                        error.message
+                    )}
+
+                </div>
+
+            `;
+        }
+    }
+}
+
+
+/* =========================================================
+   HERO IMAGE PREVIEW
+========================================================= */
+
+function previewHeroImage(input) {
+
+    const preview =
+        document.getElementById(
+            "heroPreview"
+        );
+
+
+    if (
+        !preview ||
+        !input.files ||
+        !input.files[0]
+    ) {
+
+        if (preview) {
+
+            preview.style.display =
+                "none";
+        }
+
+        return;
+    }
+
+
+    const file =
+        input.files[0];
+
+
+    const reader =
+        new FileReader();
+
+
+    reader.onload =
+        function(event) {
+
+            preview.src =
+                event.target.result;
+
+            preview.style.display =
+                "block";
+        };
+
+
+    reader.readAsDataURL(file);
+}
+
+
+/* =========================================================
+   ADD HERO SLIDE
+========================================================= */
+
+async function addHeroSlide() {
+
+    const fileInput =
+        document.getElementById(
+            "heroImageInput"
+        );
+
+
+    const title =
+        document.getElementById(
+            "heroTitle"
+        ).value.trim();
+
+
+    const text =
+        document.getElementById(
+            "heroText"
+        ).value.trim();
+
+
+    const buttonText =
+        document.getElementById(
+            "heroButtonText"
+        ).value.trim();
+
+
+    const buttonLink =
+        document.getElementById(
+            "heroButtonLink"
+        ).value.trim();
+
+
+    if (
+        !fileInput.files ||
+        !fileInput.files[0]
+    ) {
+
+        alert(
+            "Lütfen bir vitrin görseli seçin."
+        );
+
+        return;
+    }
+
+
+    try {
+
+        /*
+         * Önce resmi /api/upload
+         * üzerinden yüklüyoruz.
+         */
+
+        const formData =
+            new FormData();
+
+
+        formData.append(
+            "images",
+            fileInput.files[0]
+        );
+
+
+        const uploadResult =
+            await apiFetch(
+                "/api/upload",
+                {
+                    method:"POST",
+                    body:formData
+                }
+            );
+
+
+        if (
+            !uploadResult.response.ok
+        ) {
+
+            throw new Error(
+                uploadResult.data.message ||
+                "Vitrin görseli yüklenemedi."
+            );
+        }
+
+
+        const returned =
+            uploadResult.data.files ||
+            uploadResult.data.images ||
+            [];
+
+
+        let image = "";
+
+
+        if (
+            Array.isArray(returned) &&
+            returned.length
+        ) {
+
+            const item =
+                returned[0];
+
+
+            image =
+                typeof item === "string"
+                    ? item
+                    : item.url ||
+                      item.path ||
+                      item.location ||
+                      "";
+        }
+
+
+        if (!image) {
+
+            throw new Error(
+                "Yüklenen görsel adresi alınamadı."
+            );
+        }
+
+
+        /*
+         * Şimdi vitrin kaydını oluşturuyoruz.
+         */
+
+        const slide = {
+
+            image,
+
+            title,
+
+            text,
+
+            buttonText,
+
+            buttonLink
+
+        };
+
+
+        const result =
+            await apiFetch(
+                "/api/homepage/slides",
+                {
+                    method:"POST",
+
+                    headers:{
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify(
+                            slide
+                        )
+                }
+            );
+
+
+        if (
+            !result.response.ok
+        ) {
+
+            throw new Error(
+                result.data.message ||
+                "Vitrin kaydedilemedi."
+            );
+        }
+
+
+        alert(
+            "Vitrin başarıyla eklendi."
+        );
+
+
+        document.getElementById(
+            "heroImageInput"
+        ).value = "";
+
+
+        document.getElementById(
+            "heroTitle"
+        ).value = "";
+
+
+        document.getElementById(
+            "heroText"
+        ).value = "";
+
+
+        document.getElementById(
+            "heroButtonText"
+        ).value =
+            "Şimdi Keşfet";
+
+
+        document.getElementById(
+            "heroButtonLink"
+        ).value =
+            "#products";
+
+
+        document.getElementById(
+            "heroPreview"
+        ).style.display =
+            "none";
+
+
+        await loadHomepage();
+
+    } catch(error) {
+
+        alert(
+            error.message
+        );
+    }
+}
+
+
+/* =========================================================
+   RENDER HERO SLIDES
+========================================================= */
+
+function renderHeroSlides() {
+
+    const container =
+        document.getElementById(
+            "heroSlidesList"
+        );
+
+
+    if (!container) return;
+
+
+    if (!heroSlides.length) {
+
+        container.innerHTML = `
+
+            <div class="empty-box">
+
+                Henüz ana sayfa vitrini
+                eklenmemiş.
+
+                <br><br>
+
+                Yukarıdaki alandan ilk
+                vitrin görselinizi ekleyebilirsiniz.
+
+            </div>
+
+        `;
+
+        return;
+    }
+
+
+    container.innerHTML =
+        heroSlides
+            .map(
+                (slide,index) => `
+
+                    <div
+                        class="hero-admin-card"
+                    >
+
+                        <div class="hero-admin-grid">
+
+
+                            <img
+                                class="hero-admin-image"
+                                src="${escapeHTML(
+                                    slide.image ||
+                                    ""
+                                )}"
+                            >
+
+
+                            <div>
+
+                                <h3>
+
+                                    ${escapeHTML(
+                                        slide.title ||
+                                        "Başlıksız Vitrin"
+                                    )}
+
+                                </h3>
+
+
+                                ${
+                                    slide.text
+                                        ? `
+                                            <p>
+                                                ${escapeHTML(
+                                                    slide.text
+                                                )}
+                                            </p>
+                                          `
+                                        : ""
+                                }
+
+
+                                ${
+                                    slide.buttonText
+                                        ? `
+                                            <p>
+                                                <strong>
+                                                    Buton:
+                                                </strong>
+
+                                                ${escapeHTML(
+                                                    slide.buttonText
+                                                )}
+
+                                                ${
+                                                    slide.buttonLink
+                                                        ? `
+                                                            →
+                                                            ${escapeHTML(
+                                                                slide.buttonLink
+                                                            )}
+                                                          `
+                                                        : ""
+                                                }
+
+                                            </p>
+                                          `
+                                        : ""
+                                }
+
+
+                                <small>
+
+                                    Sıra:
+                                    ${index + 1}
+
+                                </small>
+
+
+                                <div class="slide-buttons">
+
+
+                                    ${
+                                        index > 0
+                                            ? `
+                                                <button
+                                                    class="btn gray"
+                                                    onclick="moveHeroSlide(
+                                                        '${escapeJS(slide.id)}',
+                                                        'up'
+                                                    )"
+                                                >
+                                                    ⬆️ Yukarı
+                                                </button>
+                                              `
+                                            : ""
+                                    }
+
+
+                                    ${
+                                        index <
+                                        heroSlides.length - 1
+                                            ? `
+                                                <button
+                                                    class="btn gray"
+                                                    onclick="moveHeroSlide(
+                                                        '${escapeJS(slide.id)}',
+                                                        'down'
+                                                    )"
+                                                >
+                                                    ⬇️ Aşağı
+                                                </button>
+                                              `
+                                            : ""
+                                    }
+
+
+                                    <button
+                                        class="btn blue"
+                                        onclick="editHeroSlide(
+                                            '${escapeJS(slide.id)}'
+                                        )"
+                                    >
+                                        ✏️ Düzenle
+                                    </button>
+
+
+                                    <button
+                                        class="btn red"
+                                        onclick="deleteHeroSlide(
+                                            '${escapeJS(slide.id)}'
+                                        )"
+                                    >
+                                        🗑️ Sil
+                                    </button>
+
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                `
+            )
+            .join("");
+}
+
+
+/* =========================================================
+   EDIT HERO SLIDE
+========================================================= */
+
+async function editHeroSlide(id) {
+
+    const slide =
+        heroSlides.find(
+            item =>
+                String(item.id) ===
+                String(id)
+        );
+
+
+    if (!slide) return;
+
+
+    const title =
+        prompt(
+            "Vitrin başlığı:",
+            slide.title || ""
+        );
+
+
+    if (title === null) return;
+
+
+    const text =
+        prompt(
+            "Vitrin açıklaması:",
+            slide.text || ""
+        );
+
+
+    if (text === null) return;
+
+
+    const buttonText =
+        prompt(
+            "Buton yazısı:",
+            slide.buttonText ||
+            "Şimdi Keşfet"
+        );
+
+
+    if (buttonText === null) return;
+
+
+    const buttonLink =
+        prompt(
+            "Buton bağlantısı:",
+            slide.buttonLink ||
+            "#products"
+        );
+
+
+    if (buttonLink === null) return;
+
+
+    try {
+
+        const result =
+            await apiFetch(
+                "/api/homepage/slides/" +
+                encodeURIComponent(id),
+                {
+                    method:"PUT",
+
+                    headers:{
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify({
+
+                            title,
+
+                            text,
+
+                            buttonText,
+
+                            buttonLink
+
+                        })
+                }
+            );
+
+
+        if (
+            !result.response.ok
+        ) {
+
+            throw new Error(
+                result.data.message ||
+                "Vitrin düzenlenemedi."
+            );
+        }
+
+
+        await loadHomepage();
+
+
+        alert(
+            "Vitrin güncellendi."
+        );
+
+    } catch(error) {
+
+        alert(
+            error.message
+        );
+    }
+}
+
+
+/* =========================================================
+   DELETE HERO
+========================================================= */
+
+async function deleteHeroSlide(id) {
+
+    if (
+        !confirm(
+            "Bu vitrin görselini silmek istediğinize emin misiniz?"
+        )
+    ) {
+
+        return;
+    }
+
+
+    try {
+
+        const result =
+            await apiFetch(
+                "/api/homepage/slides/" +
+                encodeURIComponent(id),
+                {
+                    method:"DELETE"
+                }
+            );
+
+
+        if (
+            !result.response.ok
+        ) {
+
+            throw new Error(
+                result.data.message ||
+                "Vitrin silinemedi."
+            );
+        }
+
+
+        await loadHomepage();
+
+
+        alert(
+            "Vitrin silindi."
+        );
+
+    } catch(error) {
+
+        alert(
+            error.message
+        );
+    }
+}
+
+
+/* =========================================================
+   MOVE HERO
+========================================================= */
+
+async function moveHeroSlide(
+    id,
+    direction
+) {
+
+    const currentIndex =
+        heroSlides.findIndex(
+            slide =>
+                String(slide.id) ===
+                String(id)
+        );
+
+
+    if (
+        currentIndex === -1
+    ) {
+
+        return;
+    }
+
+
+    let targetIndex;
+
+
+    if (
+        direction === "up"
+    ) {
+
+        targetIndex =
+            currentIndex - 1;
+
+    } else {
+
+        targetIndex =
+            currentIndex + 1;
+    }
+
+
+    if (
+        targetIndex < 0 ||
+        targetIndex >= heroSlides.length
+    ) {
+
+        return;
+    }
+
+
+    const newOrder =
+        heroSlides.map(
+            slide =>
+                slide.id
+        );
+
+
+    const temp =
+        newOrder[currentIndex];
+
+
+    newOrder[currentIndex] =
+        newOrder[targetIndex];
+
+
+    newOrder[targetIndex] =
+        temp;
+
+
+    try {
+
+        const result =
+            await apiFetch(
+                "/api/homepage/slides/reorder",
+                {
+                    method:"PUT",
+
+                    headers:{
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify({
+                            order:
+                                newOrder
+                        })
+                }
+            );
+
+
+        if (
+            !result.response.ok
+        ) {
+
+            throw new Error(
+                result.data.message ||
+                "Vitrin sırası değiştirilemedi."
+            );
+        }
+
+
+        await loadHomepage();
+
+    } catch(error) {
+
+        alert(
+            error.message
+        );
+    }
+}
+
 
 /* =========================================================
    PASSWORD
@@ -2667,10 +4841,12 @@ async function changePassword() {
             "oldPassword"
         ).value;
 
+
     const newPassword =
         document.getElementById(
             "newPassword"
         ).value;
+
 
     try {
 
@@ -2679,19 +4855,27 @@ async function changePassword() {
                 "/api/admin/change-password",
                 {
                     method:"POST",
+
                     headers:{
                         "Content-Type":
                             "application/json"
                     },
+
                     body:
                         JSON.stringify({
+
                             oldPassword,
+
                             newPassword
+
                         })
                 }
             );
 
-        if (!result.response.ok) {
+
+        if (
+            !result.response.ok
+        ) {
 
             throw new Error(
                 result.data.message ||
@@ -2699,13 +4883,16 @@ async function changePassword() {
             );
         }
 
+
         alert(
             "Şifre başarıyla değiştirildi."
         );
 
+
         document.getElementById(
             "oldPassword"
         ).value = "";
+
 
         document.getElementById(
             "newPassword"
@@ -2713,9 +4900,12 @@ async function changePassword() {
 
     } catch(error) {
 
-        alert(error.message);
+        alert(
+            error.message
+        );
     }
 }
+
 
 /* =========================================================
    DASHBOARD
@@ -2728,7 +4918,9 @@ function updateDashboard() {
             "dashboardCards"
         );
 
+
     if (!container) return;
+
 
     const waitingPayment =
         orders.filter(
@@ -2739,6 +4931,7 @@ function updateDashboard() {
                 "Ödeme bekleniyor"
         ).length;
 
+
     const approved =
         orders.filter(
             o =>
@@ -2746,37 +4939,79 @@ function updateDashboard() {
                 "paid"
         ).length;
 
+
+    const reviewCount =
+        products.reduce(
+            (sum, product) =>
+                sum +
+                (
+                    Array.isArray(
+                        product.reviews
+                    )
+                        ? product.reviews.length
+                        : 0
+                ),
+            0
+        );
+
+
     container.innerHTML = `
 
+
         <div class="card">
-            <h3>Ürün</h3>
+
+            <h3>
+                Ürün
+            </h3>
+
             <strong>
                 ${products.length}
             </strong>
+
         </div>
 
+
         <div class="card">
-            <h3>Sipariş</h3>
+
+            <h3>
+                Sipariş
+            </h3>
+
             <strong>
                 ${orders.length}
             </strong>
+
         </div>
 
+
         <div class="card">
-            <h3>Ödeme Bekleyen</h3>
+
+            <h3>
+                Ödeme Bekleyen
+            </h3>
+
             <strong>
                 ${waitingPayment}
             </strong>
+
         </div>
 
+
         <div class="card">
-            <h3>Ödemesi Onaylanan</h3>
+
+            <h3>
+                Toplam Yorum
+            </h3>
+
             <strong>
-                ${approved}
+                ${reviewCount}
             </strong>
+
         </div>
+
     `;
 }
+
 
 /* =========================================================
    HELPERS
@@ -2784,14 +5019,22 @@ function updateDashboard() {
 
 function normalizeTurkish(value) {
 
-    return String(value ?? "")
-        .trim()
-        .toLocaleLowerCase("tr-TR");
+    return String(
+        value ?? ""
+    )
+    .trim()
+    .toLocaleLowerCase(
+        "tr-TR"
+    );
 }
+
 
 function formatPrice(value) {
 
-    return Number(value || 0).toLocaleString(
+    return Number(
+        value || 0
+    )
+    .toLocaleString(
         "tr-TR",
         {
             minimumFractionDigits:2,
@@ -2800,23 +5043,56 @@ function formatPrice(value) {
     ) + " TL";
 }
 
+
 function escapeHTML(value) {
 
-    return String(value ?? "")
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;")
-        .replaceAll("'","&#039;");
+    return String(
+        value ?? ""
+    )
+    .replaceAll(
+        "&",
+        "&amp;"
+    )
+    .replaceAll(
+        "<",
+        "&lt;"
+    )
+    .replaceAll(
+        ">",
+        "&gt;"
+    )
+    .replaceAll(
+        '"',
+        "&quot;"
+    )
+    .replaceAll(
+        "'",
+        "&#039;"
+    );
 }
+
 
 function escapeJS(value) {
 
-    return String(value ?? "")
-        .replaceAll("\\","\\\\")
-        .replaceAll("'","\\'")
-        .replaceAll("\n","\\n")
-        .replaceAll("\r","\\r");
+    return String(
+        value ?? ""
+    )
+    .replaceAll(
+        "\\",
+        "\\\\"
+    )
+    .replaceAll(
+        "'",
+        "\\'"
+    )
+    .replaceAll(
+        "\n",
+        "\\n"
+    )
+    .replaceAll(
+        "\r",
+        "\\r"
+    );
 }
 
 </script>
